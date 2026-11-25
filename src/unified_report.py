@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from math import isclose
 from pathlib import Path
 from statistics import geometric_mean, median
@@ -10,9 +11,9 @@ from plot_style import BASELINE, DFLASH, DSPARK, INK, MTP, MUTED, save_plot, set
 from unified_framework import CONFIG, cell_name, read_json, stress_cells, write_json
 
 
-LABELS = {"mtp": "Native MTP", "dspark": "DSpark", "dflash": "DFlash 2", "suffix": "Suffix"}
-COLORS = {"mtp": MTP, "dspark": DSPARK, "dflash": DFLASH, "suffix": DFLASH}
-MARKERS = {"mtp": "o", "dspark": "s", "dflash": "^", "suffix": "^"}
+LABELS = {"normal": "Normal", "mtp": "Native MTP", "dspark": "DSpark", "dflash": "DFlash 2", "suffix": "Suffix"}
+COLORS = {"normal": BASELINE, "mtp": MTP, "dspark": DSPARK, "dflash": DFLASH, "suffix": DFLASH}
+MARKERS = {"normal": "D", "mtp": "o", "dspark": "s", "dflash": "^", "suffix": "^"}
 EXTERNAL = {"speed": ("NVIDIA SPEED-Bench", "speed-bench-throughput"),
             "burst": ("BurstGPT v2.0", "burstgpt-throughput")}
 METRICS = ("output_throughput", "p95_ttft_ms", "p95_tpot_ms", "spec_decode_acceptance_rate")
@@ -179,18 +180,52 @@ def collect(root, profiles=None):
 
     protocol, data_sha256, workloads = workload_identity
     model, vllm, gpu, driver = environment_identity
-    run_counts = {"tuning": 0, "holdout": 0, "stress": 0}
-    for info in methods.values():
-        selection = info["selection"]
-        profiles = 2 + int(selection["reference"]["id"] != selection["selected"]["id"])
-        run_counts["tuning"] += sum(len(row.get("tps", {})) for key in ("round1", "round2") for row in selection[key])
-        for phase in ("holdout", "stress"):
-            run_counts[phase] += profiles * sum(len(row["runs"]) for row in info[phase].values())
     return {
         "schema": SCHEMA, "model": model, "vllm": vllm, "gpu": gpu, "driver": driver,
         "protocol": protocol, "data_sha256": data_sha256, "workloads": workloads,
-        "methods": methods, "benchmark_counts": run_counts,
+        "methods": methods, "benchmark_counts": count_method_runs(methods),
     }
+
+
+def count_method_runs(methods):
+    counts = {"tuning": 0, "holdout": 0, "stress": 0}
+    for info in methods.values():
+        selection = info["selection"]
+        profiles = 2 + int(selection["reference"]["id"] != selection["selected"]["id"])
+        counts["tuning"] += sum(len(row.get("tps", {})) for key in ("round1", "round2") for row in selection[key])
+        for phase in ("holdout", "stress"):
+            counts[phase] += profiles * sum(len(row["runs"]) for row in info[phase].values())
+    return counts
+
+
+def external_cells(lane, manifest, confirmation, roles):
+    cells = {}
+    for cell in manifest["cells"]:
+        workload, concurrency = cell["workload"], cell["concurrency"]
+        cells.setdefault((workload, concurrency), []).append(cell)
+    if set(cells) != {("speed", 1), ("speed", 16), ("burst", 16)}:
+        raise ValueError("Incomplete external benchmark matrix")
+    results = {"speed": {}, "burst": {}}
+    for (workload, concurrency), group in cells.items():
+        seeds = [cell["seed"] for cell in group]
+        if len(set(seeds)) != 3 or len(seeds) != 3:
+            raise ValueError("External workload requires three independent trials")
+        runs = {}
+        for role in roles:
+            directory = lane / "external" / confirmation[role]
+            speeds = read_json(directory / "completed.json")["speeds"]
+            rows = []
+            for cell in group:
+                name = cell_name(workload, concurrency, cell["seed"])
+                row = load_run(directory, name, cell["count"], concurrency, speeds)
+                if workload == "burst":
+                    row["dispatch_span_seconds"] = max(row["start_times"]) - min(row["start_times"])
+                rows.append(row)
+            if runs and any(a["output_lens"] != b["output_lens"] for a, b in zip(runs["normal"], rows, strict=True)):
+                raise ValueError(f"{workload}: paired output budgets differ")
+            runs[role] = rows
+        results[workload][str(concurrency)] = summarize_cells(runs, seeds)
+    return results
 
 
 def collect_external(root, summary):
@@ -209,36 +244,130 @@ def collect_external(root, summary):
                 or Path(identity["target"]).name != summary["model"] or identity["vllm_version"] != summary["vllm"]
                 or identity["gpu"]["name"] != summary["gpu"] or identity["gpu"]["driver_version"] != summary["driver"]):
             raise ValueError(f"{lane}: external benchmark environment or profile does not match the report")
-        cells = {}
-        for cell in manifest["cells"]:
-            workload, concurrency = cell["workload"], cell["concurrency"]
-            cells.setdefault((workload, concurrency), []).append(cell)
-        if set(cells) != {("speed", 1), ("speed", 16), ("burst", 16)}:
-            raise ValueError("Incomplete external benchmark matrix")
-        results[method] = {"speed": {}, "burst": {}}
-        for (workload, concurrency), group in cells.items():
-            seeds = [cell["seed"] for cell in group]
-            if len(set(seeds)) != 3 or len(seeds) != 3:
-                raise ValueError("External workload requires three independent trials")
-            runs = {role: [] for role in ("normal", "selected")}
-            for role, rows in runs.items():
-                directory = lane / "external" / confirmation[role]
-                speeds = read_json(directory / "completed.json")["speeds"]
-                for cell in group:
-                    name = cell_name(workload, concurrency, cell["seed"])
-                    row = load_run(directory, name, cell["count"], concurrency, speeds)
-                    if workload == "burst":
-                        row["dispatch_span_seconds"] = max(row["start_times"]) - min(row["start_times"])
-                    rows.append(row)
-            if any(a["output_lens"] != b["output_lens"] for a, b in zip(*runs.values(), strict=True)):
-                raise ValueError(f"{workload}: paired output budgets differ")
-            results[method][workload][str(concurrency)] = summarize_cells(runs, seeds)
+        results[method] = external_cells(lane, manifest, confirmation, ("normal", "selected"))
     return {"manifest": common_manifest, "methods": results, "benchmark_count": len(common_manifest["cells"]) * 2 * len(results)}
+
+
+def apply_draft_study(summary, root):
+    if "external" not in summary:
+        raise ValueError("A draft study must be included with the three-workload report")
+    study = collect(root / "raw", ["dflash"])
+    for key in ("model", "vllm", "gpu", "driver", "protocol", "data_sha256", "workloads"):
+        if study[key] != summary[key]:
+            raise ValueError(f"Draft study differs from the report in {key}")
+
+    raw = root / "raw/dflash"
+    external = root / "external/dflash"
+    core = study["methods"]["dflash"]
+    selection = read_json(raw / "selection.json")
+    reference, selected = selection["reference"], selection["selected"]
+    if {key: value for key, value in selected["spec"].items() if key != "quantization"} != reference["spec"]:
+        raise ValueError("Draft study comparison may only change draft precision")
+    roles = ("normal", "reference", "selected")
+    expected = {"normal": "normal", "reference": reference["id"], "selected": selected["id"]}
+    identity = read_json(external / "experiment.json")
+    raw_identity = read_json(raw / "experiment.json")
+    manifest = identity.pop("external_workloads")
+    if (identity != raw_identity or manifest != summary["external"]["manifest"]
+            or read_json(external / "confirmation.json") != expected):
+        raise ValueError("Draft study external inputs or comparison profiles differ from the Spec-Bench run")
+
+    comparison = external_cells(external, manifest, expected, roles)
+    workload_scores = {
+        name: geometric_mean(median(cell["to_reference"]) for cell in cells.values())
+        for name, cells in {"holdout": core["holdout"], **comparison}.items()
+    }
+    throughput_score = geometric_mean(workload_scores.values())
+    adopted = throughput_score > 1 and min(workload_scores.values()) >= 0.97
+    kept = "selected" if adopted else "reference"
+    core["recommended"] = selected if adopted else reference
+    core["retained_score_vs_normal"] = geometric_mean(
+        median(paired_ratios(cell, "output_throughput", kept)) for cell in core["holdout"].values()
+    )
+
+    memory = {}
+    attention_versions = set()
+    for role in roles:
+        log = (raw / "holdout" / expected[role] / "server.log").read_text(encoding="utf-8", errors="replace")
+        memory[role] = model_memory_gib(log)
+        if role != "normal":
+            versions = set(re.findall(r"Using FlashAttention version (\d+)", log))
+            if len(versions) != 1:
+                raise ValueError(f"Could not identify the DFlash 2 FlashAttention version for {role}")
+            attention_versions.update(versions)
+    if len(attention_versions) != 1:
+        raise ValueError("Draft quantization must keep the same FlashAttention version")
+
+    summary["methods"]["dflash"] = core
+    summary["benchmark_counts"] = count_method_runs(summary["methods"])
+    summary["external"]["methods"]["dflash"] = {**comparison, "retained_role": kept}
+    summary["external"]["benchmark_count"] = sum(
+        len(cell["runs"]) * len(cell["successful"])
+        for phases in summary["external"]["methods"].values()
+        for phase in EXTERNAL for cell in phases[phase].values()
+    )
+    summary["dflash_quantization"] = {
+        "quantized_format": selected["spec"]["quantization"], "release_role": kept,
+        "throughput_score_vs_bf16": throughput_score, "workload_scores_vs_bf16": workload_scores,
+        "flash_attention_version": int(attention_versions.pop()), "model_memory_gib": memory,
+        "screening_memory_gib": {
+            row["profile"]["id"]: model_memory_gib(
+                (raw / "tuning" / row["profile"]["id"] / "server.log").read_text(encoding="utf-8", errors="replace")
+            )
+            for phase in ("round1", "round2") for row in selection[phase] if "score" in row
+        },
+    }
+
+
+def model_memory_gib(log):
+    values = re.findall(r"Model loading took ([\d.]+) GiB memory", log)
+    if len(values) != 1:
+        raise ValueError("Expected one model-loading memory measurement in the vLLM server log")
+    return float(values[0])
+
+
+def render_draft_study(summary):
+    study = summary["dflash_quantization"]
+    core = summary["methods"]["dflash"]
+    external = summary["external"]["methods"]["dflash"]
+    phases = {"Spec-Bench": core["holdout"], "SPEED-Bench": external["speed"], "BurstGPT v2.0": external["burst"]}
+    memory = study["model_memory_gib"]
+    scores = study["workload_scores_vs_bf16"]
+    lines = [
+        "", "## DFlash 2 草稿量化复测", "",
+        f"入选量化为 `{study['quantized_format']}`，发布配置为 `{core['recommended']['id']}`。"
+        f"相对 BF16 的三套负载综合倍率为 {study['throughput_score_vs_bf16']:.3f}×。"
+        f"Spec-Bench、SPEED-Bench 和 BurstGPT 的倍率分别为 {scores['holdout']:.3f}×、"
+        f"{scores['speed']:.3f}× 和 {scores['burst']:.3f}×。"
+        "每套负载先对各档并发的配对中位倍率取几何平均，三套负载等权。"
+        "综合倍率大于 1 且各套负载降幅均在 3% 以内时采用量化。",
+        "",
+        f"vLLM 报告的模型加载显存为 Normal {memory['normal']:.2f} GiB、DFlash 2 BF16 {memory['reference']:.2f} GiB、"
+        f"量化草稿 {memory['selected']:.2f} GiB。该值不含 KV cache 和 CUDA Graph。两种草稿使用 FlashAttention {study['flash_attention_version']}。",
+        "",
+        "| 负载 | 并发 | TPS（BF16 → 量化） | 配对倍率（中位数及范围） | P95 TTFT (ms) | P95 TPOT (ms) | 草稿接受率 | 成功请求 |",
+        "|---|---:|---:|---:|---:|---:|---:|---:|",
+    ]
+    for label, cells in phases.items():
+        for concurrency, cell in cells.items():
+            metrics = []
+            for key in ("median_tps", "median_p95_ttft_ms", "median_p95_tpot_ms"):
+                metrics.append(" → ".join(f"{cell[key][r]:.2f}" for r in ("reference", "selected")))
+            accept = " → ".join(f"{median(row[r]['spec_decode_acceptance_rate'] for row in cell['runs']):.1f}%"
+                                for r in ("reference", "selected"))
+            success = " → ".join(f"{cell['successful'][r]}/{cell['successful'][r] + cell['failed'][r]}"
+                                 for r in ("reference", "selected"))
+            ratios = cell["to_reference"]
+            speed = f"{median(ratios):.3f}× ({min(ratios):.3f}–{max(ratios):.3f})"
+            lines.append(f"| {label} | {concurrency} | {metrics[0]} | {speed} | "
+                         f"{metrics[1]} | {metrics[2]} | {accept} | {success} |")
+    return lines
 
 
 def phase_rows(summary, phase):
     if phase in EXTERNAL:
-        return {method: (info[phase], "selected") for method, info in summary["external"]["methods"].items()}
+        return {method: (info[phase], info.get("retained_role", "selected"))
+                for method, info in summary["external"]["methods"].items()}
     return {method: (info[phase], retained_role(info)) for method, info in summary["methods"].items()}
 
 
@@ -247,9 +376,10 @@ def speed_plot(summary, output, plt, phase):
     cells = list(next(iter(groups.values()))[0])
     if not cells:
         return
-    fig, axes = plt.subplots(1, len(cells), figsize=(max(4.2, 3.45 * len(cells)), 3.45),
+    fig, axes = plt.subplots(1, len(cells), figsize=(max(4.2, 3.45 * len(cells)), 3.85),
                              sharex=True, sharey=True, squeeze=False)
-    positions = range(len(groups))
+    methods = ["normal", *groups]
+    positions = range(len(methods))
     stress = summary["protocol"]["stress"]
     titles = {
         "holdout": ("Spec-Bench held-out throughput", "spec-bench-throughput"),
@@ -259,9 +389,10 @@ def speed_plot(summary, output, plt, phase):
     }
     title, filename = titles[phase]
     fig.suptitle(title, x=0.05, ha="left", fontsize=16, fontweight="semibold")
-    ratios = {method: {c: paired_ratios(rows[c], "output_throughput", role) for c in cells}
-              for method, (rows, role) in groups.items()}
-    limits = [value for method in groups for concurrency in cells for value in ratios[method][concurrency]]
+    ratios = {"normal": {c: [1.0] for c in cells}}
+    ratios.update({method: {c: paired_ratios(rows[c], "output_throughput", role) for c in cells}
+                   for method, (rows, role) in groups.items()})
+    limits = [value for method in methods for concurrency in cells for value in ratios[method][concurrency]]
     low, high = min(min(limits), 1), max(max(limits), 1)
     span = max(high - low, 0.65)
     axes[0][0].set_xlim(max(0, low - 0.15 * span), high + 0.27 * span)
@@ -269,22 +400,22 @@ def speed_plot(summary, output, plt, phase):
         ax.set_title(f"Concurrency {concurrency}", loc="left")
         ax.axvline(1, color=BASELINE, lw=1.1, ls="--")
         ax.grid(axis="x")
-        for position, method in enumerate(groups):
+        for position, method in enumerate(methods):
             values = ratios[method][concurrency]
             center = median(values)
             ax.hlines(position, min(values), max(values), color=COLORS[method], lw=3, alpha=0.55)
             ax.scatter(center, position, s=54, color=COLORS[method], marker=MARKERS[method], zorder=3)
             ax.annotate(f"{center:.2f}×", (max(values), position), xytext=(7, 0),
                         textcoords="offset points", va="center", fontsize=9)
-        ax.set_yticks(list(positions), [LABELS[method] for method in groups])
-        ax.set_ylim(len(groups) - 0.55, -0.55)
+        ax.set_yticks(list(positions), [LABELS[method] for method in methods])
+        ax.set_ylim(len(methods) - 0.55, -0.55)
         ax.set_xlabel("Throughput / same-GPU Normal")
         if index:
             ax.tick_params(axis="y", length=0, labelleft=False)
     if phase == "stress":
-        caption = "One run per point. The dashed line marks Normal."
+        caption = "One run per point. Normal is the paired reference."
     else:
-        caption = "Markers show paired medians. Bars span the three observed runs."
+        caption = "Paired medians and three-run ranges. Normal = 1."
     fig.text(0.05, 0.018, caption, fontsize=9.5, color=MUTED)
     fig.tight_layout(rect=(0, 0.08, 1, 0.94))
     save_plot(fig, plt, output, filename)
@@ -292,21 +423,23 @@ def speed_plot(summary, output, plt, phase):
 
 def latency_plot(summary, output, plt):
     cells = list(next(iter(summary["methods"].values()))["holdout"])
+    x = range(len(cells))
     fig, axes = plt.subplots(1, 2, figsize=(10.2, 4.25), sharey=True)
     fig.suptitle("Spec-Bench tail latency", x=0.06, ha="left", fontsize=16, fontweight="semibold")
     for ax, metric, title in zip(axes, ("p95_ttft_ms", "p95_tpot_ms"),
                                  ("Time to first token", "Time per output token"), strict=True):
-        ax.axhline(1, color=BASELINE, lw=1.1, ls="--")
+        ax.plot(x, [1.0] * len(cells), color=COLORS["normal"], marker=MARKERS["normal"],
+                markerfacecolor="white", linestyle="--", label=LABELS["normal"])
         ax.grid(axis="y")
         for method, info in summary["methods"].items():
             ratios = [median(paired_ratios(info["holdout"][c], metric, retained_role(info))) for c in cells]
-            ax.plot(range(len(cells)), ratios, color=COLORS[method], marker=MARKERS[method], label=LABELS[method])
+            ax.plot(x, ratios, color=COLORS[method], marker=MARKERS[method], label=LABELS[method])
         ax.set_title(title, loc="left")
-        ax.set_xticks(range(len(cells)), cells)
+        ax.set_xticks(x, cells)
         ax.set_xlabel("Concurrency")
     axes[0].set_ylabel("P95 latency / same-GPU Normal")
     handles, labels = axes[0].get_legend_handles_labels()
-    fig.legend(handles, labels, loc="lower center", bbox_to_anchor=(0.53, 0.015), ncol=3, frameon=False)
+    fig.legend(handles, labels, loc="lower center", bbox_to_anchor=(0.53, 0.015), ncol=len(labels), frameon=False)
     fig.tight_layout(rect=(0, 0.10, 1, 0.94))
     save_plot(fig, plt, output, "spec-bench-latency")
 
@@ -376,20 +509,23 @@ def render_tables(summary):
     lines.extend(["", "综合倍数取 Spec-Bench 三档并发的配对中位倍率，再作几何平均。各负载的结果使用每种方法的发布配置。", "",
                   "TPS、P95 TTFT、P95 TPOT 和草稿接受率均为各轮中位数。每个吞吐倍率配对同卡、同种子和同并发的运行，再取各轮中位数。", "",
                   "## Spec-Bench 留出集", "", *performance_table(summary, "holdout"), "",
-                  "![Spec-Bench 吞吐](spec-bench-throughput.png)", "",
-                  "![Spec-Bench 延迟](spec-bench-latency.png)", ""])
+                  "![Spec-Bench 吞吐](figures/spec-bench-throughput.png)", "",
+                  "![Spec-Bench 延迟](figures/spec-bench-latency.png)", ""])
     if "external" in summary:
         for phase, (label, filename) in EXTERNAL.items():
-            lines.extend([f"## {label}", "", *performance_table(summary, phase), "", f"![{label} 吞吐]({filename}.png)", ""])
+            lines.extend([f"## {label}", "", *performance_table(summary, phase), "", f"![{label} 吞吐](figures/{filename}.png)", ""])
         lines.extend(["SPEED-Bench 使用去重后的写作、代码和多语言提示。BurstGPT 回放三段轨迹，保留请求长度和相对到达间隔。回放速率会限制总吞吐，因此也要看首 token 延迟和每 token 延迟。", ""])
     cells = summary["protocol"]["concurrencies"]
     columns = "".join(f" C={concurrency} TPS |" for concurrency in cells)
     counts = summary["benchmark_counts"]
     extra = summary.get("external", {}).get("benchmark_count", 0)
-    lines.extend(["## 两轮调参", "",
+    memory = summary.get("dflash_quantization", {}).get("screening_memory_gib", {})
+    memory_column = " 模型显存 (GiB) |" if memory else ""
+    memory_separator = "---:|" if memory else ""
+    lines.extend(["## 调参记录", "",
                   f"调参跑了 {counts['tuning']} 个执行单元。留出复测、外部负载和随机压测各有 {counts['holdout']}、{extra} 和 {counts['stress']} 个执行单元。", "",
-                  f"| 方法 | 轮次 | 配置 |{columns} 调参得分 | CUDA Graph | 入选 |",
-                  "|---|---:|---|" + "---:|" * len(cells) + "---:|---|---|"])
+                  f"| 方法 | 轮次 | 配置 |{columns} 调参得分 | CUDA Graph |{memory_column} 入选 |",
+                  "|---|---:|---|" + "---:|" * len(cells) + "---:|---|" + memory_separator + "---|"])
     for method, info in summary["methods"].items():
         selected = info["selection"]["selected"]["id"]
         for phase, phase_rows in enumerate((info["selection"]["round1"], info["selection"]["round2"]), start=1):
@@ -398,29 +534,36 @@ def render_tables(summary):
                 score = f"{row['score']:.2f}" if "score" in row else "运行失败"
                 speeds = "".join(f" {row['tps'][str(c)]:.2f} |" if "tps" in row else " — |" for c in cells)
                 graph = {"full": "完整", "disabled": "关闭", "unconfirmed": "未确认"}.get(row.get("cuda_graph"), "—")
+                loaded = f"{memory[profile]:.2f}" if profile in memory else "—"
                 lines.append(f"| {LABELS[method]} | {phase} | `{profile}` |{speeds} {score} | {graph} | "
-                             f"{'✓' if profile == selected else ''} |")
+                             f"{loaded + ' | ' if memory else ''}{'✓' if profile == selected else ''} |")
     if any(info["stress"] for info in summary["methods"].values()):
         lines.extend(["", "## 合成压力对照", "", *performance_table(summary, "stress"), "",
-                      "![随机压力测试](random-stress.png)"])
+                      "![随机压力测试](figures/random-stress.png)"])
+    if "dflash_quantization" in summary:
+        lines.extend(render_draft_study(summary))
     lines.append("")
     return "\n".join(lines)
 
 
-def generate_report(results, output, external=None, profiles=None):
+def generate_report(results, output, external=None, profiles=None, draft_study=None):
     summary = read_json(results) if results.is_file() else collect(results, profiles)
     if summary["schema"] != SCHEMA:
         raise ValueError("Unsupported summary format")
     if external is not None:
         summary["external"] = collect_external(external, summary)
+    if draft_study is not None:
+        apply_draft_study(summary, draft_study)
     output.mkdir(parents=True, exist_ok=True)
     write_json(output / "summary.json", summary)
     (output / "results.md").write_text(render_tables(summary), encoding="utf-8")
+    figures = output / "figures"
+    figures.mkdir(exist_ok=True)
     plt = setup_plots()
-    workflow_plot(output, plt)
-    speed_plot(summary, output, plt, "holdout")
-    latency_plot(summary, output, plt)
-    speed_plot(summary, output, plt, "stress")
+    workflow_plot(figures, plt)
+    speed_plot(summary, figures, plt, "holdout")
+    latency_plot(summary, figures, plt)
+    speed_plot(summary, figures, plt, "stress")
     if "external" in summary:
         for phase in EXTERNAL:
-            speed_plot(summary, output, plt, phase)
+            speed_plot(summary, figures, plt, phase)

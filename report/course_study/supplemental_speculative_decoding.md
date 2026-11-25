@@ -21,7 +21,7 @@
 
 Suffix 和 Normal 各成功处理了 288 条请求。按相同种子和并发配对后，59 条 greedy 输出全文一致。比较包含推理文本，部分输出在 128 tokens 处截断。留出集记录的是全文是否一致，答案得分只用于另做的短答检查。
 
-短答检查使用 20 道有标准答案的题。关闭思考后用 greedy 解码，两种配置按预设规则均通过 17 道，失分题相同。[逐题结果](../results/raw/supplemental_speculative/short-answer.json)
+短答检查使用 20 道有标准答案的题。关闭思考后用 greedy 解码，两种配置按预设规则均通过 17 道，失分题相同。[逐题结果](../../results/raw/supplemental_speculative/short-answer.json)
 
 Spec-Bench 的 480 条原题按类别分为 144 条调参题和 336 条留出题。种子 43、44、45 各在并发 1 和 16 测量一次。六个留出子集各有 56 条候选题，题号和首轮提示互不重叠。每轮用 4 条额外问题预热，正式计时测 48 条。两种配置都关闭 vLLM 前缀缓存，压测请求饱和到达。[Spec-Bench 原始数据](https://github.com/hemingkx/Spec-Bench/blob/66230f10cb0a02aced5ef3ce1e85163c16160454/data/spec_bench/question.jsonl)
 
@@ -56,4 +56,4 @@ GPU 空闲时可用 `benchmark` 复跑。脚本从 `data/spec_bench/question.jso
 "$python_bin" src/run_supplemental_benchmark.py benchmark --gpu 7 --port 24807 --output replay-supplemental
 ```
 
-[最终复测汇总](../results/processed/supplemental_speculative_summary.json) · [原始复测 JSON](../results/raw/supplemental_speculative/) · [最终配置](../config/supplemental_speculative_config.json) · [复跑入口](../src/run_supplemental_benchmark.py)
+[最终复测汇总](../../results/processed/supplemental_speculative_summary.json) · [原始复测 JSON](../../results/raw/supplemental_speculative/) · [最终配置](../../config/supplemental_speculative_config.json) · [复跑入口](../../src/run_supplemental_benchmark.py)

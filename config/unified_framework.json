@@ -72,10 +72,11 @@
     "dflash": {
       "label": "DFlash 2",
       "reference": {
-        "id": "dflash2-k7",
+        "id": "dflash2-mxfp8",
         "spec": {
           "method": "dflash",
-          "num_speculative_tokens": 7
+          "num_speculative_tokens": 7,
+          "quantization": "mxfp8"
         }
       }
     }

@@ -71,7 +71,7 @@ Adaptive Verification 根据启动时测得的成本模型确定验证预算，�
 
 所有正式服务使用 `max_model_len=8192`、`max_num_seqs=256`、`gpu_memory_utilization=0.90`、`generation_config=vllm`，并关闭 prefix caching。压测采用 greedy 解码，参数为 `temperature=0`、`top_p=1`、`top_k=-1`。通过 `ignore_eos=true` 固定输出长度。
 
-审计包装器记录 vLLM 启动命令、每轮压测的 argv、起止时间、退出码和合并输出。[实验协议](../config/experiment_protocol.json) · [实际命令](command_audit.md)
+审计包装器记录 vLLM 启动命令、每轮压测的 argv、起止时间、退出码和合并输出。[实验协议](../../config/experiment_protocol.json) · [实际命令](command_audit.md)
 
 ### 2.2 正式随机负载
 
@@ -83,7 +83,7 @@ Normal 使用标准自回归解码。MTP 使用 `{"method":"mtp","num_speculativ
 
 ### 2.3 Spec-Bench 真实语义负载
 
-语义实验使用 [Spec-Bench question.jsonl](../data/spec_bench/question.jsonl)，文件包含 480 条记录，覆盖 writing、roleplay、reasoning、math、coding、translation、RAG 等类别。vLLM loader 使用每条记录的第一轮 prompt 并应用 chat template。每次取 128 请求，输出 256 tokens，其他并发、seed 和重复次数与随机正式矩阵一致，共 36 次正式运行。
+语义实验使用 [Spec-Bench question.jsonl](../../data/spec_bench/question.jsonl)，文件包含 480 条记录，覆盖 writing、roleplay、reasoning、math、coding、translation、RAG 等类别。vLLM loader 使用每条记录的第一轮 prompt 并应用 chat template。每次取 128 请求，输出 256 tokens，其他并发、seed 和重复次数与随机正式矩阵一致，共 36 次正式运行。
 
 该数据文件 SHA-256 为：
 
@@ -367,7 +367,7 @@ C=16 时，K5 的平均吞吐最高，K6 和 K7 相对 K5 的配对比值分别�
 
 ### 6.2 MTP 按 batch size 动态选 K
 
-两张动态表在三轮复测前根据第 4 章的单轮扫描确定。Dynamic-Oracle 在 C=1、4、16、32 分别用 K=7、6、7、5。Dynamic-Smooth 的低并发段用 K6，高并发段用 K5。实际启用的调度表可以复核。[调度表](../results/processed/mtp-dynamic-schedule-lookup.json)
+两张动态表在三轮复测前根据第 4 章的单轮扫描确定。Dynamic-Oracle 在 C=1、4、16、32 分别用 K=7、6、7、5。Dynamic-Smooth 的低并发段用 K6，高并发段用 K5。实际启用的调度表可以复核。[调度表](../../results/processed/mtp-dynamic-schedule-lookup.json)
 
 | 请求 batch size | dynamic-oracle | dynamic-smooth |
 |---:|---:|---:|
@@ -545,12 +545,12 @@ Spec-Bench 的 C=1、4、16 适合从固定 K7 开始验证。C=16 时，固定 
 | 原始 Benchmark JSON | `results/raw/` | 每次运行的请求级延迟、输出长度、吞吐和投机接受统计，保留完整记录 |
 | 汇总 JSON 与 CSV | `results/processed/` | 三轮均值、样本标准差、合并请求百分位、同 seed 配对加速比及 K 成本分析 |
 | 服务与 Benchmark 日志 | `logs/commands/`、`logs/server/` | 每次主要命令的完整合并输出 |
-| 命令审计 | `report/command_audit.md`、`results/processed/command-audit.csv` | 实际 argv、起止时间、退出码与日志位置 |
+| 命令审计 | `report/course_study/command_audit.md`、`results/processed/command-audit.csv` | 实际 argv、起止时间、退出码与日志位置 |
 | 实验清单 | `results/processed/*manifest.json` | 每个矩阵的状态、每次运行标签、结果路径及校验摘要 |
-| 图表与自动导出表 | `report/figures/`、`report/tables/` | PNG/SVG 图和 Markdown 数据表 |
+| 图表与自动导出表 | `report/course_study/figures/`、`report/course_study/tables/` | PNG/SVG 图和 Markdown 数据表 |
 | 文件校验 | `results/processed/raw-sha256.csv` | 原始 JSON 的字节数与 SHA-256 |
 
-校验覆盖 274 份原始 JSON，含早期辅助记录和 260 次核心压测。九份汇总的状态均为 `complete`，原始记录、实验清单和接受长度恒等式检查的错误数均为 0。[校验记录](../results/processed/artifact-validation.json) · [文件哈希](../results/processed/raw-sha256.csv)
+校验覆盖 274 份原始 JSON，含早期辅助记录和 260 次核心压测。九份汇总的状态均为 `complete`，原始记录、实验清单和接受长度恒等式检查的错误数均为 0。[校验记录](../../results/processed/artifact-validation.json) · [文件哈希](../../results/processed/raw-sha256.csv)
 
 ### 8.2 主要复现命令
 

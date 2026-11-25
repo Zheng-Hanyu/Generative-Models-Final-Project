@@ -15,7 +15,7 @@ from plot_style import BASELINE, DFLASH, DSPARK, MTP, PLUM, save_plot, setup_plo
 plt = setup_plots()
 ROOT = Path(__file__).resolve().parents[1]
 PROCESSED = ROOT / "results" / "processed"
-FIGURES = ROOT / "report" / "figures"
+FIGURES = ROOT / "report" / "course_study" / "figures"
 STYLES = {
     "normal": (BASELINE, "o", "--"),
     "mtp-k3": (MTP, "o", "-"),

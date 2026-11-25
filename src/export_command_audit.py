@@ -13,7 +13,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 INDEX = ROOT / "logs" / "commands.jsonl"
 PROCESSED = ROOT / "results" / "processed"
-REPORT = ROOT / "report"
+REPORT = ROOT / "report" / "course_study"
 
 
 def parse_time(value: str | None) -> datetime | None:
@@ -26,7 +26,7 @@ def log_reference(value: str | None) -> str:
     log = Path(value)
     relative = Path(*log.parts[-3:])
     if relative.parent == Path("logs/commands"):
-        return f"- [输出日志 {log.name}](../{relative.as_posix()})"
+        return f"- [输出日志 {log.name}](../../{relative.as_posix()})"
     return f"- 输出日志位于 `{value}`"
 
 
@@ -127,7 +127,7 @@ def main() -> None:
     lines = [
         "# 实验命令记录",
         "",
-        "日志保留每条命令的标准输出和标准错误。[请求级结果](../results/raw/) · [结构化命令记录](../results/processed/command-audit.json)",
+        "日志保留每条命令的标准输出和标准错误。[请求级结果](../../results/raw/) · [结构化命令记录](../../results/processed/command-audit.json)",
         "",
     ]
     for index, record in enumerate(records, 1):

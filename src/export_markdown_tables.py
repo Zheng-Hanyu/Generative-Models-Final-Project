@@ -10,7 +10,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 PROCESSED = ROOT / "results" / "processed"
-TABLES = ROOT / "report" / "tables"
+TABLES = ROOT / "report" / "course_study" / "tables"
 
 
 def number(value: float | None, digits: int = 2) -> str:

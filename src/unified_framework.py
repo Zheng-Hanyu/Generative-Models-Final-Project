@@ -365,14 +365,58 @@ def selected_profile(method, path, reference):
     return profile
 
 
+def run_quantization_study(args, config, gpu):
+    reference = config["methods"]["dflash"]["reference"]
+    spec = {key: value for key, value in reference["spec"].items() if key != "quantization"}
+    reference = {"id": f"dflash2-k{spec['num_speculative_tokens']}", "spec": spec}
+    methods = {**config["methods"]}
+    methods["dflash"] = {**methods["dflash"], "reference": reference}
+    study_config = {**config, "methods": methods}
+    candidates = [
+        {"id": "dflash2-" + name.replace("_", "-"), "spec": {**spec, "quantization": name}}
+        for name in args.quantizations
+    ]
+    if len({profile["id"] for profile in candidates}) != len(candidates):
+        raise ValueError("Draft quantization names must produce distinct profile IDs")
+
+    raw = args.output / "raw/dflash"
+    screen_args = argparse.Namespace(**{**vars(args), "output": raw, "workloads": None, "skip_stress": False})
+    experiment = Experiment(screen_args, study_config, gpu)
+    first = experiment.screen([reference, *candidates[:2]])
+    second = experiment.screen(candidates[2:])
+    eligible = [row for row in first[1:] + second if "score" in row]
+    if "score" not in first[0] or not eligible:
+        raise RuntimeError("The BF16 reference and at least one quantized profile must finish screening")
+    best = max(eligible, key=lambda row: row["score"])["profile"]
+    write_json(raw / "selection.json", {
+        "method": "dflash", "round1": first, "round2": second, "reference": reference, "selected": best,
+    })
+    print(f"Selected quantized draft for confirmation: {best['id']}", flush=True)
+    experiment.confirm()
+
+    external_dir = args.output / "external/dflash"
+    external_args = argparse.Namespace(**{**vars(args), "output": external_dir})
+    experiment = Experiment(external_args, study_config, gpu)
+    for profile in (best, experiment.normal, reference):
+        experiment.measure(profile, "external")
+    write_json(external_dir / "confirmation.json", {
+        "normal": experiment.normal["id"], "reference": reference["id"], "selected": best["id"],
+    })
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--config", type=Path, default=CONFIG)
     actions = parser.add_subparsers(dest="action", required=True)
     actions.add_parser("profiles")
-    for action in ("serve", "tune", "benchmark"):
+    for action in ("serve", "tune", "benchmark", "quantization-study"):
         sub = actions.add_parser(action)
-        sub.add_argument("--method", required=True)
+        if action == "quantization-study":
+            sub.set_defaults(method="dflash")
+            sub.add_argument("--quantizations", nargs="+", required=True)
+            sub.add_argument("--workloads", type=Path, required=True)
+        else:
+            sub.add_argument("--method", required=True)
         sub.add_argument("--gpu", type=int, default=0)
         sub.add_argument("--port", type=int, default=24820)
         sub.add_argument("--model", default="/home/model/Qwen3.8-27B-FP8")
@@ -391,13 +435,14 @@ def main():
     report = actions.add_parser("report")
     report.add_argument("--results", type=Path, required=True)
     report.add_argument("--external-results", type=Path)
+    report.add_argument("--draft-study", type=Path, help="include a completed DFlash 2 quantization study")
     report.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     if args.action == "report":
         from unified_report import generate_report
 
         methods = read_json(args.config)["methods"] if args.results.is_dir() else None
-        generate_report(args.results, args.output, args.external_results, methods)
+        generate_report(args.results, args.output, args.external_results, methods, args.draft_study)
         print(f"Report written to {args.output}")
         return
 
@@ -428,6 +473,9 @@ def main():
     with (args.output / ".lock").open("a") as lock:
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
         with reserve_gpu(args) as gpu:
+            if args.action == "quantization-study":
+                run_quantization_study(args, config, gpu)
+                return
             experiment = Experiment(args, config, gpu)
             if args.action == "tune":
                 experiment.tune()
