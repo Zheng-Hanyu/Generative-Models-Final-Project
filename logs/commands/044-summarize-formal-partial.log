@@ -1,0 +1,9 @@
+COMMAND: /home/genai/.pixi/envs/default/bin/python /home/genai/spec_decoding_study/src/summarize_benchmarks.py --phase formal-r1 --methods normal mtp-k3 dspark-k7 --concurrencies 1 4 16 32 --seeds 42 43 44 --allow-partial
+CWD: /home/genai/spec_decoding_study
+STARTED_AT: 2026-11-24T15:00:29.034985+00:00
+
+{
+  "summary": "/home/genai/spec_decoding_study/results/processed/formal-r1-summary.json",
+  "status": "partial",
+  "runs": 34
+}

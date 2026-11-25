@@ -1,0 +1,10 @@
+COMMAND: python src/summarize_benchmarks.py --phase policy-dspark-high-r1 --methods dspark-k1 dspark-k3 dspark-k7 dspark-adaptive --baseline-method dspark-k7 --best-fixed-methods dspark-k1 dspark-k3 dspark-k7 --concurrencies 16 32 --seeds 42 43 44 --num-prompts 32
+CWD: /home/genai/spec_decoding_study
+STARTED_AT: 2026-11-24T16:26:37.869918+00:00
+
+Traceback (most recent call last):
+  File "/home/genai/spec_decoding_study/src/summarize_benchmarks.py", line 424, in <module>
+    main()
+  File "/home/genai/spec_decoding_study/src/summarize_benchmarks.py", line 166, in main
+    raise FileNotFoundError(f"Missing {len(missing)} runs; first missing: {missing[:5]}")
+FileNotFoundError: Missing 24 runs; first missing: ['results/raw/policy-dspark-high-r1-dspark-k1-i1024-o512-c16-s42.json', 'results/raw/policy-dspark-high-r1-dspark-k1-i1024-o512-c16-s43.json', 'results/raw/policy-dspark-high-r1-dspark-k1-i1024-o512-c16-s44.json', 'results/raw/policy-dspark-high-r1-dspark-k1-i1024-o512-c32-s42.json', 'results/raw/policy-dspark-high-r1-dspark-k1-i1024-o512-c32-s43.json']

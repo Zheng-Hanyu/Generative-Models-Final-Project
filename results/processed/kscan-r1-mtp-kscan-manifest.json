@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "phase": "kscan-r1",
+  "method_family": "mtp",
+  "gpu": 3,
+  "port": 8103,
+  "ks": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "num_prompts": 32,
+  "seeds": [
+    42
+  ],
+  "concurrencies": [
+    32,
+    16,
+    4,
+    1
+  ],
+  "started_at": "2026-11-24T14:43:58.171286+00:00",
+  "status": "failed",
+  "configurations": [
+    {
+      "method": "mtp-k1",
+      "k": 1,
+      "server_label": "037-server-mtp-k1-gpu3",
+      "started_at": "2026-11-24T14:43:58.171421+00:00",
+      "status": "completed",
+      "stop_exit_code": 1,
+      "finished_at": "2026-11-24T14:48:27.312940+00:00"
+    }
+  ],
+  "finished_at": "2026-11-24T14:48:27.313193+00:00",
+  "error": "RuntimeError('Failed to stop 037-server-mtp-k1-gpu3')"
+}

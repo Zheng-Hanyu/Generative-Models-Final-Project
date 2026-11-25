@@ -1,0 +1,25 @@
+{
+  "label": "031-gpu-monitor-formal-r1",
+  "launcher_pid": 129896,
+  "launched_at": "2026-11-24T14:31:17.179336+00:00",
+  "run_logged_argv": [
+    "/home/genai/.pixi/envs/default/bin/python",
+    "/home/genai/spec_decoding_study/bin/run_logged.py",
+    "--label",
+    "031-gpu-monitor-formal-r1",
+    "--cwd",
+    "/home/genai/spec_decoding_study",
+    "--",
+    "/home/genai/.pixi/envs/default/bin/python",
+    "src/monitor_gpus.py",
+    "--output",
+    "results/raw/gpu-timeseries-formal-r1.csv",
+    "--interval",
+    "5",
+    "--devices",
+    "0,1,2,3"
+  ],
+  "server_command": "/home/genai/.pixi/envs/default/bin/python src/monitor_gpus.py --output results/raw/gpu-timeseries-formal-r1.csv --interval 5 --devices 0,1,2,3",
+  "console_log": "/home/genai/spec_decoding_study/logs/server/031-gpu-monitor-formal-r1.console.log",
+  "server_pid_file": "/home/genai/spec_decoding_study/logs/031-gpu-monitor-formal-r1.pid"
+}

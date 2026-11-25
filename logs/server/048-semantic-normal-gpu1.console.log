@@ -1,0 +1,879 @@
++ /home/genai/.pixi/envs/default/bin/python /home/genai/spec_decoding_study/src/run_benchmark_matrix.py --method normal --port 8101 --gpu 1 --phase semantic-r1 --vllm /home/genai/.pixi/envs/default/bin/vllm --num-prompts 128 --output-len 256 --dataset-name spec_bench --dataset-path /home/genai/spec_decoding_study/data/spec_bench/question.jsonl --seeds 42 43 44 --concurrencies 32 16 4 1
+Server ready: http://127.0.0.1:8101
+MATRIX_COMMAND: warmup-semantic-r1-normal-c32: ['/usr/bin/env', 'CUDA_VISIBLE_DEVICES=1', '/home/genai/.pixi/envs/default/bin/vllm', 'bench', 'serve', '--backend', 'openai', '--base-url', 'http://127.0.0.1:8101', '--endpoint', '/v1/completions', '--model', 'qwen-target', '--tokenizer', '/home/model/Qwen3.8-27B-FP8', '--dataset-name', 'spec_bench', '--dataset-path', '/home/genai/spec_decoding_study/data/spec_bench/question.jsonl', '--spec-bench-output-len', '256', '--request-rate', 'inf', '--ignore-eos', '--temperature', '0', '--top-p', '1', '--top-k', '-1', '--percentile-metrics', 'ttft,tpot,itl,e2el', '--metric-percentiles', '50,90,95,99', '--disable-tqdm', '--num-prompts', '32', '--num-warmups', '0', '--max-concurrency', '32', '--seed', '1032', '--request-id-prefix', 'warmup-semantic-r1-normal-c32-']
++ /usr/bin/env CUDA_VISIBLE_DEVICES=1 /home/genai/.pixi/envs/default/bin/vllm bench serve --backend openai --base-url http://127.0.0.1:8101 --endpoint /v1/completions --model qwen-target --tokenizer /home/model/Qwen3.8-27B-FP8 --dataset-name spec_bench --dataset-path /home/genai/spec_decoding_study/data/spec_bench/question.jsonl --spec-bench-output-len 256 --request-rate inf --ignore-eos --temperature 0 --top-p 1 --top-k -1 --percentile-metrics ttft,tpot,itl,e2el --metric-percentiles 50,90,95,99 --disable-tqdm --num-prompts 32 --num-warmups 0 --max-concurrency 32 --seed 1032 --request-id-prefix warmup-semantic-r1-normal-c32-
+W1124 15:05:31.060000 185696 site-packages/torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1124 15:05:31.061000 185696 site-packages/torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1124 15:05:31.061000 185696 site-packages/torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+Namespace(subparser='bench', bench_type='serve', dispatch_function=<function BenchmarkServingSubcommand.cmd at 0x7dc8e5883ba0>, trust_remote_code=False, seed=1032, num_prompts=32, dataset_name='spec_bench', no_stream=False, dataset_path='/home/genai/spec_decoding_study/data/spec_bench/question.jsonl', no_oversample=False, skip_chat_template=False, enable_multimodal_chat=False, disable_shuffle=False, custom_output_len=256, custom_ensure_client_side_data=False, spec_bench_output_len=256, spec_bench_category=None, sharegpt_output_len=None, timed_trace_chunk_hash_size=16, timed_trace_sec_multiplier=1, timed_trace_label_timestamp='timestamp', timed_trace_label_input_length='input_length', timed_trace_label_output_length='output_length', timed_trace_label_hash_ids='hash_ids', blazedit_min_distance=0.0, blazedit_max_distance=1.0, asr_max_audio_len_sec=inf, asr_min_audio_len_sec=0.0, random_input_len=1024, random_output_len=128, random_range_ratio='0.0', random_prefix_len=0, random_batch_size=1, no_reranker=False, random_mm_base_items_per_request=1, random_mm_num_mm_items_range_ratio=0.0, random_mm_limit_mm_per_prompt={'image': 255, 'video': 1}, random_mm_bucket_config={(256, 256, 1): 0.5, (720, 1280, 1): 0.5, (720, 1280, 16): 0.0}, hf_subset=None, hf_split=None, hf_name=None, hf_output_len=None, bfcl_categories=None, prefix_repetition_prefix_len=256, prefix_repetition_suffix_len=256, prefix_repetition_num_prefixes=10, prefix_repetition_output_len=128, speed_bench_dataset_subset='qualitative', speed_bench_output_len=4096, speed_bench_category=None, label=None, backend='openai', base_url='http://127.0.0.1:8101', host='127.0.0.1', port=8000, endpoint='/v1/completions', header=None, max_concurrency=32, model='qwen-target', input_len=None, output_len=None, tokenizer='/home/model/Qwen3.8-27B-FP8', tokenizer_mode='auto', use_beam_search=False, logprobs=None, request_rate=inf, burstiness=1.0, probe_request_rate=0.0, disable_tqdm=True, num_warmups=0, profile=False, save_result=False, save_detailed=False, append_result=False, metadata=None, result_dir=None, result_filename=None, ignore_eos=True, self_timed=None, percentile_metrics='ttft,tpot,itl,e2el', metric_percentiles='50,90,95,99', goodput=None, request_id_prefix='warmup-semantic-r1-normal-c32-', top_p=1.0, top_k=-1, min_p=None, temperature=0.0, frequency_penalty=None, presence_penalty=None, repetition_penalty=None, served_model_name=None, lora_modules=None, lora_assignment='random', ramp_up_strategy=None, ramp_up_start_rps=None, ramp_up_end_rps=None, ready_check_timeout_sec=0, chat_template_kwargs=None, extra_body=None, skip_tokenizer_init=False, insecure=False, plot_timeline=False, timeline_itl_thresholds='25,50', plot_dataset_stats=False, log_config_file=None, logging_config=LoggingConfig(log_level='INFO', formatter='text', configure_logging=True, pylogging_config_file=None))
+Starting initial single prompt test run...
+Skipping endpoint ready check.
+Starting main benchmark run...
+Traffic request rate: inf
+Burstiness factor: 1.0 (Poisson process)
+Maximum request concurrency: 32
+tip: install termplotlib and gnuplot to plot the metrics
+============ Serving Benchmark Result ============
+Successful requests:                     32        
+Failed requests:                         0         
+Maximum request concurrency:             32        
+Benchmark duration (s):                  3.32      
+Total input tokens:                      9137      
+Total generated tokens:                  8192      
+Request throughput (req/s):              9.63      
+Output token throughput (tok/s):         2465.74   
+Peak output token throughput (tok/s):    2880.00   
+Peak concurrent requests:                32.00     
+Total token throughput (tok/s):          5215.92   
+---------------Time to First Token----------------
+Mean TTFT (ms):                          480.53    
+Median TTFT (ms):                        480.75    
+P50 TTFT (ms):                           480.75    
+P90 TTFT (ms):                           482.52    
+P95 TTFT (ms):                           482.90    
+P99 TTFT (ms):                           483.27    
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          11.13     
+Median TPOT (ms):                        11.13     
+P50 TPOT (ms):                           11.13     
+P90 TPOT (ms):                           11.13     
+P95 TPOT (ms):                           11.13     
+P99 TPOT (ms):                           11.13     
+---------------Inter-token Latency----------------
+Mean ITL (ms):                           11.09     
+Median ITL (ms):                         11.13     
+P50 ITL (ms):                            11.13     
+P90 ITL (ms):                            11.30     
+P95 ITL (ms):                            11.37     
+P99 ITL (ms):                            11.60     
+----------------End-to-end Latency----------------
+Mean E2EL (ms):                          3318.51   
+Median E2EL (ms):                        3319.14   
+P50 E2EL (ms):                           3319.14   
+P90 E2EL (ms):                           3320.96   
+P95 E2EL (ms):                           3321.53   
+P99 E2EL (ms):                           3321.69   
+==================================================
+MATRIX_COMMAND: semantic-r1-normal-specbench-o256-c32-s42: ['/usr/bin/env', 'CUDA_VISIBLE_DEVICES=1', '/home/genai/.pixi/envs/default/bin/vllm', 'bench', 'serve', '--backend', 'openai', '--base-url', 'http://127.0.0.1:8101', '--endpoint', '/v1/completions', '--model', 'qwen-target', '--tokenizer', '/home/model/Qwen3.8-27B-FP8', '--dataset-name', 'spec_bench', '--dataset-path', '/home/genai/spec_decoding_study/data/spec_bench/question.jsonl', '--spec-bench-output-len', '256', '--request-rate', 'inf', '--ignore-eos', '--temperature', '0', '--top-p', '1', '--top-k', '-1', '--percentile-metrics', 'ttft,tpot,itl,e2el', '--metric-percentiles', '50,90,95,99', '--disable-tqdm', '--num-prompts', '128', '--num-warmups', '0', '--max-concurrency', '32', '--seed', '42', '--request-id-prefix', 'semantic-r1-normal-specbench-o256-c32-s42-', '--save-result', '--save-detailed', '--result-dir', '/home/genai/spec_decoding_study/results/raw', '--result-filename', 'semantic-r1-normal-specbench-o256-c32-s42.json', '--metadata', 'method_name=normal', 'dataset_name=spec_bench', 'mode=normal', 'k=0', 'gpu=1', 'phase=semantic-r1', 'concurrency=32', 'seed=42', 'prefix_cache=false']
++ /usr/bin/env CUDA_VISIBLE_DEVICES=1 /home/genai/.pixi/envs/default/bin/vllm bench serve --backend openai --base-url http://127.0.0.1:8101 --endpoint /v1/completions --model qwen-target --tokenizer /home/model/Qwen3.8-27B-FP8 --dataset-name spec_bench --dataset-path /home/genai/spec_decoding_study/data/spec_bench/question.jsonl --spec-bench-output-len 256 --request-rate inf --ignore-eos --temperature 0 --top-p 1 --top-k -1 --percentile-metrics ttft,tpot,itl,e2el --metric-percentiles 50,90,95,99 --disable-tqdm --num-prompts 128 --num-warmups 0 --max-concurrency 32 --seed 42 --request-id-prefix semantic-r1-normal-specbench-o256-c32-s42- --save-result --save-detailed --result-dir /home/genai/spec_decoding_study/results/raw --result-filename semantic-r1-normal-specbench-o256-c32-s42.json --metadata method_name=normal dataset_name=spec_bench mode=normal k=0 gpu=1 phase=semantic-r1 concurrency=32 seed=42 prefix_cache=false
+W1124 15:05:43.171000 186301 site-packages/torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1124 15:05:43.171000 186301 site-packages/torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1124 15:05:43.171000 186301 site-packages/torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+Namespace(subparser='bench', bench_type='serve', dispatch_function=<function BenchmarkServingSubcommand.cmd at 0x7e2add33fba0>, trust_remote_code=False, seed=42, num_prompts=128, dataset_name='spec_bench', no_stream=False, dataset_path='/home/genai/spec_decoding_study/data/spec_bench/question.jsonl', no_oversample=False, skip_chat_template=False, enable_multimodal_chat=False, disable_shuffle=False, custom_output_len=256, custom_ensure_client_side_data=False, spec_bench_output_len=256, spec_bench_category=None, sharegpt_output_len=None, timed_trace_chunk_hash_size=16, timed_trace_sec_multiplier=1, timed_trace_label_timestamp='timestamp', timed_trace_label_input_length='input_length', timed_trace_label_output_length='output_length', timed_trace_label_hash_ids='hash_ids', blazedit_min_distance=0.0, blazedit_max_distance=1.0, asr_max_audio_len_sec=inf, asr_min_audio_len_sec=0.0, random_input_len=1024, random_output_len=128, random_range_ratio='0.0', random_prefix_len=0, random_batch_size=1, no_reranker=False, random_mm_base_items_per_request=1, random_mm_num_mm_items_range_ratio=0.0, random_mm_limit_mm_per_prompt={'image': 255, 'video': 1}, random_mm_bucket_config={(256, 256, 1): 0.5, (720, 1280, 1): 0.5, (720, 1280, 16): 0.0}, hf_subset=None, hf_split=None, hf_name=None, hf_output_len=None, bfcl_categories=None, prefix_repetition_prefix_len=256, prefix_repetition_suffix_len=256, prefix_repetition_num_prefixes=10, prefix_repetition_output_len=128, speed_bench_dataset_subset='qualitative', speed_bench_output_len=4096, speed_bench_category=None, label=None, backend='openai', base_url='http://127.0.0.1:8101', host='127.0.0.1', port=8000, endpoint='/v1/completions', header=None, max_concurrency=32, model='qwen-target', input_len=None, output_len=None, tokenizer='/home/model/Qwen3.8-27B-FP8', tokenizer_mode='auto', use_beam_search=False, logprobs=None, request_rate=inf, burstiness=1.0, probe_request_rate=0.0, disable_tqdm=True, num_warmups=0, profile=False, save_result=True, save_detailed=True, append_result=False, metadata=['method_name=normal', 'dataset_name=spec_bench', 'mode=normal', 'k=0', 'gpu=1', 'phase=semantic-r1', 'concurrency=32', 'seed=42', 'prefix_cache=false'], result_dir='/home/genai/spec_decoding_study/results/raw', result_filename='semantic-r1-normal-specbench-o256-c32-s42.json', ignore_eos=True, self_timed=None, percentile_metrics='ttft,tpot,itl,e2el', metric_percentiles='50,90,95,99', goodput=None, request_id_prefix='semantic-r1-normal-specbench-o256-c32-s42-', top_p=1.0, top_k=-1, min_p=None, temperature=0.0, frequency_penalty=None, presence_penalty=None, repetition_penalty=None, served_model_name=None, lora_modules=None, lora_assignment='random', ramp_up_strategy=None, ramp_up_start_rps=None, ramp_up_end_rps=None, ready_check_timeout_sec=0, chat_template_kwargs=None, extra_body=None, skip_tokenizer_init=False, insecure=False, plot_timeline=False, timeline_itl_thresholds='25,50', plot_dataset_stats=False, log_config_file=None, logging_config=LoggingConfig(log_level='INFO', formatter='text', configure_logging=True, pylogging_config_file=None))
+Starting initial single prompt test run...
+Skipping endpoint ready check.
+Starting main benchmark run...
+Traffic request rate: inf
+Burstiness factor: 1.0 (Poisson process)
+Maximum request concurrency: 32
+tip: install termplotlib and gnuplot to plot the metrics
+============ Serving Benchmark Result ============
+Successful requests:                     128       
+Failed requests:                         0         
+Maximum request concurrency:             32        
+Benchmark duration (s):                  13.06     
+Total input tokens:                      43111     
+Total generated tokens:                  32768     
+Request throughput (req/s):              9.80      
+Output token throughput (tok/s):         2508.65   
+Peak output token throughput (tok/s):    2880.00   
+Peak concurrent requests:                64.00     
+Total token throughput (tok/s):          5809.14   
+---------------Time to First Token----------------
+Mean TTFT (ms):                          357.23    
+Median TTFT (ms):                        382.58    
+P50 TTFT (ms):                           382.58    
+P90 TTFT (ms):                           492.52    
+P95 TTFT (ms):                           493.40    
+P99 TTFT (ms):                           495.11    
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          11.39     
+Median TPOT (ms):                        11.19     
+P50 TPOT (ms):                           11.19     
+P90 TPOT (ms):                           12.19     
+P95 TPOT (ms):                           12.19     
+P99 TPOT (ms):                           12.59     
+---------------Inter-token Latency----------------
+Mean ITL (ms):                           11.35     
+Median ITL (ms):                         11.12     
+P50 ITL (ms):                            11.12     
+P90 ITL (ms):                            11.35     
+P95 ITL (ms):                            11.49     
+P99 ITL (ms):                            12.15     
+----------------End-to-end Latency----------------
+Mean E2EL (ms):                          3262.54   
+Median E2EL (ms):                        3250.21   
+P50 E2EL (ms):                           3250.21   
+P90 E2EL (ms):                           3346.67   
+P95 E2EL (ms):                           3347.45   
+P99 E2EL (ms):                           3348.78   
+==================================================
+RUN_VALIDATION: semantic-r1-normal-specbench-o256-c32-s42: {'valid': True, 'checks': {'completed_matches': True, 'no_failed_requests': True, 'no_error_strings': True, 'request_level_output_lengths_present': True, 'all_output_lengths_exact': True, 'total_output_tokens_exact': True, 'positive_duration': True, 'positive_output_throughput': True}, 'completed': 128, 'failed': 0, 'total_output_tokens': 32768, 'duration': 13.061994910938665, 'output_throughput': 2508.6520262351883, 'mean_tpot_ms': 11.3933507021084, 'spec_decode_acceptance_rate': None, 'spec_decode_acceptance_length': None}
+MATRIX_COMMAND: semantic-r1-normal-specbench-o256-c32-s43: ['/usr/bin/env', 'CUDA_VISIBLE_DEVICES=1', '/home/genai/.pixi/envs/default/bin/vllm', 'bench', 'serve', '--backend', 'openai', '--base-url', 'http://127.0.0.1:8101', '--endpoint', '/v1/completions', '--model', 'qwen-target', '--tokenizer', '/home/model/Qwen3.8-27B-FP8', '--dataset-name', 'spec_bench', '--dataset-path', '/home/genai/spec_decoding_study/data/spec_bench/question.jsonl', '--spec-bench-output-len', '256', '--request-rate', 'inf', '--ignore-eos', '--temperature', '0', '--top-p', '1', '--top-k', '-1', '--percentile-metrics', 'ttft,tpot,itl,e2el', '--metric-percentiles', '50,90,95,99', '--disable-tqdm', '--num-prompts', '128', '--num-warmups', '0', '--max-concurrency', '32', '--seed', '43', '--request-id-prefix', 'semantic-r1-normal-specbench-o256-c32-s43-', '--save-result', '--save-detailed', '--result-dir', '/home/genai/spec_decoding_study/results/raw', '--result-filename', 'semantic-r1-normal-specbench-o256-c32-s43.json', '--metadata', 'method_name=normal', 'dataset_name=spec_bench', 'mode=normal', 'k=0', 'gpu=1', 'phase=semantic-r1', 'concurrency=32', 'seed=43', 'prefix_cache=false']
++ /usr/bin/env CUDA_VISIBLE_DEVICES=1 /home/genai/.pixi/envs/default/bin/vllm bench serve --backend openai --base-url http://127.0.0.1:8101 --endpoint /v1/completions --model qwen-target --tokenizer /home/model/Qwen3.8-27B-FP8 --dataset-name spec_bench --dataset-path /home/genai/spec_decoding_study/data/spec_bench/question.jsonl --spec-bench-output-len 256 --request-rate inf --ignore-eos --temperature 0 --top-p 1 --top-k -1 --percentile-metrics ttft,tpot,itl,e2el --metric-percentiles 50,90,95,99 --disable-tqdm --num-prompts 128 --num-warmups 0 --max-concurrency 32 --seed 43 --request-id-prefix semantic-r1-normal-specbench-o256-c32-s43- --save-result --save-detailed --result-dir /home/genai/spec_decoding_study/results/raw --result-filename semantic-r1-normal-specbench-o256-c32-s43.json --metadata method_name=normal dataset_name=spec_bench mode=normal k=0 gpu=1 phase=semantic-r1 concurrency=32 seed=43 prefix_cache=false
+W1124 15:06:04.505000 187033 site-packages/torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1124 15:06:04.505000 187033 site-packages/torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1124 15:06:04.505000 187033 site-packages/torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+Namespace(subparser='bench', bench_type='serve', dispatch_function=<function BenchmarkServingSubcommand.cmd at 0x76981d283e20>, trust_remote_code=False, seed=43, num_prompts=128, dataset_name='spec_bench', no_stream=False, dataset_path='/home/genai/spec_decoding_study/data/spec_bench/question.jsonl', no_oversample=False, skip_chat_template=False, enable_multimodal_chat=False, disable_shuffle=False, custom_output_len=256, custom_ensure_client_side_data=False, spec_bench_output_len=256, spec_bench_category=None, sharegpt_output_len=None, timed_trace_chunk_hash_size=16, timed_trace_sec_multiplier=1, timed_trace_label_timestamp='timestamp', timed_trace_label_input_length='input_length', timed_trace_label_output_length='output_length', timed_trace_label_hash_ids='hash_ids', blazedit_min_distance=0.0, blazedit_max_distance=1.0, asr_max_audio_len_sec=inf, asr_min_audio_len_sec=0.0, random_input_len=1024, random_output_len=128, random_range_ratio='0.0', random_prefix_len=0, random_batch_size=1, no_reranker=False, random_mm_base_items_per_request=1, random_mm_num_mm_items_range_ratio=0.0, random_mm_limit_mm_per_prompt={'image': 255, 'video': 1}, random_mm_bucket_config={(256, 256, 1): 0.5, (720, 1280, 1): 0.5, (720, 1280, 16): 0.0}, hf_subset=None, hf_split=None, hf_name=None, hf_output_len=None, bfcl_categories=None, prefix_repetition_prefix_len=256, prefix_repetition_suffix_len=256, prefix_repetition_num_prefixes=10, prefix_repetition_output_len=128, speed_bench_dataset_subset='qualitative', speed_bench_output_len=4096, speed_bench_category=None, label=None, backend='openai', base_url='http://127.0.0.1:8101', host='127.0.0.1', port=8000, endpoint='/v1/completions', header=None, max_concurrency=32, model='qwen-target', input_len=None, output_len=None, tokenizer='/home/model/Qwen3.8-27B-FP8', tokenizer_mode='auto', use_beam_search=False, logprobs=None, request_rate=inf, burstiness=1.0, probe_request_rate=0.0, disable_tqdm=True, num_warmups=0, profile=False, save_result=True, save_detailed=True, append_result=False, metadata=['method_name=normal', 'dataset_name=spec_bench', 'mode=normal', 'k=0', 'gpu=1', 'phase=semantic-r1', 'concurrency=32', 'seed=43', 'prefix_cache=false'], result_dir='/home/genai/spec_decoding_study/results/raw', result_filename='semantic-r1-normal-specbench-o256-c32-s43.json', ignore_eos=True, self_timed=None, percentile_metrics='ttft,tpot,itl,e2el', metric_percentiles='50,90,95,99', goodput=None, request_id_prefix='semantic-r1-normal-specbench-o256-c32-s43-', top_p=1.0, top_k=-1, min_p=None, temperature=0.0, frequency_penalty=None, presence_penalty=None, repetition_penalty=None, served_model_name=None, lora_modules=None, lora_assignment='random', ramp_up_strategy=None, ramp_up_start_rps=None, ramp_up_end_rps=None, ready_check_timeout_sec=0, chat_template_kwargs=None, extra_body=None, skip_tokenizer_init=False, insecure=False, plot_timeline=False, timeline_itl_thresholds='25,50', plot_dataset_stats=False, log_config_file=None, logging_config=LoggingConfig(log_level='INFO', formatter='text', configure_logging=True, pylogging_config_file=None))
+Starting initial single prompt test run...
+Skipping endpoint ready check.
+Starting main benchmark run...
+Traffic request rate: inf
+Burstiness factor: 1.0 (Poisson process)
+Maximum request concurrency: 32
+tip: install termplotlib and gnuplot to plot the metrics
+============ Serving Benchmark Result ============
+Successful requests:                     128       
+Failed requests:                         0         
+Maximum request concurrency:             32        
+Benchmark duration (s):                  13.03     
+Total input tokens:                      43111     
+Total generated tokens:                  32768     
+Request throughput (req/s):              9.82      
+Output token throughput (tok/s):         2514.57   
+Peak output token throughput (tok/s):    2880.00   
+Peak concurrent requests:                64.00     
+Total token throughput (tok/s):          5822.86   
+---------------Time to First Token----------------
+Mean TTFT (ms):                          407.15    
+Median TTFT (ms):                        370.33    
+P50 TTFT (ms):                           370.33    
+P90 TTFT (ms):                           491.30    
+P95 TTFT (ms):                           492.67    
+P99 TTFT (ms):                           494.50    
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          11.17     
+Median TPOT (ms):                        11.14     
+P50 TPOT (ms):                           11.14     
+P90 TPOT (ms):                           11.15     
+P95 TPOT (ms):                           11.15     
+P99 TPOT (ms):                           12.26     
+---------------Inter-token Latency----------------
+Mean ITL (ms):                           11.13     
+Median ITL (ms):                         11.12     
+P50 ITL (ms):                            11.12     
+P90 ITL (ms):                            11.38     
+P95 ITL (ms):                            11.53     
+P99 ITL (ms):                            12.24     
+----------------End-to-end Latency----------------
+Mean E2EL (ms):                          3256.11   
+Median E2EL (ms):                        3243.96   
+P50 E2EL (ms):                           3243.96   
+P90 E2EL (ms):                           3333.27   
+P95 E2EL (ms):                           3334.57   
+P99 E2EL (ms):                           3335.84   
+==================================================
+RUN_VALIDATION: semantic-r1-normal-specbench-o256-c32-s43: {'valid': True, 'checks': {'completed_matches': True, 'no_failed_requests': True, 'no_error_strings': True, 'request_level_output_lengths_present': True, 'all_output_lengths_exact': True, 'total_output_tokens_exact': True, 'positive_duration': True, 'positive_output_throughput': True}, 'completed': 128, 'failed': 0, 'total_output_tokens': 32768, 'duration': 13.031233449000865, 'output_throughput': 2514.5739371672753, 'mean_tpot_ms': 11.172379769570899, 'spec_decode_acceptance_rate': None, 'spec_decode_acceptance_length': None}
+MATRIX_COMMAND: semantic-r1-normal-specbench-o256-c32-s44: ['/usr/bin/env', 'CUDA_VISIBLE_DEVICES=1', '/home/genai/.pixi/envs/default/bin/vllm', 'bench', 'serve', '--backend', 'openai', '--base-url', 'http://127.0.0.1:8101', '--endpoint', '/v1/completions', '--model', 'qwen-target', '--tokenizer', '/home/model/Qwen3.8-27B-FP8', '--dataset-name', 'spec_bench', '--dataset-path', '/home/genai/spec_decoding_study/data/spec_bench/question.jsonl', '--spec-bench-output-len', '256', '--request-rate', 'inf', '--ignore-eos', '--temperature', '0', '--top-p', '1', '--top-k', '-1', '--percentile-metrics', 'ttft,tpot,itl,e2el', '--metric-percentiles', '50,90,95,99', '--disable-tqdm', '--num-prompts', '128', '--num-warmups', '0', '--max-concurrency', '32', '--seed', '44', '--request-id-prefix', 'semantic-r1-normal-specbench-o256-c32-s44-', '--save-result', '--save-detailed', '--result-dir', '/home/genai/spec_decoding_study/results/raw', '--result-filename', 'semantic-r1-normal-specbench-o256-c32-s44.json', '--metadata', 'method_name=normal', 'dataset_name=spec_bench', 'mode=normal', 'k=0', 'gpu=1', 'phase=semantic-r1', 'concurrency=32', 'seed=44', 'prefix_cache=false']
++ /usr/bin/env CUDA_VISIBLE_DEVICES=1 /home/genai/.pixi/envs/default/bin/vllm bench serve --backend openai --base-url http://127.0.0.1:8101 --endpoint /v1/completions --model qwen-target --tokenizer /home/model/Qwen3.8-27B-FP8 --dataset-name spec_bench --dataset-path /home/genai/spec_decoding_study/data/spec_bench/question.jsonl --spec-bench-output-len 256 --request-rate inf --ignore-eos --temperature 0 --top-p 1 --top-k -1 --percentile-metrics ttft,tpot,itl,e2el --metric-percentiles 50,90,95,99 --disable-tqdm --num-prompts 128 --num-warmups 0 --max-concurrency 32 --seed 44 --request-id-prefix semantic-r1-normal-specbench-o256-c32-s44- --save-result --save-detailed --result-dir /home/genai/spec_decoding_study/results/raw --result-filename semantic-r1-normal-specbench-o256-c32-s44.json --metadata method_name=normal dataset_name=spec_bench mode=normal k=0 gpu=1 phase=semantic-r1 concurrency=32 seed=44 prefix_cache=false
+W1124 15:06:25.777000 187684 site-packages/torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1124 15:06:25.777000 187684 site-packages/torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1124 15:06:25.778000 187684 site-packages/torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+Namespace(subparser='bench', bench_type='serve', dispatch_function=<function BenchmarkServingSubcommand.cmd at 0x7b199086be20>, trust_remote_code=False, seed=44, num_prompts=128, dataset_name='spec_bench', no_stream=False, dataset_path='/home/genai/spec_decoding_study/data/spec_bench/question.jsonl', no_oversample=False, skip_chat_template=False, enable_multimodal_chat=False, disable_shuffle=False, custom_output_len=256, custom_ensure_client_side_data=False, spec_bench_output_len=256, spec_bench_category=None, sharegpt_output_len=None, timed_trace_chunk_hash_size=16, timed_trace_sec_multiplier=1, timed_trace_label_timestamp='timestamp', timed_trace_label_input_length='input_length', timed_trace_label_output_length='output_length', timed_trace_label_hash_ids='hash_ids', blazedit_min_distance=0.0, blazedit_max_distance=1.0, asr_max_audio_len_sec=inf, asr_min_audio_len_sec=0.0, random_input_len=1024, random_output_len=128, random_range_ratio='0.0', random_prefix_len=0, random_batch_size=1, no_reranker=False, random_mm_base_items_per_request=1, random_mm_num_mm_items_range_ratio=0.0, random_mm_limit_mm_per_prompt={'image': 255, 'video': 1}, random_mm_bucket_config={(256, 256, 1): 0.5, (720, 1280, 1): 0.5, (720, 1280, 16): 0.0}, hf_subset=None, hf_split=None, hf_name=None, hf_output_len=None, bfcl_categories=None, prefix_repetition_prefix_len=256, prefix_repetition_suffix_len=256, prefix_repetition_num_prefixes=10, prefix_repetition_output_len=128, speed_bench_dataset_subset='qualitative', speed_bench_output_len=4096, speed_bench_category=None, label=None, backend='openai', base_url='http://127.0.0.1:8101', host='127.0.0.1', port=8000, endpoint='/v1/completions', header=None, max_concurrency=32, model='qwen-target', input_len=None, output_len=None, tokenizer='/home/model/Qwen3.8-27B-FP8', tokenizer_mode='auto', use_beam_search=False, logprobs=None, request_rate=inf, burstiness=1.0, probe_request_rate=0.0, disable_tqdm=True, num_warmups=0, profile=False, save_result=True, save_detailed=True, append_result=False, metadata=['method_name=normal', 'dataset_name=spec_bench', 'mode=normal', 'k=0', 'gpu=1', 'phase=semantic-r1', 'concurrency=32', 'seed=44', 'prefix_cache=false'], result_dir='/home/genai/spec_decoding_study/results/raw', result_filename='semantic-r1-normal-specbench-o256-c32-s44.json', ignore_eos=True, self_timed=None, percentile_metrics='ttft,tpot,itl,e2el', metric_percentiles='50,90,95,99', goodput=None, request_id_prefix='semantic-r1-normal-specbench-o256-c32-s44-', top_p=1.0, top_k=-1, min_p=None, temperature=0.0, frequency_penalty=None, presence_penalty=None, repetition_penalty=None, served_model_name=None, lora_modules=None, lora_assignment='random', ramp_up_strategy=None, ramp_up_start_rps=None, ramp_up_end_rps=None, ready_check_timeout_sec=0, chat_template_kwargs=None, extra_body=None, skip_tokenizer_init=False, insecure=False, plot_timeline=False, timeline_itl_thresholds='25,50', plot_dataset_stats=False, log_config_file=None, logging_config=LoggingConfig(log_level='INFO', formatter='text', configure_logging=True, pylogging_config_file=None))
+Starting initial single prompt test run...
+Skipping endpoint ready check.
+Starting main benchmark run...
+Traffic request rate: inf
+Burstiness factor: 1.0 (Poisson process)
+Maximum request concurrency: 32
+tip: install termplotlib and gnuplot to plot the metrics
+============ Serving Benchmark Result ============
+Successful requests:                     128       
+Failed requests:                         0         
+Maximum request concurrency:             32        
+Benchmark duration (s):                  13.06     
+Total input tokens:                      43111     
+Total generated tokens:                  32768     
+Request throughput (req/s):              9.80      
+Output token throughput (tok/s):         2509.64   
+Peak output token throughput (tok/s):    2880.00   
+Peak concurrent requests:                64.00     
+Total token throughput (tok/s):          5811.44   
+---------------Time to First Token----------------
+Mean TTFT (ms):                          380.83    
+Median TTFT (ms):                        373.28    
+P50 TTFT (ms):                           373.28    
+P90 TTFT (ms):                           491.47    
+P95 TTFT (ms):                           492.90    
+P99 TTFT (ms):                           494.94    
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          11.30     
+Median TPOT (ms):                        11.17     
+P50 TPOT (ms):                           11.17     
+P90 TPOT (ms):                           11.82     
+P95 TPOT (ms):                           11.89     
+P99 TPOT (ms):                           12.56     
+---------------Inter-token Latency----------------
+Mean ITL (ms):                           11.25     
+Median ITL (ms):                         11.12     
+P50 ITL (ms):                            11.12     
+P90 ITL (ms):                            11.35     
+P95 ITL (ms):                            11.47     
+P99 ITL (ms):                            12.18     
+----------------End-to-end Latency----------------
+Mean E2EL (ms):                          3261.33   
+Median E2EL (ms):                        3245.03   
+P50 E2EL (ms):                           3245.03   
+P90 E2EL (ms):                           3350.02   
+P95 E2EL (ms):                           3351.26   
+P99 E2EL (ms):                           3352.93   
+==================================================
+RUN_VALIDATION: semantic-r1-normal-specbench-o256-c32-s44: {'valid': True, 'checks': {'completed_matches': True, 'no_failed_requests': True, 'no_error_strings': True, 'request_level_output_lengths_present': True, 'all_output_lengths_exact': True, 'total_output_tokens_exact': True, 'positive_duration': True, 'positive_output_throughput': True}, 'completed': 128, 'failed': 0, 'total_output_tokens': 32768, 'duration': 13.056833697017282, 'output_throughput': 2509.6436670925477, 'mean_tpot_ms': 11.296068777251183, 'spec_decode_acceptance_rate': None, 'spec_decode_acceptance_length': None}
+MATRIX_COMMAND: warmup-semantic-r1-normal-c16: ['/usr/bin/env', 'CUDA_VISIBLE_DEVICES=1', '/home/genai/.pixi/envs/default/bin/vllm', 'bench', 'serve', '--backend', 'openai', '--base-url', 'http://127.0.0.1:8101', '--endpoint', '/v1/completions', '--model', 'qwen-target', '--tokenizer', '/home/model/Qwen3.8-27B-FP8', '--dataset-name', 'spec_bench', '--dataset-path', '/home/genai/spec_decoding_study/data/spec_bench/question.jsonl', '--spec-bench-output-len', '256', '--request-rate', 'inf', '--ignore-eos', '--temperature', '0', '--top-p', '1', '--top-k', '-1', '--percentile-metrics', 'ttft,tpot,itl,e2el', '--metric-percentiles', '50,90,95,99', '--disable-tqdm', '--num-prompts', '16', '--num-warmups', '0', '--max-concurrency', '16', '--seed', '1016', '--request-id-prefix', 'warmup-semantic-r1-normal-c16-']
++ /usr/bin/env CUDA_VISIBLE_DEVICES=1 /home/genai/.pixi/envs/default/bin/vllm bench serve --backend openai --base-url http://127.0.0.1:8101 --endpoint /v1/completions --model qwen-target --tokenizer /home/model/Qwen3.8-27B-FP8 --dataset-name spec_bench --dataset-path /home/genai/spec_decoding_study/data/spec_bench/question.jsonl --spec-bench-output-len 256 --request-rate inf --ignore-eos --temperature 0 --top-p 1 --top-k -1 --percentile-metrics ttft,tpot,itl,e2el --metric-percentiles 50,90,95,99 --disable-tqdm --num-prompts 16 --num-warmups 0 --max-concurrency 16 --seed 1016 --request-id-prefix warmup-semantic-r1-normal-c16-
+W1124 15:06:47.099000 188912 site-packages/torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1124 15:06:47.100000 188912 site-packages/torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1124 15:06:47.100000 188912 site-packages/torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+Namespace(subparser='bench', bench_type='serve', dispatch_function=<function BenchmarkServingSubcommand.cmd at 0x7a83d1e7fe20>, trust_remote_code=False, seed=1016, num_prompts=16, dataset_name='spec_bench', no_stream=False, dataset_path='/home/genai/spec_decoding_study/data/spec_bench/question.jsonl', no_oversample=False, skip_chat_template=False, enable_multimodal_chat=False, disable_shuffle=False, custom_output_len=256, custom_ensure_client_side_data=False, spec_bench_output_len=256, spec_bench_category=None, sharegpt_output_len=None, timed_trace_chunk_hash_size=16, timed_trace_sec_multiplier=1, timed_trace_label_timestamp='timestamp', timed_trace_label_input_length='input_length', timed_trace_label_output_length='output_length', timed_trace_label_hash_ids='hash_ids', blazedit_min_distance=0.0, blazedit_max_distance=1.0, asr_max_audio_len_sec=inf, asr_min_audio_len_sec=0.0, random_input_len=1024, random_output_len=128, random_range_ratio='0.0', random_prefix_len=0, random_batch_size=1, no_reranker=False, random_mm_base_items_per_request=1, random_mm_num_mm_items_range_ratio=0.0, random_mm_limit_mm_per_prompt={'image': 255, 'video': 1}, random_mm_bucket_config={(256, 256, 1): 0.5, (720, 1280, 1): 0.5, (720, 1280, 16): 0.0}, hf_subset=None, hf_split=None, hf_name=None, hf_output_len=None, bfcl_categories=None, prefix_repetition_prefix_len=256, prefix_repetition_suffix_len=256, prefix_repetition_num_prefixes=10, prefix_repetition_output_len=128, speed_bench_dataset_subset='qualitative', speed_bench_output_len=4096, speed_bench_category=None, label=None, backend='openai', base_url='http://127.0.0.1:8101', host='127.0.0.1', port=8000, endpoint='/v1/completions', header=None, max_concurrency=16, model='qwen-target', input_len=None, output_len=None, tokenizer='/home/model/Qwen3.8-27B-FP8', tokenizer_mode='auto', use_beam_search=False, logprobs=None, request_rate=inf, burstiness=1.0, probe_request_rate=0.0, disable_tqdm=True, num_warmups=0, profile=False, save_result=False, save_detailed=False, append_result=False, metadata=None, result_dir=None, result_filename=None, ignore_eos=True, self_timed=None, percentile_metrics='ttft,tpot,itl,e2el', metric_percentiles='50,90,95,99', goodput=None, request_id_prefix='warmup-semantic-r1-normal-c16-', top_p=1.0, top_k=-1, min_p=None, temperature=0.0, frequency_penalty=None, presence_penalty=None, repetition_penalty=None, served_model_name=None, lora_modules=None, lora_assignment='random', ramp_up_strategy=None, ramp_up_start_rps=None, ramp_up_end_rps=None, ready_check_timeout_sec=0, chat_template_kwargs=None, extra_body=None, skip_tokenizer_init=False, insecure=False, plot_timeline=False, timeline_itl_thresholds='25,50', plot_dataset_stats=False, log_config_file=None, logging_config=LoggingConfig(log_level='INFO', formatter='text', configure_logging=True, pylogging_config_file=None))
+Starting initial single prompt test run...
+Skipping endpoint ready check.
+Starting main benchmark run...
+Traffic request rate: inf
+Burstiness factor: 1.0 (Poisson process)
+Maximum request concurrency: 16
+tip: install termplotlib and gnuplot to plot the metrics
+============ Serving Benchmark Result ============
+Successful requests:                     16        
+Failed requests:                         0         
+Maximum request concurrency:             16        
+Benchmark duration (s):                  2.60      
+Total input tokens:                      2651      
+Total generated tokens:                  4096      
+Request throughput (req/s):              6.15      
+Output token throughput (tok/s):         1573.92   
+Peak output token throughput (tok/s):    1648.00   
+Peak concurrent requests:                16.00     
+Total token throughput (tok/s):          2592.59   
+---------------Time to First Token----------------
+Mean TTFT (ms):                          115.37    
+Median TTFT (ms):                        119.77    
+P50 TTFT (ms):                           119.77    
+P90 TTFT (ms):                           120.54    
+P95 TTFT (ms):                           120.67    
+P99 TTFT (ms):                           120.92    
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          9.74      
+Median TPOT (ms):                        9.73      
+P50 TPOT (ms):                           9.73      
+P90 TPOT (ms):                           9.73      
+P95 TPOT (ms):                           9.79      
+P99 TPOT (ms):                           9.94      
+---------------Inter-token Latency----------------
+Mean ITL (ms):                           9.71      
+Median ITL (ms):                         9.72      
+P50 ITL (ms):                            9.72      
+P90 ITL (ms):                            9.93      
+P95 ITL (ms):                            10.02     
+P99 ITL (ms):                            10.31     
+----------------End-to-end Latency----------------
+Mean E2EL (ms):                          2600.15   
+Median E2EL (ms):                        2600.69   
+P50 E2EL (ms):                           2600.69   
+P90 E2EL (ms):                           2601.21   
+P95 E2EL (ms):                           2601.41   
+P99 E2EL (ms):                           2601.82   
+==================================================
+MATRIX_COMMAND: semantic-r1-normal-specbench-o256-c16-s42: ['/usr/bin/env', 'CUDA_VISIBLE_DEVICES=1', '/home/genai/.pixi/envs/default/bin/vllm', 'bench', 'serve', '--backend', 'openai', '--base-url', 'http://127.0.0.1:8101', '--endpoint', '/v1/completions', '--model', 'qwen-target', '--tokenizer', '/home/model/Qwen3.8-27B-FP8', '--dataset-name', 'spec_bench', '--dataset-path', '/home/genai/spec_decoding_study/data/spec_bench/question.jsonl', '--spec-bench-output-len', '256', '--request-rate', 'inf', '--ignore-eos', '--temperature', '0', '--top-p', '1', '--top-k', '-1', '--percentile-metrics', 'ttft,tpot,itl,e2el', '--metric-percentiles', '50,90,95,99', '--disable-tqdm', '--num-prompts', '128', '--num-warmups', '0', '--max-concurrency', '16', '--seed', '42', '--request-id-prefix', 'semantic-r1-normal-specbench-o256-c16-s42-', '--save-result', '--save-detailed', '--result-dir', '/home/genai/spec_decoding_study/results/raw', '--result-filename', 'semantic-r1-normal-specbench-o256-c16-s42.json', '--metadata', 'method_name=normal', 'dataset_name=spec_bench', 'mode=normal', 'k=0', 'gpu=1', 'phase=semantic-r1', 'concurrency=16', 'seed=42', 'prefix_cache=false']
++ /usr/bin/env CUDA_VISIBLE_DEVICES=1 /home/genai/.pixi/envs/default/bin/vllm bench serve --backend openai --base-url http://127.0.0.1:8101 --endpoint /v1/completions --model qwen-target --tokenizer /home/model/Qwen3.8-27B-FP8 --dataset-name spec_bench --dataset-path /home/genai/spec_decoding_study/data/spec_bench/question.jsonl --spec-bench-output-len 256 --request-rate inf --ignore-eos --temperature 0 --top-p 1 --top-k -1 --percentile-metrics ttft,tpot,itl,e2el --metric-percentiles 50,90,95,99 --disable-tqdm --num-prompts 128 --num-warmups 0 --max-concurrency 16 --seed 42 --request-id-prefix semantic-r1-normal-specbench-o256-c16-s42- --save-result --save-detailed --result-dir /home/genai/spec_decoding_study/results/raw --result-filename semantic-r1-normal-specbench-o256-c16-s42.json --metadata method_name=normal dataset_name=spec_bench mode=normal k=0 gpu=1 phase=semantic-r1 concurrency=16 seed=42 prefix_cache=false
+W1124 15:06:58.028000 189728 site-packages/torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1124 15:06:58.028000 189728 site-packages/torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1124 15:06:58.028000 189728 site-packages/torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+Namespace(subparser='bench', bench_type='serve', dispatch_function=<function BenchmarkServingSubcommand.cmd at 0x796397297ec0>, trust_remote_code=False, seed=42, num_prompts=128, dataset_name='spec_bench', no_stream=False, dataset_path='/home/genai/spec_decoding_study/data/spec_bench/question.jsonl', no_oversample=False, skip_chat_template=False, enable_multimodal_chat=False, disable_shuffle=False, custom_output_len=256, custom_ensure_client_side_data=False, spec_bench_output_len=256, spec_bench_category=None, sharegpt_output_len=None, timed_trace_chunk_hash_size=16, timed_trace_sec_multiplier=1, timed_trace_label_timestamp='timestamp', timed_trace_label_input_length='input_length', timed_trace_label_output_length='output_length', timed_trace_label_hash_ids='hash_ids', blazedit_min_distance=0.0, blazedit_max_distance=1.0, asr_max_audio_len_sec=inf, asr_min_audio_len_sec=0.0, random_input_len=1024, random_output_len=128, random_range_ratio='0.0', random_prefix_len=0, random_batch_size=1, no_reranker=False, random_mm_base_items_per_request=1, random_mm_num_mm_items_range_ratio=0.0, random_mm_limit_mm_per_prompt={'image': 255, 'video': 1}, random_mm_bucket_config={(256, 256, 1): 0.5, (720, 1280, 1): 0.5, (720, 1280, 16): 0.0}, hf_subset=None, hf_split=None, hf_name=None, hf_output_len=None, bfcl_categories=None, prefix_repetition_prefix_len=256, prefix_repetition_suffix_len=256, prefix_repetition_num_prefixes=10, prefix_repetition_output_len=128, speed_bench_dataset_subset='qualitative', speed_bench_output_len=4096, speed_bench_category=None, label=None, backend='openai', base_url='http://127.0.0.1:8101', host='127.0.0.1', port=8000, endpoint='/v1/completions', header=None, max_concurrency=16, model='qwen-target', input_len=None, output_len=None, tokenizer='/home/model/Qwen3.8-27B-FP8', tokenizer_mode='auto', use_beam_search=False, logprobs=None, request_rate=inf, burstiness=1.0, probe_request_rate=0.0, disable_tqdm=True, num_warmups=0, profile=False, save_result=True, save_detailed=True, append_result=False, metadata=['method_name=normal', 'dataset_name=spec_bench', 'mode=normal', 'k=0', 'gpu=1', 'phase=semantic-r1', 'concurrency=16', 'seed=42', 'prefix_cache=false'], result_dir='/home/genai/spec_decoding_study/results/raw', result_filename='semantic-r1-normal-specbench-o256-c16-s42.json', ignore_eos=True, self_timed=None, percentile_metrics='ttft,tpot,itl,e2el', metric_percentiles='50,90,95,99', goodput=None, request_id_prefix='semantic-r1-normal-specbench-o256-c16-s42-', top_p=1.0, top_k=-1, min_p=None, temperature=0.0, frequency_penalty=None, presence_penalty=None, repetition_penalty=None, served_model_name=None, lora_modules=None, lora_assignment='random', ramp_up_strategy=None, ramp_up_start_rps=None, ramp_up_end_rps=None, ready_check_timeout_sec=0, chat_template_kwargs=None, extra_body=None, skip_tokenizer_init=False, insecure=False, plot_timeline=False, timeline_itl_thresholds='25,50', plot_dataset_stats=False, log_config_file=None, logging_config=LoggingConfig(log_level='INFO', formatter='text', configure_logging=True, pylogging_config_file=None))
+Starting initial single prompt test run...
+Skipping endpoint ready check.
+Starting main benchmark run...
+Traffic request rate: inf
+Burstiness factor: 1.0 (Poisson process)
+Maximum request concurrency: 16
+tip: install termplotlib and gnuplot to plot the metrics
+============ Serving Benchmark Result ============
+Successful requests:                     128       
+Failed requests:                         0         
+Maximum request concurrency:             16        
+Benchmark duration (s):                  21.67     
+Total input tokens:                      43111     
+Total generated tokens:                  32768     
+Request throughput (req/s):              5.91      
+Output token throughput (tok/s):         1512.30   
+Peak output token throughput (tok/s):    1648.00   
+Peak concurrent requests:                32.00     
+Total token throughput (tok/s):          3501.95   
+---------------Time to First Token----------------
+Mean TTFT (ms):                          206.23    
+Median TTFT (ms):                        232.41    
+P50 TTFT (ms):                           232.41    
+P90 TTFT (ms):                           279.30    
+P95 TTFT (ms):                           279.51    
+P99 TTFT (ms):                           279.98    
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          9.81      
+Median TPOT (ms):                        9.78      
+P50 TPOT (ms):                           9.78      
+P90 TPOT (ms):                           9.80      
+P95 TPOT (ms):                           10.03     
+P99 TPOT (ms):                           10.59     
+---------------Inter-token Latency----------------
+Mean ITL (ms):                           9.77      
+Median ITL (ms):                         9.76      
+P50 ITL (ms):                            9.76      
+P90 ITL (ms):                            9.94      
+P95 ITL (ms):                            10.01     
+P99 ITL (ms):                            10.35     
+----------------End-to-end Latency----------------
+Mean E2EL (ms):                          2707.71   
+Median E2EL (ms):                        2728.18   
+P50 E2EL (ms):                           2728.18   
+P90 E2EL (ms):                           2772.53   
+P95 E2EL (ms):                           2772.91   
+P99 E2EL (ms):                           2773.07   
+==================================================
+RUN_VALIDATION: semantic-r1-normal-specbench-o256-c16-s42: {'valid': True, 'checks': {'completed_matches': True, 'no_failed_requests': True, 'no_error_strings': True, 'request_level_output_lengths_present': True, 'all_output_lengths_exact': True, 'total_output_tokens_exact': True, 'positive_duration': True, 'positive_output_throughput': True}, 'completed': 128, 'failed': 0, 'total_output_tokens': 32768, 'duration': 21.667663231957704, 'output_throughput': 1512.2996720601775, 'mean_tpot_ms': 9.809724079048678, 'spec_decode_acceptance_rate': None, 'spec_decode_acceptance_length': None}
+MATRIX_COMMAND: semantic-r1-normal-specbench-o256-c16-s43: ['/usr/bin/env', 'CUDA_VISIBLE_DEVICES=1', '/home/genai/.pixi/envs/default/bin/vllm', 'bench', 'serve', '--backend', 'openai', '--base-url', 'http://127.0.0.1:8101', '--endpoint', '/v1/completions', '--model', 'qwen-target', '--tokenizer', '/home/model/Qwen3.8-27B-FP8', '--dataset-name', 'spec_bench', '--dataset-path', '/home/genai/spec_decoding_study/data/spec_bench/question.jsonl', '--spec-bench-output-len', '256', '--request-rate', 'inf', '--ignore-eos', '--temperature', '0', '--top-p', '1', '--top-k', '-1', '--percentile-metrics', 'ttft,tpot,itl,e2el', '--metric-percentiles', '50,90,95,99', '--disable-tqdm', '--num-prompts', '128', '--num-warmups', '0', '--max-concurrency', '16', '--seed', '43', '--request-id-prefix', 'semantic-r1-normal-specbench-o256-c16-s43-', '--save-result', '--save-detailed', '--result-dir', '/home/genai/spec_decoding_study/results/raw', '--result-filename', 'semantic-r1-normal-specbench-o256-c16-s43.json', '--metadata', 'method_name=normal', 'dataset_name=spec_bench', 'mode=normal', 'k=0', 'gpu=1', 'phase=semantic-r1', 'concurrency=16', 'seed=43', 'prefix_cache=false']
++ /usr/bin/env CUDA_VISIBLE_DEVICES=1 /home/genai/.pixi/envs/default/bin/vllm bench serve --backend openai --base-url http://127.0.0.1:8101 --endpoint /v1/completions --model qwen-target --tokenizer /home/model/Qwen3.8-27B-FP8 --dataset-name spec_bench --dataset-path /home/genai/spec_decoding_study/data/spec_bench/question.jsonl --spec-bench-output-len 256 --request-rate inf --ignore-eos --temperature 0 --top-p 1 --top-k -1 --percentile-metrics ttft,tpot,itl,e2el --metric-percentiles 50,90,95,99 --disable-tqdm --num-prompts 128 --num-warmups 0 --max-concurrency 16 --seed 43 --request-id-prefix semantic-r1-normal-specbench-o256-c16-s43- --save-result --save-detailed --result-dir /home/genai/spec_decoding_study/results/raw --result-filename semantic-r1-normal-specbench-o256-c16-s43.json --metadata method_name=normal dataset_name=spec_bench mode=normal k=0 gpu=1 phase=semantic-r1 concurrency=16 seed=43 prefix_cache=false
+W1124 15:07:27.688000 191512 site-packages/torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1124 15:07:27.688000 191512 site-packages/torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1124 15:07:27.688000 191512 site-packages/torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+Namespace(subparser='bench', bench_type='serve', dispatch_function=<function BenchmarkServingSubcommand.cmd at 0x7eb1f1047e20>, trust_remote_code=False, seed=43, num_prompts=128, dataset_name='spec_bench', no_stream=False, dataset_path='/home/genai/spec_decoding_study/data/spec_bench/question.jsonl', no_oversample=False, skip_chat_template=False, enable_multimodal_chat=False, disable_shuffle=False, custom_output_len=256, custom_ensure_client_side_data=False, spec_bench_output_len=256, spec_bench_category=None, sharegpt_output_len=None, timed_trace_chunk_hash_size=16, timed_trace_sec_multiplier=1, timed_trace_label_timestamp='timestamp', timed_trace_label_input_length='input_length', timed_trace_label_output_length='output_length', timed_trace_label_hash_ids='hash_ids', blazedit_min_distance=0.0, blazedit_max_distance=1.0, asr_max_audio_len_sec=inf, asr_min_audio_len_sec=0.0, random_input_len=1024, random_output_len=128, random_range_ratio='0.0', random_prefix_len=0, random_batch_size=1, no_reranker=False, random_mm_base_items_per_request=1, random_mm_num_mm_items_range_ratio=0.0, random_mm_limit_mm_per_prompt={'image': 255, 'video': 1}, random_mm_bucket_config={(256, 256, 1): 0.5, (720, 1280, 1): 0.5, (720, 1280, 16): 0.0}, hf_subset=None, hf_split=None, hf_name=None, hf_output_len=None, bfcl_categories=None, prefix_repetition_prefix_len=256, prefix_repetition_suffix_len=256, prefix_repetition_num_prefixes=10, prefix_repetition_output_len=128, speed_bench_dataset_subset='qualitative', speed_bench_output_len=4096, speed_bench_category=None, label=None, backend='openai', base_url='http://127.0.0.1:8101', host='127.0.0.1', port=8000, endpoint='/v1/completions', header=None, max_concurrency=16, model='qwen-target', input_len=None, output_len=None, tokenizer='/home/model/Qwen3.8-27B-FP8', tokenizer_mode='auto', use_beam_search=False, logprobs=None, request_rate=inf, burstiness=1.0, probe_request_rate=0.0, disable_tqdm=True, num_warmups=0, profile=False, save_result=True, save_detailed=True, append_result=False, metadata=['method_name=normal', 'dataset_name=spec_bench', 'mode=normal', 'k=0', 'gpu=1', 'phase=semantic-r1', 'concurrency=16', 'seed=43', 'prefix_cache=false'], result_dir='/home/genai/spec_decoding_study/results/raw', result_filename='semantic-r1-normal-specbench-o256-c16-s43.json', ignore_eos=True, self_timed=None, percentile_metrics='ttft,tpot,itl,e2el', metric_percentiles='50,90,95,99', goodput=None, request_id_prefix='semantic-r1-normal-specbench-o256-c16-s43-', top_p=1.0, top_k=-1, min_p=None, temperature=0.0, frequency_penalty=None, presence_penalty=None, repetition_penalty=None, served_model_name=None, lora_modules=None, lora_assignment='random', ramp_up_strategy=None, ramp_up_start_rps=None, ramp_up_end_rps=None, ready_check_timeout_sec=0, chat_template_kwargs=None, extra_body=None, skip_tokenizer_init=False, insecure=False, plot_timeline=False, timeline_itl_thresholds='25,50', plot_dataset_stats=False, log_config_file=None, logging_config=LoggingConfig(log_level='INFO', formatter='text', configure_logging=True, pylogging_config_file=None))
+Starting initial single prompt test run...
+Skipping endpoint ready check.
+Starting main benchmark run...
+Traffic request rate: inf
+Burstiness factor: 1.0 (Poisson process)
+Maximum request concurrency: 16
+tip: install termplotlib and gnuplot to plot the metrics
+============ Serving Benchmark Result ============
+Successful requests:                     128       
+Failed requests:                         0         
+Maximum request concurrency:             16        
+Benchmark duration (s):                  21.67     
+Total input tokens:                      43111     
+Total generated tokens:                  32768     
+Request throughput (req/s):              5.91      
+Output token throughput (tok/s):         1512.15   
+Peak output token throughput (tok/s):    1648.00   
+Peak concurrent requests:                32.00     
+Total token throughput (tok/s):          3501.60   
+---------------Time to First Token----------------
+Mean TTFT (ms):                          206.67    
+Median TTFT (ms):                        235.32    
+P50 TTFT (ms):                           235.32    
+P90 TTFT (ms):                           279.76    
+P95 TTFT (ms):                           280.15    
+P99 TTFT (ms):                           280.77    
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          9.81      
+Median TPOT (ms):                        9.78      
+P50 TPOT (ms):                           9.78      
+P90 TPOT (ms):                           9.81      
+P95 TPOT (ms):                           10.02     
+P99 TPOT (ms):                           10.59     
+---------------Inter-token Latency----------------
+Mean ITL (ms):                           9.77      
+Median ITL (ms):                         9.76      
+P50 ITL (ms):                            9.76      
+P90 ITL (ms):                            9.96      
+P95 ITL (ms):                            10.04     
+P99 ITL (ms):                            10.36     
+----------------End-to-end Latency----------------
+Mean E2EL (ms):                          2707.95   
+Median E2EL (ms):                        2730.49   
+P50 E2EL (ms):                           2730.49   
+P90 E2EL (ms):                           2773.37   
+P95 E2EL (ms):                           2773.68   
+P99 E2EL (ms):                           2774.08   
+==================================================
+RUN_VALIDATION: semantic-r1-normal-specbench-o256-c16-s43: {'valid': True, 'checks': {'completed_matches': True, 'no_failed_requests': True, 'no_error_strings': True, 'request_level_output_lengths_present': True, 'all_output_lengths_exact': True, 'total_output_tokens_exact': True, 'positive_duration': True, 'positive_output_throughput': True}, 'completed': 128, 'failed': 0, 'total_output_tokens': 32768, 'duration': 21.669787758029997, 'output_throughput': 1512.151404798943, 'mean_tpot_ms': 9.808946789623814, 'spec_decode_acceptance_rate': None, 'spec_decode_acceptance_length': None}
+MATRIX_COMMAND: semantic-r1-normal-specbench-o256-c16-s44: ['/usr/bin/env', 'CUDA_VISIBLE_DEVICES=1', '/home/genai/.pixi/envs/default/bin/vllm', 'bench', 'serve', '--backend', 'openai', '--base-url', 'http://127.0.0.1:8101', '--endpoint', '/v1/completions', '--model', 'qwen-target', '--tokenizer', '/home/model/Qwen3.8-27B-FP8', '--dataset-name', 'spec_bench', '--dataset-path', '/home/genai/spec_decoding_study/data/spec_bench/question.jsonl', '--spec-bench-output-len', '256', '--request-rate', 'inf', '--ignore-eos', '--temperature', '0', '--top-p', '1', '--top-k', '-1', '--percentile-metrics', 'ttft,tpot,itl,e2el', '--metric-percentiles', '50,90,95,99', '--disable-tqdm', '--num-prompts', '128', '--num-warmups', '0', '--max-concurrency', '16', '--seed', '44', '--request-id-prefix', 'semantic-r1-normal-specbench-o256-c16-s44-', '--save-result', '--save-detailed', '--result-dir', '/home/genai/spec_decoding_study/results/raw', '--result-filename', 'semantic-r1-normal-specbench-o256-c16-s44.json', '--metadata', 'method_name=normal', 'dataset_name=spec_bench', 'mode=normal', 'k=0', 'gpu=1', 'phase=semantic-r1', 'concurrency=16', 'seed=44', 'prefix_cache=false']
++ /usr/bin/env CUDA_VISIBLE_DEVICES=1 /home/genai/.pixi/envs/default/bin/vllm bench serve --backend openai --base-url http://127.0.0.1:8101 --endpoint /v1/completions --model qwen-target --tokenizer /home/model/Qwen3.8-27B-FP8 --dataset-name spec_bench --dataset-path /home/genai/spec_decoding_study/data/spec_bench/question.jsonl --spec-bench-output-len 256 --request-rate inf --ignore-eos --temperature 0 --top-p 1 --top-k -1 --percentile-metrics ttft,tpot,itl,e2el --metric-percentiles 50,90,95,99 --disable-tqdm --num-prompts 128 --num-warmups 0 --max-concurrency 16 --seed 44 --request-id-prefix semantic-r1-normal-specbench-o256-c16-s44- --save-result --save-detailed --result-dir /home/genai/spec_decoding_study/results/raw --result-filename semantic-r1-normal-specbench-o256-c16-s44.json --metadata method_name=normal dataset_name=spec_bench mode=normal k=0 gpu=1 phase=semantic-r1 concurrency=16 seed=44 prefix_cache=false
+W1124 15:07:57.853000 192557 site-packages/torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1124 15:07:57.854000 192557 site-packages/torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1124 15:07:57.854000 192557 site-packages/torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+Namespace(subparser='bench', bench_type='serve', dispatch_function=<function BenchmarkServingSubcommand.cmd at 0x7a993d87fba0>, trust_remote_code=False, seed=44, num_prompts=128, dataset_name='spec_bench', no_stream=False, dataset_path='/home/genai/spec_decoding_study/data/spec_bench/question.jsonl', no_oversample=False, skip_chat_template=False, enable_multimodal_chat=False, disable_shuffle=False, custom_output_len=256, custom_ensure_client_side_data=False, spec_bench_output_len=256, spec_bench_category=None, sharegpt_output_len=None, timed_trace_chunk_hash_size=16, timed_trace_sec_multiplier=1, timed_trace_label_timestamp='timestamp', timed_trace_label_input_length='input_length', timed_trace_label_output_length='output_length', timed_trace_label_hash_ids='hash_ids', blazedit_min_distance=0.0, blazedit_max_distance=1.0, asr_max_audio_len_sec=inf, asr_min_audio_len_sec=0.0, random_input_len=1024, random_output_len=128, random_range_ratio='0.0', random_prefix_len=0, random_batch_size=1, no_reranker=False, random_mm_base_items_per_request=1, random_mm_num_mm_items_range_ratio=0.0, random_mm_limit_mm_per_prompt={'image': 255, 'video': 1}, random_mm_bucket_config={(256, 256, 1): 0.5, (720, 1280, 1): 0.5, (720, 1280, 16): 0.0}, hf_subset=None, hf_split=None, hf_name=None, hf_output_len=None, bfcl_categories=None, prefix_repetition_prefix_len=256, prefix_repetition_suffix_len=256, prefix_repetition_num_prefixes=10, prefix_repetition_output_len=128, speed_bench_dataset_subset='qualitative', speed_bench_output_len=4096, speed_bench_category=None, label=None, backend='openai', base_url='http://127.0.0.1:8101', host='127.0.0.1', port=8000, endpoint='/v1/completions', header=None, max_concurrency=16, model='qwen-target', input_len=None, output_len=None, tokenizer='/home/model/Qwen3.8-27B-FP8', tokenizer_mode='auto', use_beam_search=False, logprobs=None, request_rate=inf, burstiness=1.0, probe_request_rate=0.0, disable_tqdm=True, num_warmups=0, profile=False, save_result=True, save_detailed=True, append_result=False, metadata=['method_name=normal', 'dataset_name=spec_bench', 'mode=normal', 'k=0', 'gpu=1', 'phase=semantic-r1', 'concurrency=16', 'seed=44', 'prefix_cache=false'], result_dir='/home/genai/spec_decoding_study/results/raw', result_filename='semantic-r1-normal-specbench-o256-c16-s44.json', ignore_eos=True, self_timed=None, percentile_metrics='ttft,tpot,itl,e2el', metric_percentiles='50,90,95,99', goodput=None, request_id_prefix='semantic-r1-normal-specbench-o256-c16-s44-', top_p=1.0, top_k=-1, min_p=None, temperature=0.0, frequency_penalty=None, presence_penalty=None, repetition_penalty=None, served_model_name=None, lora_modules=None, lora_assignment='random', ramp_up_strategy=None, ramp_up_start_rps=None, ramp_up_end_rps=None, ready_check_timeout_sec=0, chat_template_kwargs=None, extra_body=None, skip_tokenizer_init=False, insecure=False, plot_timeline=False, timeline_itl_thresholds='25,50', plot_dataset_stats=False, log_config_file=None, logging_config=LoggingConfig(log_level='INFO', formatter='text', configure_logging=True, pylogging_config_file=None))
+Starting initial single prompt test run...
+Skipping endpoint ready check.
+Starting main benchmark run...
+Traffic request rate: inf
+Burstiness factor: 1.0 (Poisson process)
+Maximum request concurrency: 16
+tip: install termplotlib and gnuplot to plot the metrics
+============ Serving Benchmark Result ============
+Successful requests:                     128       
+Failed requests:                         0         
+Maximum request concurrency:             16        
+Benchmark duration (s):                  21.67     
+Total input tokens:                      43111     
+Total generated tokens:                  32768     
+Request throughput (req/s):              5.91      
+Output token throughput (tok/s):         1512.35   
+Peak output token throughput (tok/s):    1648.00   
+Peak concurrent requests:                32.00     
+Total token throughput (tok/s):          3502.07   
+---------------Time to First Token----------------
+Mean TTFT (ms):                          205.02    
+Median TTFT (ms):                        233.58    
+P50 TTFT (ms):                           233.58    
+P90 TTFT (ms):                           280.04    
+P95 TTFT (ms):                           280.28    
+P99 TTFT (ms):                           280.76    
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          9.81      
+Median TPOT (ms):                        9.78      
+P50 TPOT (ms):                           9.78      
+P90 TPOT (ms):                           9.81      
+P95 TPOT (ms):                           10.04     
+P99 TPOT (ms):                           10.61     
+---------------Inter-token Latency----------------
+Mean ITL (ms):                           9.78      
+Median ITL (ms):                         9.76      
+P50 ITL (ms):                            9.76      
+P90 ITL (ms):                            9.94      
+P95 ITL (ms):                            10.02     
+P99 ITL (ms):                            10.30     
+----------------End-to-end Latency----------------
+Mean E2EL (ms):                          2707.56   
+Median E2EL (ms):                        2729.26   
+P50 E2EL (ms):                           2729.26   
+P90 E2EL (ms):                           2773.03   
+P95 E2EL (ms):                           2773.31   
+P99 E2EL (ms):                           2773.62   
+==================================================
+RUN_VALIDATION: semantic-r1-normal-specbench-o256-c16-s44: {'valid': True, 'checks': {'completed_matches': True, 'no_failed_requests': True, 'no_error_strings': True, 'request_level_output_lengths_present': True, 'all_output_lengths_exact': True, 'total_output_tokens_exact': True, 'positive_duration': True, 'positive_output_throughput': True}, 'completed': 128, 'failed': 0, 'total_output_tokens': 32768, 'duration': 21.666883459081873, 'output_throughput': 1512.3540984508777, 'mean_tpot_ms': 9.813898376024536, 'spec_decode_acceptance_rate': None, 'spec_decode_acceptance_length': None}
+MATRIX_COMMAND: warmup-semantic-r1-normal-c4: ['/usr/bin/env', 'CUDA_VISIBLE_DEVICES=1', '/home/genai/.pixi/envs/default/bin/vllm', 'bench', 'serve', '--backend', 'openai', '--base-url', 'http://127.0.0.1:8101', '--endpoint', '/v1/completions', '--model', 'qwen-target', '--tokenizer', '/home/model/Qwen3.8-27B-FP8', '--dataset-name', 'spec_bench', '--dataset-path', '/home/genai/spec_decoding_study/data/spec_bench/question.jsonl', '--spec-bench-output-len', '256', '--request-rate', 'inf', '--ignore-eos', '--temperature', '0', '--top-p', '1', '--top-k', '-1', '--percentile-metrics', 'ttft,tpot,itl,e2el', '--metric-percentiles', '50,90,95,99', '--disable-tqdm', '--num-prompts', '4', '--num-warmups', '0', '--max-concurrency', '4', '--seed', '1004', '--request-id-prefix', 'warmup-semantic-r1-normal-c4-']
++ /usr/bin/env CUDA_VISIBLE_DEVICES=1 /home/genai/.pixi/envs/default/bin/vllm bench serve --backend openai --base-url http://127.0.0.1:8101 --endpoint /v1/completions --model qwen-target --tokenizer /home/model/Qwen3.8-27B-FP8 --dataset-name spec_bench --dataset-path /home/genai/spec_decoding_study/data/spec_bench/question.jsonl --spec-bench-output-len 256 --request-rate inf --ignore-eos --temperature 0 --top-p 1 --top-k -1 --percentile-metrics ttft,tpot,itl,e2el --metric-percentiles 50,90,95,99 --disable-tqdm --num-prompts 4 --num-warmups 0 --max-concurrency 4 --seed 1004 --request-id-prefix warmup-semantic-r1-normal-c4-
+W1124 15:08:27.610000 193521 site-packages/torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1124 15:08:27.610000 193521 site-packages/torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1124 15:08:27.610000 193521 site-packages/torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+Namespace(subparser='bench', bench_type='serve', dispatch_function=<function BenchmarkServingSubcommand.cmd at 0x7d47d658fec0>, trust_remote_code=False, seed=1004, num_prompts=4, dataset_name='spec_bench', no_stream=False, dataset_path='/home/genai/spec_decoding_study/data/spec_bench/question.jsonl', no_oversample=False, skip_chat_template=False, enable_multimodal_chat=False, disable_shuffle=False, custom_output_len=256, custom_ensure_client_side_data=False, spec_bench_output_len=256, spec_bench_category=None, sharegpt_output_len=None, timed_trace_chunk_hash_size=16, timed_trace_sec_multiplier=1, timed_trace_label_timestamp='timestamp', timed_trace_label_input_length='input_length', timed_trace_label_output_length='output_length', timed_trace_label_hash_ids='hash_ids', blazedit_min_distance=0.0, blazedit_max_distance=1.0, asr_max_audio_len_sec=inf, asr_min_audio_len_sec=0.0, random_input_len=1024, random_output_len=128, random_range_ratio='0.0', random_prefix_len=0, random_batch_size=1, no_reranker=False, random_mm_base_items_per_request=1, random_mm_num_mm_items_range_ratio=0.0, random_mm_limit_mm_per_prompt={'image': 255, 'video': 1}, random_mm_bucket_config={(256, 256, 1): 0.5, (720, 1280, 1): 0.5, (720, 1280, 16): 0.0}, hf_subset=None, hf_split=None, hf_name=None, hf_output_len=None, bfcl_categories=None, prefix_repetition_prefix_len=256, prefix_repetition_suffix_len=256, prefix_repetition_num_prefixes=10, prefix_repetition_output_len=128, speed_bench_dataset_subset='qualitative', speed_bench_output_len=4096, speed_bench_category=None, label=None, backend='openai', base_url='http://127.0.0.1:8101', host='127.0.0.1', port=8000, endpoint='/v1/completions', header=None, max_concurrency=4, model='qwen-target', input_len=None, output_len=None, tokenizer='/home/model/Qwen3.8-27B-FP8', tokenizer_mode='auto', use_beam_search=False, logprobs=None, request_rate=inf, burstiness=1.0, probe_request_rate=0.0, disable_tqdm=True, num_warmups=0, profile=False, save_result=False, save_detailed=False, append_result=False, metadata=None, result_dir=None, result_filename=None, ignore_eos=True, self_timed=None, percentile_metrics='ttft,tpot,itl,e2el', metric_percentiles='50,90,95,99', goodput=None, request_id_prefix='warmup-semantic-r1-normal-c4-', top_p=1.0, top_k=-1, min_p=None, temperature=0.0, frequency_penalty=None, presence_penalty=None, repetition_penalty=None, served_model_name=None, lora_modules=None, lora_assignment='random', ramp_up_strategy=None, ramp_up_start_rps=None, ramp_up_end_rps=None, ready_check_timeout_sec=0, chat_template_kwargs=None, extra_body=None, skip_tokenizer_init=False, insecure=False, plot_timeline=False, timeline_itl_thresholds='25,50', plot_dataset_stats=False, log_config_file=None, logging_config=LoggingConfig(log_level='INFO', formatter='text', configure_logging=True, pylogging_config_file=None))
+Starting initial single prompt test run...
+Skipping endpoint ready check.
+Starting main benchmark run...
+Traffic request rate: inf
+Burstiness factor: 1.0 (Poisson process)
+Maximum request concurrency: 4
+tip: install termplotlib and gnuplot to plot the metrics
+============ Serving Benchmark Result ============
+Successful requests:                     4         
+Failed requests:                         0         
+Maximum request concurrency:             4         
+Benchmark duration (s):                  2.30      
+Total input tokens:                      764       
+Total generated tokens:                  1024      
+Request throughput (req/s):              1.74      
+Output token throughput (tok/s):         445.86    
+Peak output token throughput (tok/s):    456.00    
+Peak concurrent requests:                4.00      
+Total token throughput (tok/s):          778.51    
+---------------Time to First Token----------------
+Mean TTFT (ms):                          51.99     
+Median TTFT (ms):                        54.26     
+P50 TTFT (ms):                           54.26     
+P90 TTFT (ms):                           54.54     
+P95 TTFT (ms):                           54.59     
+P99 TTFT (ms):                           54.64     
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          8.79      
+Median TPOT (ms):                        8.79      
+P50 TPOT (ms):                           8.79      
+P90 TPOT (ms):                           8.79      
+P95 TPOT (ms):                           8.80      
+P99 TPOT (ms):                           8.80      
+---------------Inter-token Latency----------------
+Mean ITL (ms):                           8.76      
+Median ITL (ms):                         8.80      
+P50 ITL (ms):                            8.80      
+P90 ITL (ms):                            8.91      
+P95 ITL (ms):                            8.95      
+P99 ITL (ms):                            9.18      
+----------------End-to-end Latency----------------
+Mean E2EL (ms):                          2294.09   
+Median E2EL (ms):                        2296.05   
+P50 E2EL (ms):                           2296.05   
+P90 E2EL (ms):                           2296.34   
+P95 E2EL (ms):                           2296.39   
+P99 E2EL (ms):                           2296.43   
+==================================================
+MATRIX_COMMAND: semantic-r1-normal-specbench-o256-c4-s42: ['/usr/bin/env', 'CUDA_VISIBLE_DEVICES=1', '/home/genai/.pixi/envs/default/bin/vllm', 'bench', 'serve', '--backend', 'openai', '--base-url', 'http://127.0.0.1:8101', '--endpoint', '/v1/completions', '--model', 'qwen-target', '--tokenizer', '/home/model/Qwen3.8-27B-FP8', '--dataset-name', 'spec_bench', '--dataset-path', '/home/genai/spec_decoding_study/data/spec_bench/question.jsonl', '--spec-bench-output-len', '256', '--request-rate', 'inf', '--ignore-eos', '--temperature', '0', '--top-p', '1', '--top-k', '-1', '--percentile-metrics', 'ttft,tpot,itl,e2el', '--metric-percentiles', '50,90,95,99', '--disable-tqdm', '--num-prompts', '128', '--num-warmups', '0', '--max-concurrency', '4', '--seed', '42', '--request-id-prefix', 'semantic-r1-normal-specbench-o256-c4-s42-', '--save-result', '--save-detailed', '--result-dir', '/home/genai/spec_decoding_study/results/raw', '--result-filename', 'semantic-r1-normal-specbench-o256-c4-s42.json', '--metadata', 'method_name=normal', 'dataset_name=spec_bench', 'mode=normal', 'k=0', 'gpu=1', 'phase=semantic-r1', 'concurrency=4', 'seed=42', 'prefix_cache=false']
++ /usr/bin/env CUDA_VISIBLE_DEVICES=1 /home/genai/.pixi/envs/default/bin/vllm bench serve --backend openai --base-url http://127.0.0.1:8101 --endpoint /v1/completions --model qwen-target --tokenizer /home/model/Qwen3.8-27B-FP8 --dataset-name spec_bench --dataset-path /home/genai/spec_decoding_study/data/spec_bench/question.jsonl --spec-bench-output-len 256 --request-rate inf --ignore-eos --temperature 0 --top-p 1 --top-k -1 --percentile-metrics ttft,tpot,itl,e2el --metric-percentiles 50,90,95,99 --disable-tqdm --num-prompts 128 --num-warmups 0 --max-concurrency 4 --seed 42 --request-id-prefix semantic-r1-normal-specbench-o256-c4-s42- --save-result --save-detailed --result-dir /home/genai/spec_decoding_study/results/raw --result-filename semantic-r1-normal-specbench-o256-c4-s42.json --metadata method_name=normal dataset_name=spec_bench mode=normal k=0 gpu=1 phase=semantic-r1 concurrency=4 seed=42 prefix_cache=false
+W1124 15:08:37.841000 193931 site-packages/torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1124 15:08:37.841000 193931 site-packages/torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1124 15:08:37.842000 193931 site-packages/torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+Namespace(subparser='bench', bench_type='serve', dispatch_function=<function BenchmarkServingSubcommand.cmd at 0x748070783ec0>, trust_remote_code=False, seed=42, num_prompts=128, dataset_name='spec_bench', no_stream=False, dataset_path='/home/genai/spec_decoding_study/data/spec_bench/question.jsonl', no_oversample=False, skip_chat_template=False, enable_multimodal_chat=False, disable_shuffle=False, custom_output_len=256, custom_ensure_client_side_data=False, spec_bench_output_len=256, spec_bench_category=None, sharegpt_output_len=None, timed_trace_chunk_hash_size=16, timed_trace_sec_multiplier=1, timed_trace_label_timestamp='timestamp', timed_trace_label_input_length='input_length', timed_trace_label_output_length='output_length', timed_trace_label_hash_ids='hash_ids', blazedit_min_distance=0.0, blazedit_max_distance=1.0, asr_max_audio_len_sec=inf, asr_min_audio_len_sec=0.0, random_input_len=1024, random_output_len=128, random_range_ratio='0.0', random_prefix_len=0, random_batch_size=1, no_reranker=False, random_mm_base_items_per_request=1, random_mm_num_mm_items_range_ratio=0.0, random_mm_limit_mm_per_prompt={'image': 255, 'video': 1}, random_mm_bucket_config={(256, 256, 1): 0.5, (720, 1280, 1): 0.5, (720, 1280, 16): 0.0}, hf_subset=None, hf_split=None, hf_name=None, hf_output_len=None, bfcl_categories=None, prefix_repetition_prefix_len=256, prefix_repetition_suffix_len=256, prefix_repetition_num_prefixes=10, prefix_repetition_output_len=128, speed_bench_dataset_subset='qualitative', speed_bench_output_len=4096, speed_bench_category=None, label=None, backend='openai', base_url='http://127.0.0.1:8101', host='127.0.0.1', port=8000, endpoint='/v1/completions', header=None, max_concurrency=4, model='qwen-target', input_len=None, output_len=None, tokenizer='/home/model/Qwen3.8-27B-FP8', tokenizer_mode='auto', use_beam_search=False, logprobs=None, request_rate=inf, burstiness=1.0, probe_request_rate=0.0, disable_tqdm=True, num_warmups=0, profile=False, save_result=True, save_detailed=True, append_result=False, metadata=['method_name=normal', 'dataset_name=spec_bench', 'mode=normal', 'k=0', 'gpu=1', 'phase=semantic-r1', 'concurrency=4', 'seed=42', 'prefix_cache=false'], result_dir='/home/genai/spec_decoding_study/results/raw', result_filename='semantic-r1-normal-specbench-o256-c4-s42.json', ignore_eos=True, self_timed=None, percentile_metrics='ttft,tpot,itl,e2el', metric_percentiles='50,90,95,99', goodput=None, request_id_prefix='semantic-r1-normal-specbench-o256-c4-s42-', top_p=1.0, top_k=-1, min_p=None, temperature=0.0, frequency_penalty=None, presence_penalty=None, repetition_penalty=None, served_model_name=None, lora_modules=None, lora_assignment='random', ramp_up_strategy=None, ramp_up_start_rps=None, ramp_up_end_rps=None, ready_check_timeout_sec=0, chat_template_kwargs=None, extra_body=None, skip_tokenizer_init=False, insecure=False, plot_timeline=False, timeline_itl_thresholds='25,50', plot_dataset_stats=False, log_config_file=None, logging_config=LoggingConfig(log_level='INFO', formatter='text', configure_logging=True, pylogging_config_file=None))
+Starting initial single prompt test run...
+Skipping endpoint ready check.
+Starting main benchmark run...
+Traffic request rate: inf
+Burstiness factor: 1.0 (Poisson process)
+Maximum request concurrency: 4
+tip: install termplotlib and gnuplot to plot the metrics
+============ Serving Benchmark Result ============
+Successful requests:                     128       
+Failed requests:                         0         
+Maximum request concurrency:             4         
+Benchmark duration (s):                  74.15     
+Total input tokens:                      43111     
+Total generated tokens:                  32768     
+Request throughput (req/s):              1.73      
+Output token throughput (tok/s):         441.94    
+Peak output token throughput (tok/s):    457.00    
+Peak concurrent requests:                8.00      
+Total token throughput (tok/s):          1023.38   
+---------------Time to First Token----------------
+Mean TTFT (ms):                          66.78     
+Median TTFT (ms):                        60.75     
+P50 TTFT (ms):                           60.75     
+P90 TTFT (ms):                           101.74    
+P95 TTFT (ms):                           107.39    
+P99 TTFT (ms):                           109.86    
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          8.82      
+Median TPOT (ms):                        8.80      
+P50 TPOT (ms):                           8.80      
+P90 TPOT (ms):                           8.88      
+P95 TPOT (ms):                           8.95      
+P99 TPOT (ms):                           9.05      
+---------------Inter-token Latency----------------
+Mean ITL (ms):                           8.79      
+Median ITL (ms):                         8.80      
+P50 ITL (ms):                            8.80      
+P90 ITL (ms):                            8.94      
+P95 ITL (ms):                            8.99      
+P99 ITL (ms):                            9.23      
+----------------End-to-end Latency----------------
+Mean E2EL (ms):                          2316.80   
+Median E2EL (ms):                        2311.66   
+P50 E2EL (ms):                           2311.66   
+P90 E2EL (ms):                           2352.76   
+P95 E2EL (ms):                           2357.99   
+P99 E2EL (ms):                           2358.28   
+==================================================
+RUN_VALIDATION: semantic-r1-normal-specbench-o256-c4-s42: {'valid': True, 'checks': {'completed_matches': True, 'no_failed_requests': True, 'no_error_strings': True, 'request_level_output_lengths_present': True, 'all_output_lengths_exact': True, 'total_output_tokens_exact': True, 'positive_duration': True, 'positive_output_throughput': True}, 'completed': 128, 'failed': 0, 'total_output_tokens': 32768, 'duration': 74.14578562090173, 'output_throughput': 441.94015513624396, 'mean_tpot_ms': 8.823632309377347, 'spec_decode_acceptance_rate': None, 'spec_decode_acceptance_length': None}
+MATRIX_COMMAND: semantic-r1-normal-specbench-o256-c4-s43: ['/usr/bin/env', 'CUDA_VISIBLE_DEVICES=1', '/home/genai/.pixi/envs/default/bin/vllm', 'bench', 'serve', '--backend', 'openai', '--base-url', 'http://127.0.0.1:8101', '--endpoint', '/v1/completions', '--model', 'qwen-target', '--tokenizer', '/home/model/Qwen3.8-27B-FP8', '--dataset-name', 'spec_bench', '--dataset-path', '/home/genai/spec_decoding_study/data/spec_bench/question.jsonl', '--spec-bench-output-len', '256', '--request-rate', 'inf', '--ignore-eos', '--temperature', '0', '--top-p', '1', '--top-k', '-1', '--percentile-metrics', 'ttft,tpot,itl,e2el', '--metric-percentiles', '50,90,95,99', '--disable-tqdm', '--num-prompts', '128', '--num-warmups', '0', '--max-concurrency', '4', '--seed', '43', '--request-id-prefix', 'semantic-r1-normal-specbench-o256-c4-s43-', '--save-result', '--save-detailed', '--result-dir', '/home/genai/spec_decoding_study/results/raw', '--result-filename', 'semantic-r1-normal-specbench-o256-c4-s43.json', '--metadata', 'method_name=normal', 'dataset_name=spec_bench', 'mode=normal', 'k=0', 'gpu=1', 'phase=semantic-r1', 'concurrency=4', 'seed=43', 'prefix_cache=false']
++ /usr/bin/env CUDA_VISIBLE_DEVICES=1 /home/genai/.pixi/envs/default/bin/vllm bench serve --backend openai --base-url http://127.0.0.1:8101 --endpoint /v1/completions --model qwen-target --tokenizer /home/model/Qwen3.8-27B-FP8 --dataset-name spec_bench --dataset-path /home/genai/spec_decoding_study/data/spec_bench/question.jsonl --spec-bench-output-len 256 --request-rate inf --ignore-eos --temperature 0 --top-p 1 --top-k -1 --percentile-metrics ttft,tpot,itl,e2el --metric-percentiles 50,90,95,99 --disable-tqdm --num-prompts 128 --num-warmups 0 --max-concurrency 4 --seed 43 --request-id-prefix semantic-r1-normal-specbench-o256-c4-s43- --save-result --save-detailed --result-dir /home/genai/spec_decoding_study/results/raw --result-filename semantic-r1-normal-specbench-o256-c4-s43.json --metadata method_name=normal dataset_name=spec_bench mode=normal k=0 gpu=1 phase=semantic-r1 concurrency=4 seed=43 prefix_cache=false
+W1124 15:10:00.451000 195016 site-packages/torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1124 15:10:00.451000 195016 site-packages/torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1124 15:10:00.451000 195016 site-packages/torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+Namespace(subparser='bench', bench_type='serve', dispatch_function=<function BenchmarkServingSubcommand.cmd at 0x7c555b273e20>, trust_remote_code=False, seed=43, num_prompts=128, dataset_name='spec_bench', no_stream=False, dataset_path='/home/genai/spec_decoding_study/data/spec_bench/question.jsonl', no_oversample=False, skip_chat_template=False, enable_multimodal_chat=False, disable_shuffle=False, custom_output_len=256, custom_ensure_client_side_data=False, spec_bench_output_len=256, spec_bench_category=None, sharegpt_output_len=None, timed_trace_chunk_hash_size=16, timed_trace_sec_multiplier=1, timed_trace_label_timestamp='timestamp', timed_trace_label_input_length='input_length', timed_trace_label_output_length='output_length', timed_trace_label_hash_ids='hash_ids', blazedit_min_distance=0.0, blazedit_max_distance=1.0, asr_max_audio_len_sec=inf, asr_min_audio_len_sec=0.0, random_input_len=1024, random_output_len=128, random_range_ratio='0.0', random_prefix_len=0, random_batch_size=1, no_reranker=False, random_mm_base_items_per_request=1, random_mm_num_mm_items_range_ratio=0.0, random_mm_limit_mm_per_prompt={'image': 255, 'video': 1}, random_mm_bucket_config={(256, 256, 1): 0.5, (720, 1280, 1): 0.5, (720, 1280, 16): 0.0}, hf_subset=None, hf_split=None, hf_name=None, hf_output_len=None, bfcl_categories=None, prefix_repetition_prefix_len=256, prefix_repetition_suffix_len=256, prefix_repetition_num_prefixes=10, prefix_repetition_output_len=128, speed_bench_dataset_subset='qualitative', speed_bench_output_len=4096, speed_bench_category=None, label=None, backend='openai', base_url='http://127.0.0.1:8101', host='127.0.0.1', port=8000, endpoint='/v1/completions', header=None, max_concurrency=4, model='qwen-target', input_len=None, output_len=None, tokenizer='/home/model/Qwen3.8-27B-FP8', tokenizer_mode='auto', use_beam_search=False, logprobs=None, request_rate=inf, burstiness=1.0, probe_request_rate=0.0, disable_tqdm=True, num_warmups=0, profile=False, save_result=True, save_detailed=True, append_result=False, metadata=['method_name=normal', 'dataset_name=spec_bench', 'mode=normal', 'k=0', 'gpu=1', 'phase=semantic-r1', 'concurrency=4', 'seed=43', 'prefix_cache=false'], result_dir='/home/genai/spec_decoding_study/results/raw', result_filename='semantic-r1-normal-specbench-o256-c4-s43.json', ignore_eos=True, self_timed=None, percentile_metrics='ttft,tpot,itl,e2el', metric_percentiles='50,90,95,99', goodput=None, request_id_prefix='semantic-r1-normal-specbench-o256-c4-s43-', top_p=1.0, top_k=-1, min_p=None, temperature=0.0, frequency_penalty=None, presence_penalty=None, repetition_penalty=None, served_model_name=None, lora_modules=None, lora_assignment='random', ramp_up_strategy=None, ramp_up_start_rps=None, ramp_up_end_rps=None, ready_check_timeout_sec=0, chat_template_kwargs=None, extra_body=None, skip_tokenizer_init=False, insecure=False, plot_timeline=False, timeline_itl_thresholds='25,50', plot_dataset_stats=False, log_config_file=None, logging_config=LoggingConfig(log_level='INFO', formatter='text', configure_logging=True, pylogging_config_file=None))
+Starting initial single prompt test run...
+Skipping endpoint ready check.
+Starting main benchmark run...
+Traffic request rate: inf
+Burstiness factor: 1.0 (Poisson process)
+Maximum request concurrency: 4
+tip: install termplotlib and gnuplot to plot the metrics
+============ Serving Benchmark Result ============
+Successful requests:                     128       
+Failed requests:                         0         
+Maximum request concurrency:             4         
+Benchmark duration (s):                  74.11     
+Total input tokens:                      43111     
+Total generated tokens:                  32768     
+Request throughput (req/s):              1.73      
+Output token throughput (tok/s):         442.17    
+Peak output token throughput (tok/s):    456.00    
+Peak concurrent requests:                8.00      
+Total token throughput (tok/s):          1023.92   
+---------------Time to First Token----------------
+Mean TTFT (ms):                          65.50     
+Median TTFT (ms):                        61.03     
+P50 TTFT (ms):                           61.03     
+P90 TTFT (ms):                           100.70    
+P95 TTFT (ms):                           107.10    
+P99 TTFT (ms):                           109.36    
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          8.82      
+Median TPOT (ms):                        8.80      
+P50 TPOT (ms):                           8.80      
+P90 TPOT (ms):                           8.89      
+P95 TPOT (ms):                           8.98      
+P99 TPOT (ms):                           9.05      
+---------------Inter-token Latency----------------
+Mean ITL (ms):                           8.79      
+Median ITL (ms):                         8.80      
+P50 ITL (ms):                            8.80      
+P90 ITL (ms):                            9.01      
+P95 ITL (ms):                            9.14      
+P99 ITL (ms):                            9.37      
+----------------End-to-end Latency----------------
+Mean E2EL (ms):                          2315.58   
+Median E2EL (ms):                        2310.99   
+P50 E2EL (ms):                           2310.99   
+P90 E2EL (ms):                           2350.46   
+P95 E2EL (ms):                           2356.49   
+P99 E2EL (ms):                           2356.84   
+==================================================
+RUN_VALIDATION: semantic-r1-normal-specbench-o256-c4-s43: {'valid': True, 'checks': {'completed_matches': True, 'no_failed_requests': True, 'no_error_strings': True, 'request_level_output_lengths_present': True, 'all_output_lengths_exact': True, 'total_output_tokens_exact': True, 'positive_duration': True, 'positive_output_throughput': True}, 'completed': 128, 'failed': 0, 'total_output_tokens': 32768, 'duration': 74.1064281789586, 'output_throughput': 442.1748666778138, 'mean_tpot_ms': 8.823818498721641, 'spec_decode_acceptance_rate': None, 'spec_decode_acceptance_length': None}
+MATRIX_COMMAND: semantic-r1-normal-specbench-o256-c4-s44: ['/usr/bin/env', 'CUDA_VISIBLE_DEVICES=1', '/home/genai/.pixi/envs/default/bin/vllm', 'bench', 'serve', '--backend', 'openai', '--base-url', 'http://127.0.0.1:8101', '--endpoint', '/v1/completions', '--model', 'qwen-target', '--tokenizer', '/home/model/Qwen3.8-27B-FP8', '--dataset-name', 'spec_bench', '--dataset-path', '/home/genai/spec_decoding_study/data/spec_bench/question.jsonl', '--spec-bench-output-len', '256', '--request-rate', 'inf', '--ignore-eos', '--temperature', '0', '--top-p', '1', '--top-k', '-1', '--percentile-metrics', 'ttft,tpot,itl,e2el', '--metric-percentiles', '50,90,95,99', '--disable-tqdm', '--num-prompts', '128', '--num-warmups', '0', '--max-concurrency', '4', '--seed', '44', '--request-id-prefix', 'semantic-r1-normal-specbench-o256-c4-s44-', '--save-result', '--save-detailed', '--result-dir', '/home/genai/spec_decoding_study/results/raw', '--result-filename', 'semantic-r1-normal-specbench-o256-c4-s44.json', '--metadata', 'method_name=normal', 'dataset_name=spec_bench', 'mode=normal', 'k=0', 'gpu=1', 'phase=semantic-r1', 'concurrency=4', 'seed=44', 'prefix_cache=false']
++ /usr/bin/env CUDA_VISIBLE_DEVICES=1 /home/genai/.pixi/envs/default/bin/vllm bench serve --backend openai --base-url http://127.0.0.1:8101 --endpoint /v1/completions --model qwen-target --tokenizer /home/model/Qwen3.8-27B-FP8 --dataset-name spec_bench --dataset-path /home/genai/spec_decoding_study/data/spec_bench/question.jsonl --spec-bench-output-len 256 --request-rate inf --ignore-eos --temperature 0 --top-p 1 --top-k -1 --percentile-metrics ttft,tpot,itl,e2el --metric-percentiles 50,90,95,99 --disable-tqdm --num-prompts 128 --num-warmups 0 --max-concurrency 4 --seed 44 --request-id-prefix semantic-r1-normal-specbench-o256-c4-s44- --save-result --save-detailed --result-dir /home/genai/spec_decoding_study/results/raw --result-filename semantic-r1-normal-specbench-o256-c4-s44.json --metadata method_name=normal dataset_name=spec_bench mode=normal k=0 gpu=1 phase=semantic-r1 concurrency=4 seed=44 prefix_cache=false
+W1124 15:11:22.663000 197028 site-packages/torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1124 15:11:22.664000 197028 site-packages/torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1124 15:11:22.664000 197028 site-packages/torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+Namespace(subparser='bench', bench_type='serve', dispatch_function=<function BenchmarkServingSubcommand.cmd at 0x714b2bb97e20>, trust_remote_code=False, seed=44, num_prompts=128, dataset_name='spec_bench', no_stream=False, dataset_path='/home/genai/spec_decoding_study/data/spec_bench/question.jsonl', no_oversample=False, skip_chat_template=False, enable_multimodal_chat=False, disable_shuffle=False, custom_output_len=256, custom_ensure_client_side_data=False, spec_bench_output_len=256, spec_bench_category=None, sharegpt_output_len=None, timed_trace_chunk_hash_size=16, timed_trace_sec_multiplier=1, timed_trace_label_timestamp='timestamp', timed_trace_label_input_length='input_length', timed_trace_label_output_length='output_length', timed_trace_label_hash_ids='hash_ids', blazedit_min_distance=0.0, blazedit_max_distance=1.0, asr_max_audio_len_sec=inf, asr_min_audio_len_sec=0.0, random_input_len=1024, random_output_len=128, random_range_ratio='0.0', random_prefix_len=0, random_batch_size=1, no_reranker=False, random_mm_base_items_per_request=1, random_mm_num_mm_items_range_ratio=0.0, random_mm_limit_mm_per_prompt={'image': 255, 'video': 1}, random_mm_bucket_config={(256, 256, 1): 0.5, (720, 1280, 1): 0.5, (720, 1280, 16): 0.0}, hf_subset=None, hf_split=None, hf_name=None, hf_output_len=None, bfcl_categories=None, prefix_repetition_prefix_len=256, prefix_repetition_suffix_len=256, prefix_repetition_num_prefixes=10, prefix_repetition_output_len=128, speed_bench_dataset_subset='qualitative', speed_bench_output_len=4096, speed_bench_category=None, label=None, backend='openai', base_url='http://127.0.0.1:8101', host='127.0.0.1', port=8000, endpoint='/v1/completions', header=None, max_concurrency=4, model='qwen-target', input_len=None, output_len=None, tokenizer='/home/model/Qwen3.8-27B-FP8', tokenizer_mode='auto', use_beam_search=False, logprobs=None, request_rate=inf, burstiness=1.0, probe_request_rate=0.0, disable_tqdm=True, num_warmups=0, profile=False, save_result=True, save_detailed=True, append_result=False, metadata=['method_name=normal', 'dataset_name=spec_bench', 'mode=normal', 'k=0', 'gpu=1', 'phase=semantic-r1', 'concurrency=4', 'seed=44', 'prefix_cache=false'], result_dir='/home/genai/spec_decoding_study/results/raw', result_filename='semantic-r1-normal-specbench-o256-c4-s44.json', ignore_eos=True, self_timed=None, percentile_metrics='ttft,tpot,itl,e2el', metric_percentiles='50,90,95,99', goodput=None, request_id_prefix='semantic-r1-normal-specbench-o256-c4-s44-', top_p=1.0, top_k=-1, min_p=None, temperature=0.0, frequency_penalty=None, presence_penalty=None, repetition_penalty=None, served_model_name=None, lora_modules=None, lora_assignment='random', ramp_up_strategy=None, ramp_up_start_rps=None, ramp_up_end_rps=None, ready_check_timeout_sec=0, chat_template_kwargs=None, extra_body=None, skip_tokenizer_init=False, insecure=False, plot_timeline=False, timeline_itl_thresholds='25,50', plot_dataset_stats=False, log_config_file=None, logging_config=LoggingConfig(log_level='INFO', formatter='text', configure_logging=True, pylogging_config_file=None))
+Starting initial single prompt test run...
+Skipping endpoint ready check.
+Starting main benchmark run...
+Traffic request rate: inf
+Burstiness factor: 1.0 (Poisson process)
+Maximum request concurrency: 4
+tip: install termplotlib and gnuplot to plot the metrics
+============ Serving Benchmark Result ============
+Successful requests:                     128       
+Failed requests:                         0         
+Maximum request concurrency:             4         
+Benchmark duration (s):                  74.12     
+Total input tokens:                      43111     
+Total generated tokens:                  32768     
+Request throughput (req/s):              1.73      
+Output token throughput (tok/s):         442.11    
+Peak output token throughput (tok/s):    456.00    
+Peak concurrent requests:                8.00      
+Total token throughput (tok/s):          1023.78   
+---------------Time to First Token----------------
+Mean TTFT (ms):                          61.57     
+Median TTFT (ms):                        57.08     
+P50 TTFT (ms):                           57.08     
+P90 TTFT (ms):                           81.80     
+P95 TTFT (ms):                           88.84     
+P99 TTFT (ms):                           111.16    
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          8.84      
+Median TPOT (ms):                        8.82      
+P50 TPOT (ms):                           8.82      
+P90 TPOT (ms):                           8.94      
+P95 TPOT (ms):                           8.96      
+P99 TPOT (ms):                           9.02      
+---------------Inter-token Latency----------------
+Mean ITL (ms):                           8.81      
+Median ITL (ms):                         8.80      
+P50 ITL (ms):                            8.80      
+P90 ITL (ms):                            8.98      
+P95 ITL (ms):                            9.05      
+P99 ITL (ms):                            9.32      
+----------------End-to-end Latency----------------
+Mean E2EL (ms):                          2315.70   
+Median E2EL (ms):                        2311.09   
+P50 E2EL (ms):                           2311.09   
+P90 E2EL (ms):                           2351.44   
+P95 E2EL (ms):                           2359.30   
+P99 E2EL (ms):                           2365.02   
+==================================================
+RUN_VALIDATION: semantic-r1-normal-specbench-o256-c4-s44: {'valid': True, 'checks': {'completed_matches': True, 'no_failed_requests': True, 'no_error_strings': True, 'request_level_output_lengths_present': True, 'all_output_lengths_exact': True, 'total_output_tokens_exact': True, 'positive_duration': True, 'positive_output_throughput': True}, 'completed': 128, 'failed': 0, 'total_output_tokens': 32768, 'duration': 74.11662018601783, 'output_throughput': 442.11406183604845, 'mean_tpot_ms': 8.839757023337835, 'spec_decode_acceptance_rate': None, 'spec_decode_acceptance_length': None}
+MATRIX_COMMAND: warmup-semantic-r1-normal-c1: ['/usr/bin/env', 'CUDA_VISIBLE_DEVICES=1', '/home/genai/.pixi/envs/default/bin/vllm', 'bench', 'serve', '--backend', 'openai', '--base-url', 'http://127.0.0.1:8101', '--endpoint', '/v1/completions', '--model', 'qwen-target', '--tokenizer', '/home/model/Qwen3.8-27B-FP8', '--dataset-name', 'spec_bench', '--dataset-path', '/home/genai/spec_decoding_study/data/spec_bench/question.jsonl', '--spec-bench-output-len', '256', '--request-rate', 'inf', '--ignore-eos', '--temperature', '0', '--top-p', '1', '--top-k', '-1', '--percentile-metrics', 'ttft,tpot,itl,e2el', '--metric-percentiles', '50,90,95,99', '--disable-tqdm', '--num-prompts', '4', '--num-warmups', '0', '--max-concurrency', '1', '--seed', '1001', '--request-id-prefix', 'warmup-semantic-r1-normal-c1-']
++ /usr/bin/env CUDA_VISIBLE_DEVICES=1 /home/genai/.pixi/envs/default/bin/vllm bench serve --backend openai --base-url http://127.0.0.1:8101 --endpoint /v1/completions --model qwen-target --tokenizer /home/model/Qwen3.8-27B-FP8 --dataset-name spec_bench --dataset-path /home/genai/spec_decoding_study/data/spec_bench/question.jsonl --spec-bench-output-len 256 --request-rate inf --ignore-eos --temperature 0 --top-p 1 --top-k -1 --percentile-metrics ttft,tpot,itl,e2el --metric-percentiles 50,90,95,99 --disable-tqdm --num-prompts 4 --num-warmups 0 --max-concurrency 1 --seed 1001 --request-id-prefix warmup-semantic-r1-normal-c1-
+W1124 15:12:45.107000 200662 site-packages/torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1124 15:12:45.107000 200662 site-packages/torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1124 15:12:45.107000 200662 site-packages/torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+Namespace(subparser='bench', bench_type='serve', dispatch_function=<function BenchmarkServingSubcommand.cmd at 0x760193193c40>, trust_remote_code=False, seed=1001, num_prompts=4, dataset_name='spec_bench', no_stream=False, dataset_path='/home/genai/spec_decoding_study/data/spec_bench/question.jsonl', no_oversample=False, skip_chat_template=False, enable_multimodal_chat=False, disable_shuffle=False, custom_output_len=256, custom_ensure_client_side_data=False, spec_bench_output_len=256, spec_bench_category=None, sharegpt_output_len=None, timed_trace_chunk_hash_size=16, timed_trace_sec_multiplier=1, timed_trace_label_timestamp='timestamp', timed_trace_label_input_length='input_length', timed_trace_label_output_length='output_length', timed_trace_label_hash_ids='hash_ids', blazedit_min_distance=0.0, blazedit_max_distance=1.0, asr_max_audio_len_sec=inf, asr_min_audio_len_sec=0.0, random_input_len=1024, random_output_len=128, random_range_ratio='0.0', random_prefix_len=0, random_batch_size=1, no_reranker=False, random_mm_base_items_per_request=1, random_mm_num_mm_items_range_ratio=0.0, random_mm_limit_mm_per_prompt={'image': 255, 'video': 1}, random_mm_bucket_config={(256, 256, 1): 0.5, (720, 1280, 1): 0.5, (720, 1280, 16): 0.0}, hf_subset=None, hf_split=None, hf_name=None, hf_output_len=None, bfcl_categories=None, prefix_repetition_prefix_len=256, prefix_repetition_suffix_len=256, prefix_repetition_num_prefixes=10, prefix_repetition_output_len=128, speed_bench_dataset_subset='qualitative', speed_bench_output_len=4096, speed_bench_category=None, label=None, backend='openai', base_url='http://127.0.0.1:8101', host='127.0.0.1', port=8000, endpoint='/v1/completions', header=None, max_concurrency=1, model='qwen-target', input_len=None, output_len=None, tokenizer='/home/model/Qwen3.8-27B-FP8', tokenizer_mode='auto', use_beam_search=False, logprobs=None, request_rate=inf, burstiness=1.0, probe_request_rate=0.0, disable_tqdm=True, num_warmups=0, profile=False, save_result=False, save_detailed=False, append_result=False, metadata=None, result_dir=None, result_filename=None, ignore_eos=True, self_timed=None, percentile_metrics='ttft,tpot,itl,e2el', metric_percentiles='50,90,95,99', goodput=None, request_id_prefix='warmup-semantic-r1-normal-c1-', top_p=1.0, top_k=-1, min_p=None, temperature=0.0, frequency_penalty=None, presence_penalty=None, repetition_penalty=None, served_model_name=None, lora_modules=None, lora_assignment='random', ramp_up_strategy=None, ramp_up_start_rps=None, ramp_up_end_rps=None, ready_check_timeout_sec=0, chat_template_kwargs=None, extra_body=None, skip_tokenizer_init=False, insecure=False, plot_timeline=False, timeline_itl_thresholds='25,50', plot_dataset_stats=False, log_config_file=None, logging_config=LoggingConfig(log_level='INFO', formatter='text', configure_logging=True, pylogging_config_file=None))
+Starting initial single prompt test run...
+Skipping endpoint ready check.
+Starting main benchmark run...
+Traffic request rate: inf
+Burstiness factor: 1.0 (Poisson process)
+Maximum request concurrency: 1
+tip: install termplotlib and gnuplot to plot the metrics
+============ Serving Benchmark Result ============
+Successful requests:                     4         
+Failed requests:                         0         
+Maximum request concurrency:             1         
+Benchmark duration (s):                  8.62      
+Total input tokens:                      764       
+Total generated tokens:                  1024      
+Request throughput (req/s):              0.46      
+Output token throughput (tok/s):         118.75    
+Peak output token throughput (tok/s):    120.00    
+Peak concurrent requests:                2.00      
+Total token throughput (tok/s):          207.35    
+---------------Time to First Token----------------
+Mean TTFT (ms):                          23.79     
+Median TTFT (ms):                        21.66     
+P50 TTFT (ms):                           21.66     
+P90 TTFT (ms):                           28.28     
+P95 TTFT (ms):                           29.59     
+P99 TTFT (ms):                           30.63     
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          8.36      
+Median TPOT (ms):                        8.36      
+P50 TPOT (ms):                           8.36      
+P90 TPOT (ms):                           8.36      
+P95 TPOT (ms):                           8.36      
+P99 TPOT (ms):                           8.36      
+---------------Inter-token Latency----------------
+Mean ITL (ms):                           8.33      
+Median ITL (ms):                         8.36      
+P50 ITL (ms):                            8.36      
+P90 ITL (ms):                            8.63      
+P95 ITL (ms):                            8.75      
+P99 ITL (ms):                            9.02      
+----------------End-to-end Latency----------------
+Mean E2EL (ms):                          2155.57   
+Median E2EL (ms):                        2153.27   
+P50 E2EL (ms):                           2153.27   
+P90 E2EL (ms):                           2160.03   
+P95 E2EL (ms):                           2161.48   
+P99 E2EL (ms):                           2162.64   
+==================================================
+MATRIX_COMMAND: semantic-r1-normal-specbench-o256-c1-s42: ['/usr/bin/env', 'CUDA_VISIBLE_DEVICES=1', '/home/genai/.pixi/envs/default/bin/vllm', 'bench', 'serve', '--backend', 'openai', '--base-url', 'http://127.0.0.1:8101', '--endpoint', '/v1/completions', '--model', 'qwen-target', '--tokenizer', '/home/model/Qwen3.8-27B-FP8', '--dataset-name', 'spec_bench', '--dataset-path', '/home/genai/spec_decoding_study/data/spec_bench/question.jsonl', '--spec-bench-output-len', '256', '--request-rate', 'inf', '--ignore-eos', '--temperature', '0', '--top-p', '1', '--top-k', '-1', '--percentile-metrics', 'ttft,tpot,itl,e2el', '--metric-percentiles', '50,90,95,99', '--disable-tqdm', '--num-prompts', '128', '--num-warmups', '0', '--max-concurrency', '1', '--seed', '42', '--request-id-prefix', 'semantic-r1-normal-specbench-o256-c1-s42-', '--save-result', '--save-detailed', '--result-dir', '/home/genai/spec_decoding_study/results/raw', '--result-filename', 'semantic-r1-normal-specbench-o256-c1-s42.json', '--metadata', 'method_name=normal', 'dataset_name=spec_bench', 'mode=normal', 'k=0', 'gpu=1', 'phase=semantic-r1', 'concurrency=1', 'seed=42', 'prefix_cache=false']
++ /usr/bin/env CUDA_VISIBLE_DEVICES=1 /home/genai/.pixi/envs/default/bin/vllm bench serve --backend openai --base-url http://127.0.0.1:8101 --endpoint /v1/completions --model qwen-target --tokenizer /home/model/Qwen3.8-27B-FP8 --dataset-name spec_bench --dataset-path /home/genai/spec_decoding_study/data/spec_bench/question.jsonl --spec-bench-output-len 256 --request-rate inf --ignore-eos --temperature 0 --top-p 1 --top-k -1 --percentile-metrics ttft,tpot,itl,e2el --metric-percentiles 50,90,95,99 --disable-tqdm --num-prompts 128 --num-warmups 0 --max-concurrency 1 --seed 42 --request-id-prefix semantic-r1-normal-specbench-o256-c1-s42- --save-result --save-detailed --result-dir /home/genai/spec_decoding_study/results/raw --result-filename semantic-r1-normal-specbench-o256-c1-s42.json --metadata method_name=normal dataset_name=spec_bench mode=normal k=0 gpu=1 phase=semantic-r1 concurrency=1 seed=42 prefix_cache=false
+W1124 15:13:01.671000 201874 site-packages/torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1124 15:13:01.671000 201874 site-packages/torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1124 15:13:01.671000 201874 site-packages/torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+Namespace(subparser='bench', bench_type='serve', dispatch_function=<function BenchmarkServingSubcommand.cmd at 0x73e7c6c7fec0>, trust_remote_code=False, seed=42, num_prompts=128, dataset_name='spec_bench', no_stream=False, dataset_path='/home/genai/spec_decoding_study/data/spec_bench/question.jsonl', no_oversample=False, skip_chat_template=False, enable_multimodal_chat=False, disable_shuffle=False, custom_output_len=256, custom_ensure_client_side_data=False, spec_bench_output_len=256, spec_bench_category=None, sharegpt_output_len=None, timed_trace_chunk_hash_size=16, timed_trace_sec_multiplier=1, timed_trace_label_timestamp='timestamp', timed_trace_label_input_length='input_length', timed_trace_label_output_length='output_length', timed_trace_label_hash_ids='hash_ids', blazedit_min_distance=0.0, blazedit_max_distance=1.0, asr_max_audio_len_sec=inf, asr_min_audio_len_sec=0.0, random_input_len=1024, random_output_len=128, random_range_ratio='0.0', random_prefix_len=0, random_batch_size=1, no_reranker=False, random_mm_base_items_per_request=1, random_mm_num_mm_items_range_ratio=0.0, random_mm_limit_mm_per_prompt={'image': 255, 'video': 1}, random_mm_bucket_config={(256, 256, 1): 0.5, (720, 1280, 1): 0.5, (720, 1280, 16): 0.0}, hf_subset=None, hf_split=None, hf_name=None, hf_output_len=None, bfcl_categories=None, prefix_repetition_prefix_len=256, prefix_repetition_suffix_len=256, prefix_repetition_num_prefixes=10, prefix_repetition_output_len=128, speed_bench_dataset_subset='qualitative', speed_bench_output_len=4096, speed_bench_category=None, label=None, backend='openai', base_url='http://127.0.0.1:8101', host='127.0.0.1', port=8000, endpoint='/v1/completions', header=None, max_concurrency=1, model='qwen-target', input_len=None, output_len=None, tokenizer='/home/model/Qwen3.8-27B-FP8', tokenizer_mode='auto', use_beam_search=False, logprobs=None, request_rate=inf, burstiness=1.0, probe_request_rate=0.0, disable_tqdm=True, num_warmups=0, profile=False, save_result=True, save_detailed=True, append_result=False, metadata=['method_name=normal', 'dataset_name=spec_bench', 'mode=normal', 'k=0', 'gpu=1', 'phase=semantic-r1', 'concurrency=1', 'seed=42', 'prefix_cache=false'], result_dir='/home/genai/spec_decoding_study/results/raw', result_filename='semantic-r1-normal-specbench-o256-c1-s42.json', ignore_eos=True, self_timed=None, percentile_metrics='ttft,tpot,itl,e2el', metric_percentiles='50,90,95,99', goodput=None, request_id_prefix='semantic-r1-normal-specbench-o256-c1-s42-', top_p=1.0, top_k=-1, min_p=None, temperature=0.0, frequency_penalty=None, presence_penalty=None, repetition_penalty=None, served_model_name=None, lora_modules=None, lora_assignment='random', ramp_up_strategy=None, ramp_up_start_rps=None, ramp_up_end_rps=None, ready_check_timeout_sec=0, chat_template_kwargs=None, extra_body=None, skip_tokenizer_init=False, insecure=False, plot_timeline=False, timeline_itl_thresholds='25,50', plot_dataset_stats=False, log_config_file=None, logging_config=LoggingConfig(log_level='INFO', formatter='text', configure_logging=True, pylogging_config_file=None))
+Starting initial single prompt test run...
+Skipping endpoint ready check.
+Starting main benchmark run...
+Traffic request rate: inf
+Burstiness factor: 1.0 (Poisson process)
+Maximum request concurrency: 1
+tip: install termplotlib and gnuplot to plot the metrics
+============ Serving Benchmark Result ============
+Successful requests:                     128       
+Failed requests:                         0         
+Maximum request concurrency:             1         
+Benchmark duration (s):                  276.71    
+Total input tokens:                      43111     
+Total generated tokens:                  32768     
+Request throughput (req/s):              0.46      
+Output token throughput (tok/s):         118.42    
+Peak output token throughput (tok/s):    121.00    
+Peak concurrent requests:                2.00      
+Total token throughput (tok/s):          274.22    
+---------------Time to First Token----------------
+Mean TTFT (ms):                          29.73     
+Median TTFT (ms):                        23.96     
+P50 TTFT (ms):                           23.96     
+P90 TTFT (ms):                           45.77     
+P95 TTFT (ms):                           52.57     
+P99 TTFT (ms):                           63.47     
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          8.36      
+Median TPOT (ms):                        8.36      
+P50 TPOT (ms):                           8.36      
+P90 TPOT (ms):                           8.37      
+P95 TPOT (ms):                           8.37      
+P99 TPOT (ms):                           8.37      
+---------------Inter-token Latency----------------
+Mean ITL (ms):                           8.33      
+Median ITL (ms):                         8.36      
+P50 ITL (ms):                            8.36      
+P90 ITL (ms):                            8.60      
+P95 ITL (ms):                            8.71      
+P99 ITL (ms):                            8.97      
+----------------End-to-end Latency----------------
+Mean E2EL (ms):                          2161.67   
+Median E2EL (ms):                        2156.00   
+P50 E2EL (ms):                           2156.00   
+P90 E2EL (ms):                           2177.44   
+P95 E2EL (ms):                           2186.85   
+P99 E2EL (ms):                           2197.52   
+==================================================
+RUN_VALIDATION: semantic-r1-normal-specbench-o256-c1-s42: {'valid': True, 'checks': {'completed_matches': True, 'no_failed_requests': True, 'no_error_strings': True, 'request_level_output_lengths_present': True, 'all_output_lengths_exact': True, 'total_output_tokens_exact': True, 'positive_duration': True, 'positive_output_throughput': True}, 'completed': 128, 'failed': 0, 'total_output_tokens': 32768, 'duration': 276.7098105850164, 'output_throughput': 118.42008756654602, 'mean_tpot_ms': 8.360538321957232, 'spec_decode_acceptance_rate': None, 'spec_decode_acceptance_length': None}
+MATRIX_COMMAND: semantic-r1-normal-specbench-o256-c1-s43: ['/usr/bin/env', 'CUDA_VISIBLE_DEVICES=1', '/home/genai/.pixi/envs/default/bin/vllm', 'bench', 'serve', '--backend', 'openai', '--base-url', 'http://127.0.0.1:8101', '--endpoint', '/v1/completions', '--model', 'qwen-target', '--tokenizer', '/home/model/Qwen3.8-27B-FP8', '--dataset-name', 'spec_bench', '--dataset-path', '/home/genai/spec_decoding_study/data/spec_bench/question.jsonl', '--spec-bench-output-len', '256', '--request-rate', 'inf', '--ignore-eos', '--temperature', '0', '--top-p', '1', '--top-k', '-1', '--percentile-metrics', 'ttft,tpot,itl,e2el', '--metric-percentiles', '50,90,95,99', '--disable-tqdm', '--num-prompts', '128', '--num-warmups', '0', '--max-concurrency', '1', '--seed', '43', '--request-id-prefix', 'semantic-r1-normal-specbench-o256-c1-s43-', '--save-result', '--save-detailed', '--result-dir', '/home/genai/spec_decoding_study/results/raw', '--result-filename', 'semantic-r1-normal-specbench-o256-c1-s43.json', '--metadata', 'method_name=normal', 'dataset_name=spec_bench', 'mode=normal', 'k=0', 'gpu=1', 'phase=semantic-r1', 'concurrency=1', 'seed=43', 'prefix_cache=false']
++ /usr/bin/env CUDA_VISIBLE_DEVICES=1 /home/genai/.pixi/envs/default/bin/vllm bench serve --backend openai --base-url http://127.0.0.1:8101 --endpoint /v1/completions --model qwen-target --tokenizer /home/model/Qwen3.8-27B-FP8 --dataset-name spec_bench --dataset-path /home/genai/spec_decoding_study/data/spec_bench/question.jsonl --spec-bench-output-len 256 --request-rate inf --ignore-eos --temperature 0 --top-p 1 --top-k -1 --percentile-metrics ttft,tpot,itl,e2el --metric-percentiles 50,90,95,99 --disable-tqdm --num-prompts 128 --num-warmups 0 --max-concurrency 1 --seed 43 --request-id-prefix semantic-r1-normal-specbench-o256-c1-s43- --save-result --save-detailed --result-dir /home/genai/spec_decoding_study/results/raw --result-filename semantic-r1-normal-specbench-o256-c1-s43.json --metadata method_name=normal dataset_name=spec_bench mode=normal k=0 gpu=1 phase=semantic-r1 concurrency=1 seed=43 prefix_cache=false
+W1124 15:17:46.159000 216477 site-packages/torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1124 15:17:46.159000 216477 site-packages/torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1124 15:17:46.160000 216477 site-packages/torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+Namespace(subparser='bench', bench_type='serve', dispatch_function=<function BenchmarkServingSubcommand.cmd at 0x7f64b479fe20>, trust_remote_code=False, seed=43, num_prompts=128, dataset_name='spec_bench', no_stream=False, dataset_path='/home/genai/spec_decoding_study/data/spec_bench/question.jsonl', no_oversample=False, skip_chat_template=False, enable_multimodal_chat=False, disable_shuffle=False, custom_output_len=256, custom_ensure_client_side_data=False, spec_bench_output_len=256, spec_bench_category=None, sharegpt_output_len=None, timed_trace_chunk_hash_size=16, timed_trace_sec_multiplier=1, timed_trace_label_timestamp='timestamp', timed_trace_label_input_length='input_length', timed_trace_label_output_length='output_length', timed_trace_label_hash_ids='hash_ids', blazedit_min_distance=0.0, blazedit_max_distance=1.0, asr_max_audio_len_sec=inf, asr_min_audio_len_sec=0.0, random_input_len=1024, random_output_len=128, random_range_ratio='0.0', random_prefix_len=0, random_batch_size=1, no_reranker=False, random_mm_base_items_per_request=1, random_mm_num_mm_items_range_ratio=0.0, random_mm_limit_mm_per_prompt={'image': 255, 'video': 1}, random_mm_bucket_config={(256, 256, 1): 0.5, (720, 1280, 1): 0.5, (720, 1280, 16): 0.0}, hf_subset=None, hf_split=None, hf_name=None, hf_output_len=None, bfcl_categories=None, prefix_repetition_prefix_len=256, prefix_repetition_suffix_len=256, prefix_repetition_num_prefixes=10, prefix_repetition_output_len=128, speed_bench_dataset_subset='qualitative', speed_bench_output_len=4096, speed_bench_category=None, label=None, backend='openai', base_url='http://127.0.0.1:8101', host='127.0.0.1', port=8000, endpoint='/v1/completions', header=None, max_concurrency=1, model='qwen-target', input_len=None, output_len=None, tokenizer='/home/model/Qwen3.8-27B-FP8', tokenizer_mode='auto', use_beam_search=False, logprobs=None, request_rate=inf, burstiness=1.0, probe_request_rate=0.0, disable_tqdm=True, num_warmups=0, profile=False, save_result=True, save_detailed=True, append_result=False, metadata=['method_name=normal', 'dataset_name=spec_bench', 'mode=normal', 'k=0', 'gpu=1', 'phase=semantic-r1', 'concurrency=1', 'seed=43', 'prefix_cache=false'], result_dir='/home/genai/spec_decoding_study/results/raw', result_filename='semantic-r1-normal-specbench-o256-c1-s43.json', ignore_eos=True, self_timed=None, percentile_metrics='ttft,tpot,itl,e2el', metric_percentiles='50,90,95,99', goodput=None, request_id_prefix='semantic-r1-normal-specbench-o256-c1-s43-', top_p=1.0, top_k=-1, min_p=None, temperature=0.0, frequency_penalty=None, presence_penalty=None, repetition_penalty=None, served_model_name=None, lora_modules=None, lora_assignment='random', ramp_up_strategy=None, ramp_up_start_rps=None, ramp_up_end_rps=None, ready_check_timeout_sec=0, chat_template_kwargs=None, extra_body=None, skip_tokenizer_init=False, insecure=False, plot_timeline=False, timeline_itl_thresholds='25,50', plot_dataset_stats=False, log_config_file=None, logging_config=LoggingConfig(log_level='INFO', formatter='text', configure_logging=True, pylogging_config_file=None))
+Starting initial single prompt test run...
+Skipping endpoint ready check.
+Starting main benchmark run...
+Traffic request rate: inf
+Burstiness factor: 1.0 (Poisson process)
+Maximum request concurrency: 1
+tip: install termplotlib and gnuplot to plot the metrics
+============ Serving Benchmark Result ============
+Successful requests:                     128       
+Failed requests:                         0         
+Maximum request concurrency:             1         
+Benchmark duration (s):                  276.62    
+Total input tokens:                      43111     
+Total generated tokens:                  32768     
+Request throughput (req/s):              0.46      
+Output token throughput (tok/s):         118.46    
+Peak output token throughput (tok/s):    121.00    
+Peak concurrent requests:                2.00      
+Total token throughput (tok/s):          274.31    
+---------------Time to First Token----------------
+Mean TTFT (ms):                          29.24     
+Median TTFT (ms):                        22.80     
+P50 TTFT (ms):                           22.80     
+P90 TTFT (ms):                           45.74     
+P95 TTFT (ms):                           52.76     
+P99 TTFT (ms):                           63.21     
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          8.36      
+Median TPOT (ms):                        8.36      
+P50 TPOT (ms):                           8.36      
+P90 TPOT (ms):                           8.36      
+P95 TPOT (ms):                           8.37      
+P99 TPOT (ms):                           8.37      
+---------------Inter-token Latency----------------
+Mean ITL (ms):                           8.33      
+Median ITL (ms):                         8.36      
+P50 ITL (ms):                            8.36      
+P90 ITL (ms):                            8.58      
+P95 ITL (ms):                            8.69      
+P99 ITL (ms):                            8.95      
+----------------End-to-end Latency----------------
+Mean E2EL (ms):                          2160.93   
+Median E2EL (ms):                        2154.63   
+P50 E2EL (ms):                           2154.63   
+P90 E2EL (ms):                           2177.18   
+P95 E2EL (ms):                           2186.48   
+P99 E2EL (ms):                           2196.97   
+==================================================
+RUN_VALIDATION: semantic-r1-normal-specbench-o256-c1-s43: {'valid': True, 'checks': {'completed_matches': True, 'no_failed_requests': True, 'no_error_strings': True, 'request_level_output_lengths_present': True, 'all_output_lengths_exact': True, 'total_output_tokens_exact': True, 'positive_duration': True, 'positive_output_throughput': True}, 'completed': 128, 'failed': 0, 'total_output_tokens': 32768, 'duration': 276.6155059088487, 'output_throughput': 118.46045973575256, 'mean_tpot_ms': 8.35957254062569, 'spec_decode_acceptance_rate': None, 'spec_decode_acceptance_length': None}
+MATRIX_COMMAND: semantic-r1-normal-specbench-o256-c1-s44: ['/usr/bin/env', 'CUDA_VISIBLE_DEVICES=1', '/home/genai/.pixi/envs/default/bin/vllm', 'bench', 'serve', '--backend', 'openai', '--base-url', 'http://127.0.0.1:8101', '--endpoint', '/v1/completions', '--model', 'qwen-target', '--tokenizer', '/home/model/Qwen3.8-27B-FP8', '--dataset-name', 'spec_bench', '--dataset-path', '/home/genai/spec_decoding_study/data/spec_bench/question.jsonl', '--spec-bench-output-len', '256', '--request-rate', 'inf', '--ignore-eos', '--temperature', '0', '--top-p', '1', '--top-k', '-1', '--percentile-metrics', 'ttft,tpot,itl,e2el', '--metric-percentiles', '50,90,95,99', '--disable-tqdm', '--num-prompts', '128', '--num-warmups', '0', '--max-concurrency', '1', '--seed', '44', '--request-id-prefix', 'semantic-r1-normal-specbench-o256-c1-s44-', '--save-result', '--save-detailed', '--result-dir', '/home/genai/spec_decoding_study/results/raw', '--result-filename', 'semantic-r1-normal-specbench-o256-c1-s44.json', '--metadata', 'method_name=normal', 'dataset_name=spec_bench', 'mode=normal', 'k=0', 'gpu=1', 'phase=semantic-r1', 'concurrency=1', 'seed=44', 'prefix_cache=false']
++ /usr/bin/env CUDA_VISIBLE_DEVICES=1 /home/genai/.pixi/envs/default/bin/vllm bench serve --backend openai --base-url http://127.0.0.1:8101 --endpoint /v1/completions --model qwen-target --tokenizer /home/model/Qwen3.8-27B-FP8 --dataset-name spec_bench --dataset-path /home/genai/spec_decoding_study/data/spec_bench/question.jsonl --spec-bench-output-len 256 --request-rate inf --ignore-eos --temperature 0 --top-p 1 --top-k -1 --percentile-metrics ttft,tpot,itl,e2el --metric-percentiles 50,90,95,99 --disable-tqdm --num-prompts 128 --num-warmups 0 --max-concurrency 1 --seed 44 --request-id-prefix semantic-r1-normal-specbench-o256-c1-s44- --save-result --save-detailed --result-dir /home/genai/spec_decoding_study/results/raw --result-filename semantic-r1-normal-specbench-o256-c1-s44.json --metadata method_name=normal dataset_name=spec_bench mode=normal k=0 gpu=1 phase=semantic-r1 concurrency=1 seed=44 prefix_cache=false
+W1124 15:22:31.881000 228116 site-packages/torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1124 15:22:31.881000 228116 site-packages/torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1124 15:22:31.881000 228116 site-packages/torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+Namespace(subparser='bench', bench_type='serve', dispatch_function=<function BenchmarkServingSubcommand.cmd at 0x7a0fa1977e20>, trust_remote_code=False, seed=44, num_prompts=128, dataset_name='spec_bench', no_stream=False, dataset_path='/home/genai/spec_decoding_study/data/spec_bench/question.jsonl', no_oversample=False, skip_chat_template=False, enable_multimodal_chat=False, disable_shuffle=False, custom_output_len=256, custom_ensure_client_side_data=False, spec_bench_output_len=256, spec_bench_category=None, sharegpt_output_len=None, timed_trace_chunk_hash_size=16, timed_trace_sec_multiplier=1, timed_trace_label_timestamp='timestamp', timed_trace_label_input_length='input_length', timed_trace_label_output_length='output_length', timed_trace_label_hash_ids='hash_ids', blazedit_min_distance=0.0, blazedit_max_distance=1.0, asr_max_audio_len_sec=inf, asr_min_audio_len_sec=0.0, random_input_len=1024, random_output_len=128, random_range_ratio='0.0', random_prefix_len=0, random_batch_size=1, no_reranker=False, random_mm_base_items_per_request=1, random_mm_num_mm_items_range_ratio=0.0, random_mm_limit_mm_per_prompt={'image': 255, 'video': 1}, random_mm_bucket_config={(256, 256, 1): 0.5, (720, 1280, 1): 0.5, (720, 1280, 16): 0.0}, hf_subset=None, hf_split=None, hf_name=None, hf_output_len=None, bfcl_categories=None, prefix_repetition_prefix_len=256, prefix_repetition_suffix_len=256, prefix_repetition_num_prefixes=10, prefix_repetition_output_len=128, speed_bench_dataset_subset='qualitative', speed_bench_output_len=4096, speed_bench_category=None, label=None, backend='openai', base_url='http://127.0.0.1:8101', host='127.0.0.1', port=8000, endpoint='/v1/completions', header=None, max_concurrency=1, model='qwen-target', input_len=None, output_len=None, tokenizer='/home/model/Qwen3.8-27B-FP8', tokenizer_mode='auto', use_beam_search=False, logprobs=None, request_rate=inf, burstiness=1.0, probe_request_rate=0.0, disable_tqdm=True, num_warmups=0, profile=False, save_result=True, save_detailed=True, append_result=False, metadata=['method_name=normal', 'dataset_name=spec_bench', 'mode=normal', 'k=0', 'gpu=1', 'phase=semantic-r1', 'concurrency=1', 'seed=44', 'prefix_cache=false'], result_dir='/home/genai/spec_decoding_study/results/raw', result_filename='semantic-r1-normal-specbench-o256-c1-s44.json', ignore_eos=True, self_timed=None, percentile_metrics='ttft,tpot,itl,e2el', metric_percentiles='50,90,95,99', goodput=None, request_id_prefix='semantic-r1-normal-specbench-o256-c1-s44-', top_p=1.0, top_k=-1, min_p=None, temperature=0.0, frequency_penalty=None, presence_penalty=None, repetition_penalty=None, served_model_name=None, lora_modules=None, lora_assignment='random', ramp_up_strategy=None, ramp_up_start_rps=None, ramp_up_end_rps=None, ready_check_timeout_sec=0, chat_template_kwargs=None, extra_body=None, skip_tokenizer_init=False, insecure=False, plot_timeline=False, timeline_itl_thresholds='25,50', plot_dataset_stats=False, log_config_file=None, logging_config=LoggingConfig(log_level='INFO', formatter='text', configure_logging=True, pylogging_config_file=None))
+Starting initial single prompt test run...
+Skipping endpoint ready check.
+Starting main benchmark run...
+Traffic request rate: inf
+Burstiness factor: 1.0 (Poisson process)
+Maximum request concurrency: 1
+tip: install termplotlib and gnuplot to plot the metrics
+============ Serving Benchmark Result ============
+Successful requests:                     128       
+Failed requests:                         0         
+Maximum request concurrency:             1         
+Benchmark duration (s):                  276.52    
+Total input tokens:                      43111     
+Total generated tokens:                  32768     
+Request throughput (req/s):              0.46      
+Output token throughput (tok/s):         118.50    
+Peak output token throughput (tok/s):    121.00    
+Peak concurrent requests:                2.00      
+Total token throughput (tok/s):          274.41    
+---------------Time to First Token----------------
+Mean TTFT (ms):                          28.66     
+Median TTFT (ms):                        21.80     
+P50 TTFT (ms):                           21.80     
+P90 TTFT (ms):                           44.97     
+P95 TTFT (ms):                           52.42     
+P99 TTFT (ms):                           62.65     
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          8.36      
+Median TPOT (ms):                        8.36      
+P50 TPOT (ms):                           8.36      
+P90 TPOT (ms):                           8.36      
+P95 TPOT (ms):                           8.37      
+P99 TPOT (ms):                           8.37      
+---------------Inter-token Latency----------------
+Mean ITL (ms):                           8.33      
+Median ITL (ms):                         8.36      
+P50 ITL (ms):                            8.36      
+P90 ITL (ms):                            8.54      
+P95 ITL (ms):                            8.63      
+P99 ITL (ms):                            8.88      
+----------------End-to-end Latency----------------
+Mean E2EL (ms):                          2160.22   
+Median E2EL (ms):                        2153.93   
+P50 E2EL (ms):                           2153.93   
+P90 E2EL (ms):                           2176.83   
+P95 E2EL (ms):                           2184.92   
+P99 E2EL (ms):                           2196.19   
+==================================================
+RUN_VALIDATION: semantic-r1-normal-specbench-o256-c1-s44: {'valid': True, 'checks': {'completed_matches': True, 'no_failed_requests': True, 'no_error_strings': True, 'request_level_output_lengths_present': True, 'all_output_lengths_exact': True, 'total_output_tokens_exact': True, 'positive_duration': True, 'positive_output_throughput': True}, 'completed': 128, 'failed': 0, 'total_output_tokens': 32768, 'duration': 276.5190135089215, 'output_throughput': 118.50179698020219, 'mean_tpot_ms': 8.359044187576123, 'spec_decode_acceptance_rate': None, 'spec_decode_acceptance_length': None}
+MATRIX_COMPLETE: /home/genai/spec_decoding_study/results/processed/semantic-r1-normal-matrix-manifest.json

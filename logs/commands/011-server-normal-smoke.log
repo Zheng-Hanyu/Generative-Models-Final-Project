@@ -1,0 +1,93 @@
+COMMAND: /usr/bin/env CUDA_VISIBLE_DEVICES=0 VLLM_USE_RUST_FRONTEND=1 /home/genai/.pixi/envs/default/bin/vllm serve /home/model/Qwen3.8-27B-FP8 --served-model-name qwen-target --host 127.0.0.1 --port 8000 --tensor-parallel-size 1 --enable-auto-tool-choice --tool-call-parser qwen3_coder --reasoning-parser qwen3 --mm-encoder-tp-mode data --max-model-len 8192 --max-num-seqs 256 --gpu-memory-utilization 0.90 --generation-config vllm --disable-log-requests --seed 0
+CWD: /home/genai/vllm
+STARTED_AT: 2026-11-24T14:15:10.755861+00:00
+
+W1124 14:15:11.817000 117951 site-packages/torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1124 14:15:11.817000 117951 site-packages/torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1124 14:15:11.817000 117951 site-packages/torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+(MainProcess pid=117951) INFO 11-24 14:15:16 [startup.py:38] 
+(MainProcess pid=117951) INFO 11-24 14:15:16 [startup.py:38]        █     █     █▄   ▄█
+(MainProcess pid=117951) INFO 11-24 14:15:16 [startup.py:38]  ▄▄ ▄█ █     █     █ ▀▄▀ █  version 0.34.0
+(MainProcess pid=117951) INFO 11-24 14:15:16 [startup.py:38]   █▄█▀ █     █     █     █  model   /home/model/Qwen3.8-27B-FP8
+(MainProcess pid=117951) INFO 11-24 14:15:16 [startup.py:38]    ▀▀  ▀▀▀▀▀ ▀▀▀▀▀ ▀     ▀
+(MainProcess pid=117951) INFO 11-24 14:15:16 [startup.py:38] 
+(MainProcess pid=117951) INFO 11-24 14:15:16 [startup.py:96] non-default args: {'model_tag': '/home/model/Qwen3.8-27B-FP8', 'api_server_count': 1, 'enable_auto_tool_choice': True, 'tool_call_parser': 'qwen3_coder', 'host': '127.0.0.1', 'model': '/home/model/Qwen3.8-27B-FP8', 'max_model_len': 8192, 'served_model_name': ['qwen-target'], 'generation_config': 'vllm', 'reasoning_parser': 'qwen3', 'gpu_memory_utilization': 0.9, 'mm_encoder_tp_mode': 'data', 'max_num_seqs': 256}
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221] Error in inspecting model architecture 'Qwen3_5ForConditionalGeneration'
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221] Traceback (most recent call last):
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221]   File "/home/genai/.pixi/envs/default/lib/python3.12/site-packages/vllm/model_executor/models/registry.py", line 1713, in _run_in_subprocess
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221]     returned.check_returncode()
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221]   File "/home/genai/.pixi/envs/default/lib/python3.12/subprocess.py", line 502, in check_returncode
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221]     raise CalledProcessError(self.returncode, self.args, self.stdout,
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221] subprocess.CalledProcessError: Command '['/home/genai/.pixi/envs/default/bin/python3.12', '-m', 'vllm.model_executor.models.registry']' returned non-zero exit status 1.
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221] 
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221] The above exception was the direct cause of the following exception:
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221] 
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221] Traceback (most recent call last):
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221]   File "/home/genai/.pixi/envs/default/lib/python3.12/site-packages/vllm/model_executor/models/registry.py", line 1219, in _try_inspect_model_cls
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221]     return model.inspect_model_cls()
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221]            ^^^^^^^^^^^^^^^^^^^^^^^^^
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221]   File "/home/genai/.pixi/envs/default/lib/python3.12/site-packages/vllm/logging_utils/log_time.py", line 18, in _wrapper
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221]     result = func(*args, **kwargs)
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221]              ^^^^^^^^^^^^^^^^^^^^^
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221]   File "/home/genai/.pixi/envs/default/lib/python3.12/site-packages/vllm/model_executor/models/registry.py", line 1180, in inspect_model_cls
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221]     mi = _run_in_subprocess(
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221]          ^^^^^^^^^^^^^^^^^^^
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221]   File "/home/genai/.pixi/envs/default/lib/python3.12/site-packages/vllm/model_executor/models/registry.py", line 1716, in _run_in_subprocess
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221]     raise RuntimeError(
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221] RuntimeError: Error raised in subprocess:
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221] /home/genai/vllm/vllm/__init__.py:7: RuntimeWarning: Failed to read commit hash:
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221] No module named 'vllm._version'
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221]   from .version import __version__, __version_tuple__  # isort:skip
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221] Traceback (most recent call last):
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221]   File "<frozen runpy>", line 189, in _run_module_as_main
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221]   File "<frozen runpy>", line 112, in _get_module_details
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221]   File "/home/genai/vllm/vllm/model_executor/__init__.py", line 4, in <module>
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221]     from vllm.model_executor.parameter import BasevLLMParameter, PackedvLLMParameter
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221]   File "/home/genai/vllm/vllm/model_executor/parameter.py", line 12, in <module>
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221]     from vllm.distributed import (
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221]   File "/home/genai/vllm/vllm/distributed/__init__.py", line 4, in <module>
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221]     from .communication_op import *
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221]   File "/home/genai/vllm/vllm/distributed/communication_op.py", line 9, in <module>
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221]     from .parallel_state import get_tp_group
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221]   File "/home/genai/vllm/vllm/distributed/parallel_state.py", line 51, in <module>
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221]     from vllm.distributed.utils import (
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221]   File "/home/genai/vllm/vllm/distributed/utils.py", line 35, in <module>
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221]     from vllm.utils.system_utils import suppress_stdout
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221]   File "/home/genai/vllm/vllm/utils/system_utils.py", line 20, in <module>
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221]     from vllm.platforms import current_platform
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221]   File "/home/genai/vllm/vllm/platforms/__init__.py", line 318, in __getattr__
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221]     _current_platform = resolve_obj_by_qualname(platform_cls_qualname)()
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221]                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221]   File "/home/genai/vllm/vllm/utils/import_utils.py", line 122, in resolve_obj_by_qualname
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221]     module = importlib.import_module(module_name)
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221]              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221]   File "/home/genai/.pixi/envs/default/lib/python3.12/importlib/__init__.py", line 90, in import_module
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221]     return _bootstrap._gcd_import(name[level:], package, level)
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221]   File "/home/genai/vllm/vllm/platforms/cuda.py", line 23, in <module>
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221]     import vllm._C_stable_libtorch  # noqa
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221]     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221] ModuleNotFoundError: No module named 'vllm._C_stable_libtorch'
+(MainProcess pid=117951) ERROR 11-24 14:15:18 [registry.py:1221] 
+Traceback (most recent call last):
+  File "/home/genai/.pixi/envs/default/bin/vllm", line 10, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/home/genai/.pixi/envs/default/lib/python3.12/site-packages/vllm/entrypoints/cli/main.py", line 117, in main
+    args.dispatch_function(args)
+  File "/home/genai/.pixi/envs/default/lib/python3.12/site-packages/vllm/entrypoints/cli/serve.py", line 152, in cmd
+    run_multi_api_server(args)
+  File "/home/genai/.pixi/envs/default/lib/python3.12/site-packages/vllm/entrypoints/cli/serve.py", line 318, in run_multi_api_server
+    vllm_config = engine_args.create_engine_config(usage_context=usage_context)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/genai/.pixi/envs/default/lib/python3.12/site-packages/vllm/engine/arg_utils.py", line 2313, in create_engine_config
+    model_config = self.create_model_config()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/genai/.pixi/envs/default/lib/python3.12/site-packages/vllm/engine/arg_utils.py", line 2025, in create_model_config
+    return ModelConfig(
+           ^^^^^^^^^^^^
+  File "/home/genai/.pixi/envs/default/lib/python3.12/site-packages/pydantic/_internal/_dataclasses.py", line 121, in __init__
+    s.__pydantic_validator__.validate_python(ArgsKwargs(args, kwargs), self_instance=s)
+pydantic_core._pydantic_core.ValidationError: 1 validation error for ModelConfig
+  Value error, Model architectures ['Qwen3_5ForConditionalGeneration'] failed to be inspected. Please check the logs for more details. [type=value_error, input_value=ArgsKwargs((), {'model': ...nderer_num_workers': 1}), input_type=ArgsKwargs]
+    For further information visit https://errors.pydantic.dev/2.14/v/value_error

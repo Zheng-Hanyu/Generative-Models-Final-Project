@@ -1,0 +1,1055 @@
++ /home/genai/.pixi/envs/default/bin/python src/run_benchmark_matrix.py --method mtp-k3 --port 8101 --gpu 1 --phase formal-r1 --vllm /home/genai/.pixi/envs/default/bin/vllm
+Server ready: http://127.0.0.1:8101
+MATRIX_COMMAND: warmup-formal-r1-mtp-k3-c32: ['/usr/bin/env', 'CUDA_VISIBLE_DEVICES=1', '/home/genai/.pixi/envs/default/bin/vllm', 'bench', 'serve', '--backend', 'openai', '--base-url', 'http://127.0.0.1:8101', '--endpoint', '/v1/completions', '--model', 'qwen-target', '--tokenizer', '/home/model/Qwen3.8-27B-FP8', '--dataset-name', 'random', '--random-input-len', '1024', '--random-output-len', '512', '--random-range-ratio', '0', '--request-rate', 'inf', '--ignore-eos', '--temperature', '0', '--top-p', '1', '--top-k', '-1', '--percentile-metrics', 'ttft,tpot,itl,e2el', '--metric-percentiles', '50,90,95,99', '--disable-tqdm', '--num-prompts', '32', '--num-warmups', '0', '--max-concurrency', '32', '--seed', '1032', '--request-id-prefix', 'warmup-formal-r1-mtp-k3-c32-']
++ /usr/bin/env CUDA_VISIBLE_DEVICES=1 /home/genai/.pixi/envs/default/bin/vllm bench serve --backend openai --base-url http://127.0.0.1:8101 --endpoint /v1/completions --model qwen-target --tokenizer /home/model/Qwen3.8-27B-FP8 --dataset-name random --random-input-len 1024 --random-output-len 512 --random-range-ratio 0 --request-rate inf --ignore-eos --temperature 0 --top-p 1 --top-k -1 --percentile-metrics ttft,tpot,itl,e2el --metric-percentiles 50,90,95,99 --disable-tqdm --num-prompts 32 --num-warmups 0 --max-concurrency 32 --seed 1032 --request-id-prefix warmup-formal-r1-mtp-k3-c32-
+W1124 14:31:32.654000 129956 site-packages/torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1124 14:31:32.655000 129956 site-packages/torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1124 14:31:32.655000 129956 site-packages/torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+Namespace(subparser='bench', bench_type='serve', dispatch_function=<function BenchmarkServingSubcommand.cmd at 0x75828b90a840>, trust_remote_code=False, seed=1032, num_prompts=32, dataset_name='random', no_stream=False, dataset_path=None, no_oversample=False, skip_chat_template=False, enable_multimodal_chat=False, disable_shuffle=False, custom_output_len=256, custom_ensure_client_side_data=False, spec_bench_output_len=256, spec_bench_category=None, sharegpt_output_len=None, timed_trace_chunk_hash_size=16, timed_trace_sec_multiplier=1, timed_trace_label_timestamp='timestamp', timed_trace_label_input_length='input_length', timed_trace_label_output_length='output_length', timed_trace_label_hash_ids='hash_ids', blazedit_min_distance=0.0, blazedit_max_distance=1.0, asr_max_audio_len_sec=inf, asr_min_audio_len_sec=0.0, random_input_len=1024, random_output_len=512, random_range_ratio='0', random_prefix_len=0, random_batch_size=1, no_reranker=False, random_mm_base_items_per_request=1, random_mm_num_mm_items_range_ratio=0.0, random_mm_limit_mm_per_prompt={'image': 255, 'video': 1}, random_mm_bucket_config={(256, 256, 1): 0.5, (720, 1280, 1): 0.5, (720, 1280, 16): 0.0}, hf_subset=None, hf_split=None, hf_name=None, hf_output_len=None, bfcl_categories=None, prefix_repetition_prefix_len=256, prefix_repetition_suffix_len=256, prefix_repetition_num_prefixes=10, prefix_repetition_output_len=128, speed_bench_dataset_subset='qualitative', speed_bench_output_len=4096, speed_bench_category=None, label=None, backend='openai', base_url='http://127.0.0.1:8101', host='127.0.0.1', port=8000, endpoint='/v1/completions', header=None, max_concurrency=32, model='qwen-target', input_len=None, output_len=None, tokenizer='/home/model/Qwen3.8-27B-FP8', tokenizer_mode='auto', use_beam_search=False, logprobs=None, request_rate=inf, burstiness=1.0, probe_request_rate=0.0, disable_tqdm=True, num_warmups=0, profile=False, save_result=False, save_detailed=False, append_result=False, metadata=None, result_dir=None, result_filename=None, ignore_eos=True, self_timed=None, percentile_metrics='ttft,tpot,itl,e2el', metric_percentiles='50,90,95,99', goodput=None, request_id_prefix='warmup-formal-r1-mtp-k3-c32-', top_p=1.0, top_k=-1, min_p=None, temperature=0.0, frequency_penalty=None, presence_penalty=None, repetition_penalty=None, served_model_name=None, lora_modules=None, lora_assignment='random', ramp_up_strategy=None, ramp_up_start_rps=None, ramp_up_end_rps=None, ready_check_timeout_sec=0, chat_template_kwargs=None, extra_body=None, skip_tokenizer_init=False, insecure=False, plot_timeline=False, timeline_itl_thresholds='25,50', plot_dataset_stats=False, log_config_file=None, logging_config=LoggingConfig(log_level='INFO', formatter='text', configure_logging=True, pylogging_config_file=None))
+(MainProcess pid=129956) INFO 11-24 14:31:38 [utils.py:88] Sampling input_len from [1024, 1024] and output_len from [512, 512]
+Starting initial single prompt test run...
+Skipping endpoint ready check.
+Starting main benchmark run...
+Traffic request rate: inf
+Burstiness factor: 1.0 (Poisson process)
+Maximum request concurrency: 32
+tip: install termplotlib and gnuplot to plot the metrics
+============ Serving Benchmark Result ============
+Successful requests:                     32        
+Failed requests:                         0         
+Maximum request concurrency:             32        
+Benchmark duration (s):                  4.59      
+Total input tokens:                      32768     
+Total generated tokens:                  16384     
+Request throughput (req/s):              6.98      
+Output token throughput (tok/s):         3571.53   
+Peak output token throughput (tok/s):    1856.00   
+Peak concurrent requests:                32.00     
+Total token throughput (tok/s):          10714.60  
+---------------Time to First Token----------------
+Mean TTFT (ms):                          1170.66   
+Median TTFT (ms):                        1260.95   
+P50 TTFT (ms):                           1260.95   
+P90 TTFT (ms):                           1494.19   
+P95 TTFT (ms):                           1494.59   
+P99 TTFT (ms):                           1495.32   
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          5.26      
+Median TPOT (ms):                        5.03      
+P50 TPOT (ms):                           5.03      
+P90 TPOT (ms):                           6.01      
+P95 TPOT (ms):                           6.12      
+P99 TPOT (ms):                           7.90      
+---------------Inter-token Latency----------------
+Mean ITL (ms):                           18.79     
+Median ITL (ms):                         17.20     
+P50 ITL (ms):                            17.20     
+P90 ITL (ms):                            17.53     
+P95 ITL (ms):                            17.65     
+P99 ITL (ms):                            18.21     
+----------------End-to-end Latency----------------
+Mean E2EL (ms):                          3856.43   
+Median E2EL (ms):                        3749.49   
+P50 E2EL (ms):                           3749.49   
+P90 E2EL (ms):                           4135.57   
+P95 E2EL (ms):                           4391.40   
+P99 E2EL (ms):                           4542.77   
+---------------Speculative Decoding---------------
+Acceptance rate (%):                     86.95     
+Acceptance length:                       3.61      
+Drafts:                                  4543      
+Draft tokens:                            13629     
+Accepted tokens:                         11850     
+Per-position acceptance (%):
+  Position 0:                            92.27     
+  Position 1:                            86.59     
+  Position 2:                            81.97     
+==================================================
+MATRIX_COMMAND: formal-r1-mtp-k3-i1024-o512-c32-s42: ['/usr/bin/env', 'CUDA_VISIBLE_DEVICES=1', '/home/genai/.pixi/envs/default/bin/vllm', 'bench', 'serve', '--backend', 'openai', '--base-url', 'http://127.0.0.1:8101', '--endpoint', '/v1/completions', '--model', 'qwen-target', '--tokenizer', '/home/model/Qwen3.8-27B-FP8', '--dataset-name', 'random', '--random-input-len', '1024', '--random-output-len', '512', '--random-range-ratio', '0', '--request-rate', 'inf', '--ignore-eos', '--temperature', '0', '--top-p', '1', '--top-k', '-1', '--percentile-metrics', 'ttft,tpot,itl,e2el', '--metric-percentiles', '50,90,95,99', '--disable-tqdm', '--num-prompts', '128', '--num-warmups', '0', '--max-concurrency', '32', '--seed', '42', '--request-id-prefix', 'formal-r1-mtp-k3-i1024-o512-c32-s42-', '--save-result', '--save-detailed', '--result-dir', '/home/genai/spec_decoding_study/results/raw', '--result-filename', 'formal-r1-mtp-k3-i1024-o512-c32-s42.json', '--metadata', 'mode=mtp', 'k=3', 'gpu=1', 'phase=formal-r1', 'concurrency=32', 'seed=42', 'prefix_cache=false']
++ /usr/bin/env CUDA_VISIBLE_DEVICES=1 /home/genai/.pixi/envs/default/bin/vllm bench serve --backend openai --base-url http://127.0.0.1:8101 --endpoint /v1/completions --model qwen-target --tokenizer /home/model/Qwen3.8-27B-FP8 --dataset-name random --random-input-len 1024 --random-output-len 512 --random-range-ratio 0 --request-rate inf --ignore-eos --temperature 0 --top-p 1 --top-k -1 --percentile-metrics ttft,tpot,itl,e2el --metric-percentiles 50,90,95,99 --disable-tqdm --num-prompts 128 --num-warmups 0 --max-concurrency 32 --seed 42 --request-id-prefix formal-r1-mtp-k3-i1024-o512-c32-s42- --save-result --save-detailed --result-dir /home/genai/spec_decoding_study/results/raw --result-filename formal-r1-mtp-k3-i1024-o512-c32-s42.json --metadata mode=mtp k=3 gpu=1 phase=formal-r1 concurrency=32 seed=42 prefix_cache=false
+W1124 14:31:45.086000 131410 site-packages/torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1124 14:31:45.087000 131410 site-packages/torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1124 14:31:45.087000 131410 site-packages/torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+Namespace(subparser='bench', bench_type='serve', dispatch_function=<function BenchmarkServingSubcommand.cmd at 0x7661e5712840>, trust_remote_code=False, seed=42, num_prompts=128, dataset_name='random', no_stream=False, dataset_path=None, no_oversample=False, skip_chat_template=False, enable_multimodal_chat=False, disable_shuffle=False, custom_output_len=256, custom_ensure_client_side_data=False, spec_bench_output_len=256, spec_bench_category=None, sharegpt_output_len=None, timed_trace_chunk_hash_size=16, timed_trace_sec_multiplier=1, timed_trace_label_timestamp='timestamp', timed_trace_label_input_length='input_length', timed_trace_label_output_length='output_length', timed_trace_label_hash_ids='hash_ids', blazedit_min_distance=0.0, blazedit_max_distance=1.0, asr_max_audio_len_sec=inf, asr_min_audio_len_sec=0.0, random_input_len=1024, random_output_len=512, random_range_ratio='0', random_prefix_len=0, random_batch_size=1, no_reranker=False, random_mm_base_items_per_request=1, random_mm_num_mm_items_range_ratio=0.0, random_mm_limit_mm_per_prompt={'image': 255, 'video': 1}, random_mm_bucket_config={(256, 256, 1): 0.5, (720, 1280, 1): 0.5, (720, 1280, 16): 0.0}, hf_subset=None, hf_split=None, hf_name=None, hf_output_len=None, bfcl_categories=None, prefix_repetition_prefix_len=256, prefix_repetition_suffix_len=256, prefix_repetition_num_prefixes=10, prefix_repetition_output_len=128, speed_bench_dataset_subset='qualitative', speed_bench_output_len=4096, speed_bench_category=None, label=None, backend='openai', base_url='http://127.0.0.1:8101', host='127.0.0.1', port=8000, endpoint='/v1/completions', header=None, max_concurrency=32, model='qwen-target', input_len=None, output_len=None, tokenizer='/home/model/Qwen3.8-27B-FP8', tokenizer_mode='auto', use_beam_search=False, logprobs=None, request_rate=inf, burstiness=1.0, probe_request_rate=0.0, disable_tqdm=True, num_warmups=0, profile=False, save_result=True, save_detailed=True, append_result=False, metadata=['mode=mtp', 'k=3', 'gpu=1', 'phase=formal-r1', 'concurrency=32', 'seed=42', 'prefix_cache=false'], result_dir='/home/genai/spec_decoding_study/results/raw', result_filename='formal-r1-mtp-k3-i1024-o512-c32-s42.json', ignore_eos=True, self_timed=None, percentile_metrics='ttft,tpot,itl,e2el', metric_percentiles='50,90,95,99', goodput=None, request_id_prefix='formal-r1-mtp-k3-i1024-o512-c32-s42-', top_p=1.0, top_k=-1, min_p=None, temperature=0.0, frequency_penalty=None, presence_penalty=None, repetition_penalty=None, served_model_name=None, lora_modules=None, lora_assignment='random', ramp_up_strategy=None, ramp_up_start_rps=None, ramp_up_end_rps=None, ready_check_timeout_sec=0, chat_template_kwargs=None, extra_body=None, skip_tokenizer_init=False, insecure=False, plot_timeline=False, timeline_itl_thresholds='25,50', plot_dataset_stats=False, log_config_file=None, logging_config=LoggingConfig(log_level='INFO', formatter='text', configure_logging=True, pylogging_config_file=None))
+(MainProcess pid=131410) INFO 11-24 14:31:51 [utils.py:88] Sampling input_len from [1024, 1024] and output_len from [512, 512]
+Starting initial single prompt test run...
+Skipping endpoint ready check.
+Starting main benchmark run...
+Traffic request rate: inf
+Burstiness factor: 1.0 (Poisson process)
+Maximum request concurrency: 32
+tip: install termplotlib and gnuplot to plot the metrics
+============ Serving Benchmark Result ============
+Successful requests:                     128       
+Failed requests:                         0         
+Maximum request concurrency:             32        
+Benchmark duration (s):                  17.35     
+Total input tokens:                      131072    
+Total generated tokens:                  65536     
+Request throughput (req/s):              7.38      
+Output token throughput (tok/s):         3776.94   
+Peak output token throughput (tok/s):    1856.00   
+Peak concurrent requests:                45.00     
+Total token throughput (tok/s):          11330.81  
+---------------Time to First Token----------------
+Mean TTFT (ms):                          470.41    
+Median TTFT (ms):                        182.10    
+P50 TTFT (ms):                           182.10    
+P90 TTFT (ms):                           1538.20   
+P95 TTFT (ms):                           1539.48   
+P99 TTFT (ms):                           1540.95   
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          6.72      
+Median TPOT (ms):                        6.63      
+P50 TPOT (ms):                           6.63      
+P90 TPOT (ms):                           8.69      
+P95 TPOT (ms):                           9.05      
+P99 TPOT (ms):                           10.36     
+---------------Inter-token Latency----------------
+Mean ITL (ms):                           23.56     
+Median ITL (ms):                         17.39     
+P50 ITL (ms):                            17.39     
+P90 ITL (ms):                            41.21     
+P95 ITL (ms):                            48.67     
+P99 ITL (ms):                            94.27     
+----------------End-to-end Latency----------------
+Mean E2EL (ms):                          3903.16   
+Median E2EL (ms):                        3698.65   
+P50 E2EL (ms):                           3698.65   
+P90 E2EL (ms):                           5013.09   
+P95 E2EL (ms):                           5587.00   
+P99 E2EL (ms):                           6254.88   
+---------------Speculative Decoding---------------
+Acceptance rate (%):                     84.72     
+Acceptance length:                       3.54      
+Drafts:                                  18524     
+Draft tokens:                            55572     
+Accepted tokens:                         47082     
+Per-position acceptance (%):
+  Position 0:                            92.65     
+  Position 1:                            84.74     
+  Position 2:                            76.78     
+==================================================
+RUN_VALIDATION: formal-r1-mtp-k3-i1024-o512-c32-s42: {'valid': True, 'checks': {'completed_matches': True, 'no_failed_requests': True, 'no_error_strings': True, 'request_level_output_lengths_present': True, 'all_output_lengths_exact': True, 'total_output_tokens_exact': True, 'positive_duration': True, 'positive_output_throughput': True}, 'completed': 128, 'failed': 0, 'total_output_tokens': 65536, 'duration': 17.351627100026235, 'output_throughput': 3776.936861437099, 'mean_tpot_ms': 6.717716065310075, 'spec_decode_acceptance_rate': 84.72252213344849, 'spec_decode_acceptance_length': 3.541675664003455}
+MATRIX_COMMAND: formal-r1-mtp-k3-i1024-o512-c32-s43: ['/usr/bin/env', 'CUDA_VISIBLE_DEVICES=1', '/home/genai/.pixi/envs/default/bin/vllm', 'bench', 'serve', '--backend', 'openai', '--base-url', 'http://127.0.0.1:8101', '--endpoint', '/v1/completions', '--model', 'qwen-target', '--tokenizer', '/home/model/Qwen3.8-27B-FP8', '--dataset-name', 'random', '--random-input-len', '1024', '--random-output-len', '512', '--random-range-ratio', '0', '--request-rate', 'inf', '--ignore-eos', '--temperature', '0', '--top-p', '1', '--top-k', '-1', '--percentile-metrics', 'ttft,tpot,itl,e2el', '--metric-percentiles', '50,90,95,99', '--disable-tqdm', '--num-prompts', '128', '--num-warmups', '0', '--max-concurrency', '32', '--seed', '43', '--request-id-prefix', 'formal-r1-mtp-k3-i1024-o512-c32-s43-', '--save-result', '--save-detailed', '--result-dir', '/home/genai/spec_decoding_study/results/raw', '--result-filename', 'formal-r1-mtp-k3-i1024-o512-c32-s43.json', '--metadata', 'mode=mtp', 'k=3', 'gpu=1', 'phase=formal-r1', 'concurrency=32', 'seed=43', 'prefix_cache=false']
++ /usr/bin/env CUDA_VISIBLE_DEVICES=1 /home/genai/.pixi/envs/default/bin/vllm bench serve --backend openai --base-url http://127.0.0.1:8101 --endpoint /v1/completions --model qwen-target --tokenizer /home/model/Qwen3.8-27B-FP8 --dataset-name random --random-input-len 1024 --random-output-len 512 --random-range-ratio 0 --request-rate inf --ignore-eos --temperature 0 --top-p 1 --top-k -1 --percentile-metrics ttft,tpot,itl,e2el --metric-percentiles 50,90,95,99 --disable-tqdm --num-prompts 128 --num-warmups 0 --max-concurrency 32 --seed 43 --request-id-prefix formal-r1-mtp-k3-i1024-o512-c32-s43- --save-result --save-detailed --result-dir /home/genai/spec_decoding_study/results/raw --result-filename formal-r1-mtp-k3-i1024-o512-c32-s43.json --metadata mode=mtp k=3 gpu=1 phase=formal-r1 concurrency=32 seed=43 prefix_cache=false
+W1124 14:32:10.898000 132298 site-packages/torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1124 14:32:10.899000 132298 site-packages/torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1124 14:32:10.899000 132298 site-packages/torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+Namespace(subparser='bench', bench_type='serve', dispatch_function=<function BenchmarkServingSubcommand.cmd at 0x761f037127a0>, trust_remote_code=False, seed=43, num_prompts=128, dataset_name='random', no_stream=False, dataset_path=None, no_oversample=False, skip_chat_template=False, enable_multimodal_chat=False, disable_shuffle=False, custom_output_len=256, custom_ensure_client_side_data=False, spec_bench_output_len=256, spec_bench_category=None, sharegpt_output_len=None, timed_trace_chunk_hash_size=16, timed_trace_sec_multiplier=1, timed_trace_label_timestamp='timestamp', timed_trace_label_input_length='input_length', timed_trace_label_output_length='output_length', timed_trace_label_hash_ids='hash_ids', blazedit_min_distance=0.0, blazedit_max_distance=1.0, asr_max_audio_len_sec=inf, asr_min_audio_len_sec=0.0, random_input_len=1024, random_output_len=512, random_range_ratio='0', random_prefix_len=0, random_batch_size=1, no_reranker=False, random_mm_base_items_per_request=1, random_mm_num_mm_items_range_ratio=0.0, random_mm_limit_mm_per_prompt={'image': 255, 'video': 1}, random_mm_bucket_config={(256, 256, 1): 0.5, (720, 1280, 1): 0.5, (720, 1280, 16): 0.0}, hf_subset=None, hf_split=None, hf_name=None, hf_output_len=None, bfcl_categories=None, prefix_repetition_prefix_len=256, prefix_repetition_suffix_len=256, prefix_repetition_num_prefixes=10, prefix_repetition_output_len=128, speed_bench_dataset_subset='qualitative', speed_bench_output_len=4096, speed_bench_category=None, label=None, backend='openai', base_url='http://127.0.0.1:8101', host='127.0.0.1', port=8000, endpoint='/v1/completions', header=None, max_concurrency=32, model='qwen-target', input_len=None, output_len=None, tokenizer='/home/model/Qwen3.8-27B-FP8', tokenizer_mode='auto', use_beam_search=False, logprobs=None, request_rate=inf, burstiness=1.0, probe_request_rate=0.0, disable_tqdm=True, num_warmups=0, profile=False, save_result=True, save_detailed=True, append_result=False, metadata=['mode=mtp', 'k=3', 'gpu=1', 'phase=formal-r1', 'concurrency=32', 'seed=43', 'prefix_cache=false'], result_dir='/home/genai/spec_decoding_study/results/raw', result_filename='formal-r1-mtp-k3-i1024-o512-c32-s43.json', ignore_eos=True, self_timed=None, percentile_metrics='ttft,tpot,itl,e2el', metric_percentiles='50,90,95,99', goodput=None, request_id_prefix='formal-r1-mtp-k3-i1024-o512-c32-s43-', top_p=1.0, top_k=-1, min_p=None, temperature=0.0, frequency_penalty=None, presence_penalty=None, repetition_penalty=None, served_model_name=None, lora_modules=None, lora_assignment='random', ramp_up_strategy=None, ramp_up_start_rps=None, ramp_up_end_rps=None, ready_check_timeout_sec=0, chat_template_kwargs=None, extra_body=None, skip_tokenizer_init=False, insecure=False, plot_timeline=False, timeline_itl_thresholds='25,50', plot_dataset_stats=False, log_config_file=None, logging_config=LoggingConfig(log_level='INFO', formatter='text', configure_logging=True, pylogging_config_file=None))
+(MainProcess pid=132298) INFO 11-24 14:32:16 [utils.py:88] Sampling input_len from [1024, 1024] and output_len from [512, 512]
+Starting initial single prompt test run...
+Skipping endpoint ready check.
+Starting main benchmark run...
+Traffic request rate: inf
+Burstiness factor: 1.0 (Poisson process)
+Maximum request concurrency: 32
+tip: install termplotlib and gnuplot to plot the metrics
+============ Serving Benchmark Result ============
+Successful requests:                     128       
+Failed requests:                         0         
+Maximum request concurrency:             32        
+Benchmark duration (s):                  16.60     
+Total input tokens:                      131072    
+Total generated tokens:                  65536     
+Request throughput (req/s):              7.71      
+Output token throughput (tok/s):         3947.65   
+Peak output token throughput (tok/s):    1856.00   
+Peak concurrent requests:                49.00     
+Total token throughput (tok/s):          11842.95  
+---------------Time to First Token----------------
+Mean TTFT (ms):                          428.31    
+Median TTFT (ms):                        188.00    
+P50 TTFT (ms):                           188.00    
+P90 TTFT (ms):                           1342.67   
+P95 TTFT (ms):                           1343.84   
+P99 TTFT (ms):                           1345.23   
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          6.72      
+Median TPOT (ms):                        6.56      
+P50 TPOT (ms):                           6.56      
+P90 TPOT (ms):                           8.62      
+P95 TPOT (ms):                           9.11      
+P99 TPOT (ms):                           10.31     
+---------------Inter-token Latency----------------
+Mean ITL (ms):                           23.56     
+Median ITL (ms):                         17.30     
+P50 ITL (ms):                            17.30     
+P90 ITL (ms):                            41.63     
+P95 ITL (ms):                            54.69     
+P99 ITL (ms):                            93.75     
+----------------End-to-end Latency----------------
+Mean E2EL (ms):                          3859.78   
+Median E2EL (ms):                        3616.36   
+P50 E2EL (ms):                           3616.36   
+P90 E2EL (ms):                           4958.16   
+P95 E2EL (ms):                           5391.61   
+P99 E2EL (ms):                           5596.59   
+---------------Speculative Decoding---------------
+Acceptance rate (%):                     84.72     
+Acceptance length:                       3.54      
+Drafts:                                  18516     
+Draft tokens:                            55548     
+Accepted tokens:                         47060     
+Per-position acceptance (%):
+  Position 0:                            92.61     
+  Position 1:                            84.96     
+  Position 2:                            76.59     
+==================================================
+RUN_VALIDATION: formal-r1-mtp-k3-i1024-o512-c32-s43: {'valid': True, 'checks': {'completed_matches': True, 'no_failed_requests': True, 'no_error_strings': True, 'request_level_output_lengths_present': True, 'all_output_lengths_exact': True, 'total_output_tokens_exact': True, 'positive_duration': True, 'positive_output_throughput': True}, 'completed': 128, 'failed': 0, 'total_output_tokens': 65536, 'duration': 16.601272498024628, 'output_throughput': 3947.6491942288208, 'mean_tpot_ms': 6.715205180246967, 'spec_decode_acceptance_rate': 84.71952185497229, 'spec_decode_acceptance_length': 3.5415856556491683}
+MATRIX_COMMAND: formal-r1-mtp-k3-i1024-o512-c32-s44: ['/usr/bin/env', 'CUDA_VISIBLE_DEVICES=1', '/home/genai/.pixi/envs/default/bin/vllm', 'bench', 'serve', '--backend', 'openai', '--base-url', 'http://127.0.0.1:8101', '--endpoint', '/v1/completions', '--model', 'qwen-target', '--tokenizer', '/home/model/Qwen3.8-27B-FP8', '--dataset-name', 'random', '--random-input-len', '1024', '--random-output-len', '512', '--random-range-ratio', '0', '--request-rate', 'inf', '--ignore-eos', '--temperature', '0', '--top-p', '1', '--top-k', '-1', '--percentile-metrics', 'ttft,tpot,itl,e2el', '--metric-percentiles', '50,90,95,99', '--disable-tqdm', '--num-prompts', '128', '--num-warmups', '0', '--max-concurrency', '32', '--seed', '44', '--request-id-prefix', 'formal-r1-mtp-k3-i1024-o512-c32-s44-', '--save-result', '--save-detailed', '--result-dir', '/home/genai/spec_decoding_study/results/raw', '--result-filename', 'formal-r1-mtp-k3-i1024-o512-c32-s44.json', '--metadata', 'mode=mtp', 'k=3', 'gpu=1', 'phase=formal-r1', 'concurrency=32', 'seed=44', 'prefix_cache=false']
++ /usr/bin/env CUDA_VISIBLE_DEVICES=1 /home/genai/.pixi/envs/default/bin/vllm bench serve --backend openai --base-url http://127.0.0.1:8101 --endpoint /v1/completions --model qwen-target --tokenizer /home/model/Qwen3.8-27B-FP8 --dataset-name random --random-input-len 1024 --random-output-len 512 --random-range-ratio 0 --request-rate inf --ignore-eos --temperature 0 --top-p 1 --top-k -1 --percentile-metrics ttft,tpot,itl,e2el --metric-percentiles 50,90,95,99 --disable-tqdm --num-prompts 128 --num-warmups 0 --max-concurrency 32 --seed 44 --request-id-prefix formal-r1-mtp-k3-i1024-o512-c32-s44- --save-result --save-detailed --result-dir /home/genai/spec_decoding_study/results/raw --result-filename formal-r1-mtp-k3-i1024-o512-c32-s44.json --metadata mode=mtp k=3 gpu=1 phase=formal-r1 concurrency=32 seed=44 prefix_cache=false
+W1124 14:32:35.628000 133664 site-packages/torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1124 14:32:35.629000 133664 site-packages/torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1124 14:32:35.629000 133664 site-packages/torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+Namespace(subparser='bench', bench_type='serve', dispatch_function=<function BenchmarkServingSubcommand.cmd at 0x73502711a520>, trust_remote_code=False, seed=44, num_prompts=128, dataset_name='random', no_stream=False, dataset_path=None, no_oversample=False, skip_chat_template=False, enable_multimodal_chat=False, disable_shuffle=False, custom_output_len=256, custom_ensure_client_side_data=False, spec_bench_output_len=256, spec_bench_category=None, sharegpt_output_len=None, timed_trace_chunk_hash_size=16, timed_trace_sec_multiplier=1, timed_trace_label_timestamp='timestamp', timed_trace_label_input_length='input_length', timed_trace_label_output_length='output_length', timed_trace_label_hash_ids='hash_ids', blazedit_min_distance=0.0, blazedit_max_distance=1.0, asr_max_audio_len_sec=inf, asr_min_audio_len_sec=0.0, random_input_len=1024, random_output_len=512, random_range_ratio='0', random_prefix_len=0, random_batch_size=1, no_reranker=False, random_mm_base_items_per_request=1, random_mm_num_mm_items_range_ratio=0.0, random_mm_limit_mm_per_prompt={'image': 255, 'video': 1}, random_mm_bucket_config={(256, 256, 1): 0.5, (720, 1280, 1): 0.5, (720, 1280, 16): 0.0}, hf_subset=None, hf_split=None, hf_name=None, hf_output_len=None, bfcl_categories=None, prefix_repetition_prefix_len=256, prefix_repetition_suffix_len=256, prefix_repetition_num_prefixes=10, prefix_repetition_output_len=128, speed_bench_dataset_subset='qualitative', speed_bench_output_len=4096, speed_bench_category=None, label=None, backend='openai', base_url='http://127.0.0.1:8101', host='127.0.0.1', port=8000, endpoint='/v1/completions', header=None, max_concurrency=32, model='qwen-target', input_len=None, output_len=None, tokenizer='/home/model/Qwen3.8-27B-FP8', tokenizer_mode='auto', use_beam_search=False, logprobs=None, request_rate=inf, burstiness=1.0, probe_request_rate=0.0, disable_tqdm=True, num_warmups=0, profile=False, save_result=True, save_detailed=True, append_result=False, metadata=['mode=mtp', 'k=3', 'gpu=1', 'phase=formal-r1', 'concurrency=32', 'seed=44', 'prefix_cache=false'], result_dir='/home/genai/spec_decoding_study/results/raw', result_filename='formal-r1-mtp-k3-i1024-o512-c32-s44.json', ignore_eos=True, self_timed=None, percentile_metrics='ttft,tpot,itl,e2el', metric_percentiles='50,90,95,99', goodput=None, request_id_prefix='formal-r1-mtp-k3-i1024-o512-c32-s44-', top_p=1.0, top_k=-1, min_p=None, temperature=0.0, frequency_penalty=None, presence_penalty=None, repetition_penalty=None, served_model_name=None, lora_modules=None, lora_assignment='random', ramp_up_strategy=None, ramp_up_start_rps=None, ramp_up_end_rps=None, ready_check_timeout_sec=0, chat_template_kwargs=None, extra_body=None, skip_tokenizer_init=False, insecure=False, plot_timeline=False, timeline_itl_thresholds='25,50', plot_dataset_stats=False, log_config_file=None, logging_config=LoggingConfig(log_level='INFO', formatter='text', configure_logging=True, pylogging_config_file=None))
+(MainProcess pid=133664) INFO 11-24 14:32:41 [utils.py:88] Sampling input_len from [1024, 1024] and output_len from [512, 512]
+Starting initial single prompt test run...
+Skipping endpoint ready check.
+Starting main benchmark run...
+Traffic request rate: inf
+Burstiness factor: 1.0 (Poisson process)
+Maximum request concurrency: 32
+tip: install termplotlib and gnuplot to plot the metrics
+============ Serving Benchmark Result ============
+Successful requests:                     128       
+Failed requests:                         0         
+Maximum request concurrency:             32        
+Benchmark duration (s):                  16.32     
+Total input tokens:                      131072    
+Total generated tokens:                  65536     
+Request throughput (req/s):              7.84      
+Output token throughput (tok/s):         4016.30   
+Peak output token throughput (tok/s):    1856.00   
+Peak concurrent requests:                49.00     
+Total token throughput (tok/s):          12048.91  
+---------------Time to First Token----------------
+Mean TTFT (ms):                          434.41    
+Median TTFT (ms):                        181.71    
+P50 TTFT (ms):                           181.71    
+P90 TTFT (ms):                           1339.32   
+P95 TTFT (ms):                           1340.48   
+P99 TTFT (ms):                           1342.90   
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          6.68      
+Median TPOT (ms):                        6.71      
+P50 TPOT (ms):                           6.71      
+P90 TPOT (ms):                           8.65      
+P95 TPOT (ms):                           9.06      
+P99 TPOT (ms):                           10.27     
+---------------Inter-token Latency----------------
+Mean ITL (ms):                           23.64     
+Median ITL (ms):                         17.33     
+P50 ITL (ms):                            17.33     
+P90 ITL (ms):                            40.91     
+P95 ITL (ms):                            49.44     
+P99 ITL (ms):                            99.18     
+----------------End-to-end Latency----------------
+Mean E2EL (ms):                          3847.13   
+Median E2EL (ms):                        3645.27   
+P50 E2EL (ms):                           3645.27   
+P90 E2EL (ms):                           4941.17   
+P95 E2EL (ms):                           5305.69   
+P99 E2EL (ms):                           5875.43   
+---------------Speculative Decoding---------------
+Acceptance rate (%):                     85.79     
+Acceptance length:                       3.57      
+Drafts:                                  18348     
+Draft tokens:                            55044     
+Accepted tokens:                         47220     
+Per-position acceptance (%):
+  Position 0:                            93.04     
+  Position 1:                            86.42     
+  Position 2:                            77.90     
+==================================================
+RUN_VALIDATION: formal-r1-mtp-k3-i1024-o512-c32-s44: {'valid': True, 'checks': {'completed_matches': True, 'no_failed_requests': True, 'no_error_strings': True, 'request_level_output_lengths_present': True, 'all_output_lengths_exact': True, 'total_output_tokens_exact': True, 'positive_duration': True, 'positive_output_throughput': True}, 'completed': 128, 'failed': 0, 'total_output_tokens': 65536, 'duration': 16.317491391208023, 'output_throughput': 4016.30363569925, 'mean_tpot_ms': 6.678524569933283, 'spec_decode_acceptance_rate': 85.78591672116852, 'spec_decode_acceptance_length': 3.5735775016350555}
+MATRIX_COMMAND: warmup-formal-r1-mtp-k3-c16: ['/usr/bin/env', 'CUDA_VISIBLE_DEVICES=1', '/home/genai/.pixi/envs/default/bin/vllm', 'bench', 'serve', '--backend', 'openai', '--base-url', 'http://127.0.0.1:8101', '--endpoint', '/v1/completions', '--model', 'qwen-target', '--tokenizer', '/home/model/Qwen3.8-27B-FP8', '--dataset-name', 'random', '--random-input-len', '1024', '--random-output-len', '512', '--random-range-ratio', '0', '--request-rate', 'inf', '--ignore-eos', '--temperature', '0', '--top-p', '1', '--top-k', '-1', '--percentile-metrics', 'ttft,tpot,itl,e2el', '--metric-percentiles', '50,90,95,99', '--disable-tqdm', '--num-prompts', '16', '--num-warmups', '0', '--max-concurrency', '16', '--seed', '1016', '--request-id-prefix', 'warmup-formal-r1-mtp-k3-c16-']
++ /usr/bin/env CUDA_VISIBLE_DEVICES=1 /home/genai/.pixi/envs/default/bin/vllm bench serve --backend openai --base-url http://127.0.0.1:8101 --endpoint /v1/completions --model qwen-target --tokenizer /home/model/Qwen3.8-27B-FP8 --dataset-name random --random-input-len 1024 --random-output-len 512 --random-range-ratio 0 --request-rate inf --ignore-eos --temperature 0 --top-p 1 --top-k -1 --percentile-metrics ttft,tpot,itl,e2el --metric-percentiles 50,90,95,99 --disable-tqdm --num-prompts 16 --num-warmups 0 --max-concurrency 16 --seed 1016 --request-id-prefix warmup-formal-r1-mtp-k3-c16-
+W1124 14:33:00.150000 134221 site-packages/torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1124 14:33:00.151000 134221 site-packages/torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1124 14:33:00.151000 134221 site-packages/torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+Namespace(subparser='bench', bench_type='serve', dispatch_function=<function BenchmarkServingSubcommand.cmd at 0x723fb9bea520>, trust_remote_code=False, seed=1016, num_prompts=16, dataset_name='random', no_stream=False, dataset_path=None, no_oversample=False, skip_chat_template=False, enable_multimodal_chat=False, disable_shuffle=False, custom_output_len=256, custom_ensure_client_side_data=False, spec_bench_output_len=256, spec_bench_category=None, sharegpt_output_len=None, timed_trace_chunk_hash_size=16, timed_trace_sec_multiplier=1, timed_trace_label_timestamp='timestamp', timed_trace_label_input_length='input_length', timed_trace_label_output_length='output_length', timed_trace_label_hash_ids='hash_ids', blazedit_min_distance=0.0, blazedit_max_distance=1.0, asr_max_audio_len_sec=inf, asr_min_audio_len_sec=0.0, random_input_len=1024, random_output_len=512, random_range_ratio='0', random_prefix_len=0, random_batch_size=1, no_reranker=False, random_mm_base_items_per_request=1, random_mm_num_mm_items_range_ratio=0.0, random_mm_limit_mm_per_prompt={'image': 255, 'video': 1}, random_mm_bucket_config={(256, 256, 1): 0.5, (720, 1280, 1): 0.5, (720, 1280, 16): 0.0}, hf_subset=None, hf_split=None, hf_name=None, hf_output_len=None, bfcl_categories=None, prefix_repetition_prefix_len=256, prefix_repetition_suffix_len=256, prefix_repetition_num_prefixes=10, prefix_repetition_output_len=128, speed_bench_dataset_subset='qualitative', speed_bench_output_len=4096, speed_bench_category=None, label=None, backend='openai', base_url='http://127.0.0.1:8101', host='127.0.0.1', port=8000, endpoint='/v1/completions', header=None, max_concurrency=16, model='qwen-target', input_len=None, output_len=None, tokenizer='/home/model/Qwen3.8-27B-FP8', tokenizer_mode='auto', use_beam_search=False, logprobs=None, request_rate=inf, burstiness=1.0, probe_request_rate=0.0, disable_tqdm=True, num_warmups=0, profile=False, save_result=False, save_detailed=False, append_result=False, metadata=None, result_dir=None, result_filename=None, ignore_eos=True, self_timed=None, percentile_metrics='ttft,tpot,itl,e2el', metric_percentiles='50,90,95,99', goodput=None, request_id_prefix='warmup-formal-r1-mtp-k3-c16-', top_p=1.0, top_k=-1, min_p=None, temperature=0.0, frequency_penalty=None, presence_penalty=None, repetition_penalty=None, served_model_name=None, lora_modules=None, lora_assignment='random', ramp_up_strategy=None, ramp_up_start_rps=None, ramp_up_end_rps=None, ready_check_timeout_sec=0, chat_template_kwargs=None, extra_body=None, skip_tokenizer_init=False, insecure=False, plot_timeline=False, timeline_itl_thresholds='25,50', plot_dataset_stats=False, log_config_file=None, logging_config=LoggingConfig(log_level='INFO', formatter='text', configure_logging=True, pylogging_config_file=None))
+(MainProcess pid=134221) INFO 11-24 14:33:06 [utils.py:88] Sampling input_len from [1024, 1024] and output_len from [512, 512]
+Starting initial single prompt test run...
+Skipping endpoint ready check.
+Starting main benchmark run...
+Traffic request rate: inf
+Burstiness factor: 1.0 (Poisson process)
+Maximum request concurrency: 16
+tip: install termplotlib and gnuplot to plot the metrics
+============ Serving Benchmark Result ============
+Successful requests:                     16        
+Failed requests:                         0         
+Maximum request concurrency:             16        
+Benchmark duration (s):                  4.02      
+Total input tokens:                      16384     
+Total generated tokens:                  8192      
+Request throughput (req/s):              3.98      
+Output token throughput (tok/s):         2039.89   
+Peak output token throughput (tok/s):    864.00    
+Peak concurrent requests:                16.00     
+Total token throughput (tok/s):          6119.66   
+---------------Time to First Token----------------
+Mean TTFT (ms):                          646.45    
+Median TTFT (ms):                        665.58    
+P50 TTFT (ms):                           665.58    
+P90 TTFT (ms):                           666.58    
+P95 TTFT (ms):                           666.71    
+P99 TTFT (ms):                           666.89    
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          5.16      
+Median TPOT (ms):                        4.87      
+P50 TPOT (ms):                           4.87      
+P90 TPOT (ms):                           6.04      
+P95 TPOT (ms):                           6.22      
+P99 TPOT (ms):                           6.49      
+---------------Inter-token Latency----------------
+Mean ITL (ms):                           18.06     
+Median ITL (ms):                         18.63     
+P50 ITL (ms):                            18.63     
+P90 ITL (ms):                            18.86     
+P95 ITL (ms):                            19.07     
+P99 ITL (ms):                            20.99     
+----------------End-to-end Latency----------------
+Mean E2EL (ms):                          3282.93   
+Median E2EL (ms):                        3139.43   
+P50 E2EL (ms):                           3139.43   
+P90 E2EL (ms):                           3751.51   
+P95 E2EL (ms):                           3846.29   
+P99 E2EL (ms):                           3979.91   
+---------------Speculative Decoding---------------
+Acceptance rate (%):                     84.37     
+Acceptance length:                       3.53      
+Drafts:                                  2320      
+Draft tokens:                            6960      
+Accepted tokens:                         5872      
+Per-position acceptance (%):
+  Position 0:                            91.21     
+  Position 1:                            83.88     
+  Position 2:                            78.02     
+==================================================
+MATRIX_COMMAND: formal-r1-mtp-k3-i1024-o512-c16-s42: ['/usr/bin/env', 'CUDA_VISIBLE_DEVICES=1', '/home/genai/.pixi/envs/default/bin/vllm', 'bench', 'serve', '--backend', 'openai', '--base-url', 'http://127.0.0.1:8101', '--endpoint', '/v1/completions', '--model', 'qwen-target', '--tokenizer', '/home/model/Qwen3.8-27B-FP8', '--dataset-name', 'random', '--random-input-len', '1024', '--random-output-len', '512', '--random-range-ratio', '0', '--request-rate', 'inf', '--ignore-eos', '--temperature', '0', '--top-p', '1', '--top-k', '-1', '--percentile-metrics', 'ttft,tpot,itl,e2el', '--metric-percentiles', '50,90,95,99', '--disable-tqdm', '--num-prompts', '128', '--num-warmups', '0', '--max-concurrency', '16', '--seed', '42', '--request-id-prefix', 'formal-r1-mtp-k3-i1024-o512-c16-s42-', '--save-result', '--save-detailed', '--result-dir', '/home/genai/spec_decoding_study/results/raw', '--result-filename', 'formal-r1-mtp-k3-i1024-o512-c16-s42.json', '--metadata', 'mode=mtp', 'k=3', 'gpu=1', 'phase=formal-r1', 'concurrency=16', 'seed=42', 'prefix_cache=false']
++ /usr/bin/env CUDA_VISIBLE_DEVICES=1 /home/genai/.pixi/envs/default/bin/vllm bench serve --backend openai --base-url http://127.0.0.1:8101 --endpoint /v1/completions --model qwen-target --tokenizer /home/model/Qwen3.8-27B-FP8 --dataset-name random --random-input-len 1024 --random-output-len 512 --random-range-ratio 0 --request-rate inf --ignore-eos --temperature 0 --top-p 1 --top-k -1 --percentile-metrics ttft,tpot,itl,e2el --metric-percentiles 50,90,95,99 --disable-tqdm --num-prompts 128 --num-warmups 0 --max-concurrency 16 --seed 42 --request-id-prefix formal-r1-mtp-k3-i1024-o512-c16-s42- --save-result --save-detailed --result-dir /home/genai/spec_decoding_study/results/raw --result-filename formal-r1-mtp-k3-i1024-o512-c16-s42.json --metadata mode=mtp k=3 gpu=1 phase=formal-r1 concurrency=16 seed=42 prefix_cache=false
+W1124 14:33:11.767000 135392 site-packages/torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1124 14:33:11.767000 135392 site-packages/torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1124 14:33:11.768000 135392 site-packages/torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+Namespace(subparser='bench', bench_type='serve', dispatch_function=<function BenchmarkServingSubcommand.cmd at 0x78f35f72e7a0>, trust_remote_code=False, seed=42, num_prompts=128, dataset_name='random', no_stream=False, dataset_path=None, no_oversample=False, skip_chat_template=False, enable_multimodal_chat=False, disable_shuffle=False, custom_output_len=256, custom_ensure_client_side_data=False, spec_bench_output_len=256, spec_bench_category=None, sharegpt_output_len=None, timed_trace_chunk_hash_size=16, timed_trace_sec_multiplier=1, timed_trace_label_timestamp='timestamp', timed_trace_label_input_length='input_length', timed_trace_label_output_length='output_length', timed_trace_label_hash_ids='hash_ids', blazedit_min_distance=0.0, blazedit_max_distance=1.0, asr_max_audio_len_sec=inf, asr_min_audio_len_sec=0.0, random_input_len=1024, random_output_len=512, random_range_ratio='0', random_prefix_len=0, random_batch_size=1, no_reranker=False, random_mm_base_items_per_request=1, random_mm_num_mm_items_range_ratio=0.0, random_mm_limit_mm_per_prompt={'image': 255, 'video': 1}, random_mm_bucket_config={(256, 256, 1): 0.5, (720, 1280, 1): 0.5, (720, 1280, 16): 0.0}, hf_subset=None, hf_split=None, hf_name=None, hf_output_len=None, bfcl_categories=None, prefix_repetition_prefix_len=256, prefix_repetition_suffix_len=256, prefix_repetition_num_prefixes=10, prefix_repetition_output_len=128, speed_bench_dataset_subset='qualitative', speed_bench_output_len=4096, speed_bench_category=None, label=None, backend='openai', base_url='http://127.0.0.1:8101', host='127.0.0.1', port=8000, endpoint='/v1/completions', header=None, max_concurrency=16, model='qwen-target', input_len=None, output_len=None, tokenizer='/home/model/Qwen3.8-27B-FP8', tokenizer_mode='auto', use_beam_search=False, logprobs=None, request_rate=inf, burstiness=1.0, probe_request_rate=0.0, disable_tqdm=True, num_warmups=0, profile=False, save_result=True, save_detailed=True, append_result=False, metadata=['mode=mtp', 'k=3', 'gpu=1', 'phase=formal-r1', 'concurrency=16', 'seed=42', 'prefix_cache=false'], result_dir='/home/genai/spec_decoding_study/results/raw', result_filename='formal-r1-mtp-k3-i1024-o512-c16-s42.json', ignore_eos=True, self_timed=None, percentile_metrics='ttft,tpot,itl,e2el', metric_percentiles='50,90,95,99', goodput=None, request_id_prefix='formal-r1-mtp-k3-i1024-o512-c16-s42-', top_p=1.0, top_k=-1, min_p=None, temperature=0.0, frequency_penalty=None, presence_penalty=None, repetition_penalty=None, served_model_name=None, lora_modules=None, lora_assignment='random', ramp_up_strategy=None, ramp_up_start_rps=None, ramp_up_end_rps=None, ready_check_timeout_sec=0, chat_template_kwargs=None, extra_body=None, skip_tokenizer_init=False, insecure=False, plot_timeline=False, timeline_itl_thresholds='25,50', plot_dataset_stats=False, log_config_file=None, logging_config=LoggingConfig(log_level='INFO', formatter='text', configure_logging=True, pylogging_config_file=None))
+(MainProcess pid=135392) INFO 11-24 14:33:17 [utils.py:88] Sampling input_len from [1024, 1024] and output_len from [512, 512]
+Starting initial single prompt test run...
+Skipping endpoint ready check.
+Starting main benchmark run...
+Traffic request rate: inf
+Burstiness factor: 1.0 (Poisson process)
+Maximum request concurrency: 16
+tip: install termplotlib and gnuplot to plot the metrics
+============ Serving Benchmark Result ============
+Successful requests:                     128       
+Failed requests:                         0         
+Maximum request concurrency:             16        
+Benchmark duration (s):                  27.56     
+Total input tokens:                      131072    
+Total generated tokens:                  65536     
+Request throughput (req/s):              4.64      
+Output token throughput (tok/s):         2377.98   
+Peak output token throughput (tok/s):    864.00    
+Peak concurrent requests:                28.00     
+Total token throughput (tok/s):          7133.95   
+---------------Time to First Token----------------
+Mean TTFT (ms):                          178.42    
+Median TTFT (ms):                        103.53    
+P50 TTFT (ms):                           103.53    
+P90 TTFT (ms):                           663.55    
+P95 TTFT (ms):                           664.40    
+P99 TTFT (ms):                           665.07    
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          6.07      
+Median TPOT (ms):                        5.84      
+P50 TPOT (ms):                           5.84      
+P90 TPOT (ms):                           7.53      
+P95 TPOT (ms):                           7.91      
+P99 TPOT (ms):                           8.68      
+---------------Inter-token Latency----------------
+Mean ITL (ms):                           21.67     
+Median ITL (ms):                         18.72     
+P50 ITL (ms):                            18.72     
+P90 ITL (ms):                            35.60     
+P95 ITL (ms):                            39.61     
+P99 ITL (ms):                            50.85     
+----------------End-to-end Latency----------------
+Mean E2EL (ms):                          3281.24   
+Median E2EL (ms):                        3104.51   
+P50 E2EL (ms):                           3104.51   
+P90 E2EL (ms):                           4079.02   
+P95 E2EL (ms):                           4255.20   
+P99 E2EL (ms):                           4587.81   
+---------------Speculative Decoding---------------
+Acceptance rate (%):                     86.80     
+Acceptance length:                       3.60      
+Drafts:                                  18201     
+Draft tokens:                            54603     
+Accepted tokens:                         47396     
+Per-position acceptance (%):
+  Position 0:                            93.51     
+  Position 1:                            87.17     
+  Position 2:                            79.73     
+==================================================
+RUN_VALIDATION: formal-r1-mtp-k3-i1024-o512-c16-s42: {'valid': True, 'checks': {'completed_matches': True, 'no_failed_requests': True, 'no_error_strings': True, 'request_level_output_lengths_present': True, 'all_output_lengths_exact': True, 'total_output_tokens_exact': True, 'positive_duration': True, 'positive_output_throughput': True}, 'completed': 128, 'failed': 0, 'total_output_tokens': 65536, 'duration': 27.559495583875105, 'output_throughput': 2377.9825650490034, 'mean_tpot_ms': 6.072073575721535, 'spec_decode_acceptance_rate': 86.80109151511822, 'spec_decode_acceptance_length': 3.6040327454535466}
+MATRIX_COMMAND: formal-r1-mtp-k3-i1024-o512-c16-s43: ['/usr/bin/env', 'CUDA_VISIBLE_DEVICES=1', '/home/genai/.pixi/envs/default/bin/vllm', 'bench', 'serve', '--backend', 'openai', '--base-url', 'http://127.0.0.1:8101', '--endpoint', '/v1/completions', '--model', 'qwen-target', '--tokenizer', '/home/model/Qwen3.8-27B-FP8', '--dataset-name', 'random', '--random-input-len', '1024', '--random-output-len', '512', '--random-range-ratio', '0', '--request-rate', 'inf', '--ignore-eos', '--temperature', '0', '--top-p', '1', '--top-k', '-1', '--percentile-metrics', 'ttft,tpot,itl,e2el', '--metric-percentiles', '50,90,95,99', '--disable-tqdm', '--num-prompts', '128', '--num-warmups', '0', '--max-concurrency', '16', '--seed', '43', '--request-id-prefix', 'formal-r1-mtp-k3-i1024-o512-c16-s43-', '--save-result', '--save-detailed', '--result-dir', '/home/genai/spec_decoding_study/results/raw', '--result-filename', 'formal-r1-mtp-k3-i1024-o512-c16-s43.json', '--metadata', 'mode=mtp', 'k=3', 'gpu=1', 'phase=formal-r1', 'concurrency=16', 'seed=43', 'prefix_cache=false']
++ /usr/bin/env CUDA_VISIBLE_DEVICES=1 /home/genai/.pixi/envs/default/bin/vllm bench serve --backend openai --base-url http://127.0.0.1:8101 --endpoint /v1/completions --model qwen-target --tokenizer /home/model/Qwen3.8-27B-FP8 --dataset-name random --random-input-len 1024 --random-output-len 512 --random-range-ratio 0 --request-rate inf --ignore-eos --temperature 0 --top-p 1 --top-k -1 --percentile-metrics ttft,tpot,itl,e2el --metric-percentiles 50,90,95,99 --disable-tqdm --num-prompts 128 --num-warmups 0 --max-concurrency 16 --seed 43 --request-id-prefix formal-r1-mtp-k3-i1024-o512-c16-s43- --save-result --save-detailed --result-dir /home/genai/spec_decoding_study/results/raw --result-filename formal-r1-mtp-k3-i1024-o512-c16-s43.json --metadata mode=mtp k=3 gpu=1 phase=formal-r1 concurrency=16 seed=43 prefix_cache=false
+W1124 14:33:47.516000 136712 site-packages/torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1124 14:33:47.516000 136712 site-packages/torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1124 14:33:47.517000 136712 site-packages/torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+Namespace(subparser='bench', bench_type='serve', dispatch_function=<function BenchmarkServingSubcommand.cmd at 0x77ab2e90a7a0>, trust_remote_code=False, seed=43, num_prompts=128, dataset_name='random', no_stream=False, dataset_path=None, no_oversample=False, skip_chat_template=False, enable_multimodal_chat=False, disable_shuffle=False, custom_output_len=256, custom_ensure_client_side_data=False, spec_bench_output_len=256, spec_bench_category=None, sharegpt_output_len=None, timed_trace_chunk_hash_size=16, timed_trace_sec_multiplier=1, timed_trace_label_timestamp='timestamp', timed_trace_label_input_length='input_length', timed_trace_label_output_length='output_length', timed_trace_label_hash_ids='hash_ids', blazedit_min_distance=0.0, blazedit_max_distance=1.0, asr_max_audio_len_sec=inf, asr_min_audio_len_sec=0.0, random_input_len=1024, random_output_len=512, random_range_ratio='0', random_prefix_len=0, random_batch_size=1, no_reranker=False, random_mm_base_items_per_request=1, random_mm_num_mm_items_range_ratio=0.0, random_mm_limit_mm_per_prompt={'image': 255, 'video': 1}, random_mm_bucket_config={(256, 256, 1): 0.5, (720, 1280, 1): 0.5, (720, 1280, 16): 0.0}, hf_subset=None, hf_split=None, hf_name=None, hf_output_len=None, bfcl_categories=None, prefix_repetition_prefix_len=256, prefix_repetition_suffix_len=256, prefix_repetition_num_prefixes=10, prefix_repetition_output_len=128, speed_bench_dataset_subset='qualitative', speed_bench_output_len=4096, speed_bench_category=None, label=None, backend='openai', base_url='http://127.0.0.1:8101', host='127.0.0.1', port=8000, endpoint='/v1/completions', header=None, max_concurrency=16, model='qwen-target', input_len=None, output_len=None, tokenizer='/home/model/Qwen3.8-27B-FP8', tokenizer_mode='auto', use_beam_search=False, logprobs=None, request_rate=inf, burstiness=1.0, probe_request_rate=0.0, disable_tqdm=True, num_warmups=0, profile=False, save_result=True, save_detailed=True, append_result=False, metadata=['mode=mtp', 'k=3', 'gpu=1', 'phase=formal-r1', 'concurrency=16', 'seed=43', 'prefix_cache=false'], result_dir='/home/genai/spec_decoding_study/results/raw', result_filename='formal-r1-mtp-k3-i1024-o512-c16-s43.json', ignore_eos=True, self_timed=None, percentile_metrics='ttft,tpot,itl,e2el', metric_percentiles='50,90,95,99', goodput=None, request_id_prefix='formal-r1-mtp-k3-i1024-o512-c16-s43-', top_p=1.0, top_k=-1, min_p=None, temperature=0.0, frequency_penalty=None, presence_penalty=None, repetition_penalty=None, served_model_name=None, lora_modules=None, lora_assignment='random', ramp_up_strategy=None, ramp_up_start_rps=None, ramp_up_end_rps=None, ready_check_timeout_sec=0, chat_template_kwargs=None, extra_body=None, skip_tokenizer_init=False, insecure=False, plot_timeline=False, timeline_itl_thresholds='25,50', plot_dataset_stats=False, log_config_file=None, logging_config=LoggingConfig(log_level='INFO', formatter='text', configure_logging=True, pylogging_config_file=None))
+(MainProcess pid=136712) INFO 11-24 14:33:53 [utils.py:88] Sampling input_len from [1024, 1024] and output_len from [512, 512]
+Starting initial single prompt test run...
+Skipping endpoint ready check.
+Starting main benchmark run...
+Traffic request rate: inf
+Burstiness factor: 1.0 (Poisson process)
+Maximum request concurrency: 16
+tip: install termplotlib and gnuplot to plot the metrics
+============ Serving Benchmark Result ============
+Successful requests:                     128       
+Failed requests:                         0         
+Maximum request concurrency:             16        
+Benchmark duration (s):                  27.77     
+Total input tokens:                      131072    
+Total generated tokens:                  65536     
+Request throughput (req/s):              4.61      
+Output token throughput (tok/s):         2359.81   
+Peak output token throughput (tok/s):    864.00    
+Peak concurrent requests:                29.00     
+Total token throughput (tok/s):          7079.44   
+---------------Time to First Token----------------
+Mean TTFT (ms):                          175.75    
+Median TTFT (ms):                        93.53     
+P50 TTFT (ms):                           93.53     
+P90 TTFT (ms):                           668.03    
+P95 TTFT (ms):                           669.34    
+P99 TTFT (ms):                           669.95    
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          6.17      
+Median TPOT (ms):                        5.86      
+P50 TPOT (ms):                           5.86      
+P90 TPOT (ms):                           7.73      
+P95 TPOT (ms):                           8.16      
+P99 TPOT (ms):                           9.03      
+---------------Inter-token Latency----------------
+Mean ITL (ms):                           21.65     
+Median ITL (ms):                         18.73     
+P50 ITL (ms):                            18.73     
+P90 ITL (ms):                            35.12     
+P95 ITL (ms):                            39.89     
+P99 ITL (ms):                            50.13     
+----------------End-to-end Latency----------------
+Mean E2EL (ms):                          3329.27   
+Median E2EL (ms):                        3131.97   
+P50 E2EL (ms):                           3131.97   
+P90 E2EL (ms):                           4060.04   
+P95 E2EL (ms):                           4331.93   
+P99 E2EL (ms):                           4752.16   
+---------------Speculative Decoding---------------
+Acceptance rate (%):                     84.71     
+Acceptance length:                       3.54      
+Drafts:                                  18518     
+Draft tokens:                            55554     
+Accepted tokens:                         47062     
+Per-position acceptance (%):
+  Position 0:                            92.30     
+  Position 1:                            84.30     
+  Position 2:                            77.54     
+==================================================
+RUN_VALIDATION: formal-r1-mtp-k3-i1024-o512-c16-s43: {'valid': True, 'checks': {'completed_matches': True, 'no_failed_requests': True, 'no_error_strings': True, 'request_level_output_lengths_present': True, 'all_output_lengths_exact': True, 'total_output_tokens_exact': True, 'positive_duration': True, 'positive_output_throughput': True}, 'completed': 128, 'failed': 0, 'total_output_tokens': 65536, 'duration': 27.771707127103582, 'output_throughput': 2359.8117213342152, 'mean_tpot_ms': 6.17127429341089, 'spec_decode_acceptance_rate': 84.71397199121576, 'spec_decode_acceptance_length': 3.541419159736473}
+MATRIX_COMMAND: formal-r1-mtp-k3-i1024-o512-c16-s44: ['/usr/bin/env', 'CUDA_VISIBLE_DEVICES=1', '/home/genai/.pixi/envs/default/bin/vllm', 'bench', 'serve', '--backend', 'openai', '--base-url', 'http://127.0.0.1:8101', '--endpoint', '/v1/completions', '--model', 'qwen-target', '--tokenizer', '/home/model/Qwen3.8-27B-FP8', '--dataset-name', 'random', '--random-input-len', '1024', '--random-output-len', '512', '--random-range-ratio', '0', '--request-rate', 'inf', '--ignore-eos', '--temperature', '0', '--top-p', '1', '--top-k', '-1', '--percentile-metrics', 'ttft,tpot,itl,e2el', '--metric-percentiles', '50,90,95,99', '--disable-tqdm', '--num-prompts', '128', '--num-warmups', '0', '--max-concurrency', '16', '--seed', '44', '--request-id-prefix', 'formal-r1-mtp-k3-i1024-o512-c16-s44-', '--save-result', '--save-detailed', '--result-dir', '/home/genai/spec_decoding_study/results/raw', '--result-filename', 'formal-r1-mtp-k3-i1024-o512-c16-s44.json', '--metadata', 'mode=mtp', 'k=3', 'gpu=1', 'phase=formal-r1', 'concurrency=16', 'seed=44', 'prefix_cache=false']
++ /usr/bin/env CUDA_VISIBLE_DEVICES=1 /home/genai/.pixi/envs/default/bin/vllm bench serve --backend openai --base-url http://127.0.0.1:8101 --endpoint /v1/completions --model qwen-target --tokenizer /home/model/Qwen3.8-27B-FP8 --dataset-name random --random-input-len 1024 --random-output-len 512 --random-range-ratio 0 --request-rate inf --ignore-eos --temperature 0 --top-p 1 --top-k -1 --percentile-metrics ttft,tpot,itl,e2el --metric-percentiles 50,90,95,99 --disable-tqdm --num-prompts 128 --num-warmups 0 --max-concurrency 16 --seed 44 --request-id-prefix formal-r1-mtp-k3-i1024-o512-c16-s44- --save-result --save-detailed --result-dir /home/genai/spec_decoding_study/results/raw --result-filename formal-r1-mtp-k3-i1024-o512-c16-s44.json --metadata mode=mtp k=3 gpu=1 phase=formal-r1 concurrency=16 seed=44 prefix_cache=false
+W1124 14:34:23.300000 138012 site-packages/torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1124 14:34:23.300000 138012 site-packages/torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1124 14:34:23.301000 138012 site-packages/torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+Namespace(subparser='bench', bench_type='serve', dispatch_function=<function BenchmarkServingSubcommand.cmd at 0x7ad9b0516520>, trust_remote_code=False, seed=44, num_prompts=128, dataset_name='random', no_stream=False, dataset_path=None, no_oversample=False, skip_chat_template=False, enable_multimodal_chat=False, disable_shuffle=False, custom_output_len=256, custom_ensure_client_side_data=False, spec_bench_output_len=256, spec_bench_category=None, sharegpt_output_len=None, timed_trace_chunk_hash_size=16, timed_trace_sec_multiplier=1, timed_trace_label_timestamp='timestamp', timed_trace_label_input_length='input_length', timed_trace_label_output_length='output_length', timed_trace_label_hash_ids='hash_ids', blazedit_min_distance=0.0, blazedit_max_distance=1.0, asr_max_audio_len_sec=inf, asr_min_audio_len_sec=0.0, random_input_len=1024, random_output_len=512, random_range_ratio='0', random_prefix_len=0, random_batch_size=1, no_reranker=False, random_mm_base_items_per_request=1, random_mm_num_mm_items_range_ratio=0.0, random_mm_limit_mm_per_prompt={'image': 255, 'video': 1}, random_mm_bucket_config={(256, 256, 1): 0.5, (720, 1280, 1): 0.5, (720, 1280, 16): 0.0}, hf_subset=None, hf_split=None, hf_name=None, hf_output_len=None, bfcl_categories=None, prefix_repetition_prefix_len=256, prefix_repetition_suffix_len=256, prefix_repetition_num_prefixes=10, prefix_repetition_output_len=128, speed_bench_dataset_subset='qualitative', speed_bench_output_len=4096, speed_bench_category=None, label=None, backend='openai', base_url='http://127.0.0.1:8101', host='127.0.0.1', port=8000, endpoint='/v1/completions', header=None, max_concurrency=16, model='qwen-target', input_len=None, output_len=None, tokenizer='/home/model/Qwen3.8-27B-FP8', tokenizer_mode='auto', use_beam_search=False, logprobs=None, request_rate=inf, burstiness=1.0, probe_request_rate=0.0, disable_tqdm=True, num_warmups=0, profile=False, save_result=True, save_detailed=True, append_result=False, metadata=['mode=mtp', 'k=3', 'gpu=1', 'phase=formal-r1', 'concurrency=16', 'seed=44', 'prefix_cache=false'], result_dir='/home/genai/spec_decoding_study/results/raw', result_filename='formal-r1-mtp-k3-i1024-o512-c16-s44.json', ignore_eos=True, self_timed=None, percentile_metrics='ttft,tpot,itl,e2el', metric_percentiles='50,90,95,99', goodput=None, request_id_prefix='formal-r1-mtp-k3-i1024-o512-c16-s44-', top_p=1.0, top_k=-1, min_p=None, temperature=0.0, frequency_penalty=None, presence_penalty=None, repetition_penalty=None, served_model_name=None, lora_modules=None, lora_assignment='random', ramp_up_strategy=None, ramp_up_start_rps=None, ramp_up_end_rps=None, ready_check_timeout_sec=0, chat_template_kwargs=None, extra_body=None, skip_tokenizer_init=False, insecure=False, plot_timeline=False, timeline_itl_thresholds='25,50', plot_dataset_stats=False, log_config_file=None, logging_config=LoggingConfig(log_level='INFO', formatter='text', configure_logging=True, pylogging_config_file=None))
+(MainProcess pid=138012) INFO 11-24 14:34:28 [utils.py:88] Sampling input_len from [1024, 1024] and output_len from [512, 512]
+Starting initial single prompt test run...
+Skipping endpoint ready check.
+Starting main benchmark run...
+Traffic request rate: inf
+Burstiness factor: 1.0 (Poisson process)
+Maximum request concurrency: 16
+tip: install termplotlib and gnuplot to plot the metrics
+============ Serving Benchmark Result ============
+Successful requests:                     128       
+Failed requests:                         0         
+Maximum request concurrency:             16        
+Benchmark duration (s):                  27.21     
+Total input tokens:                      131072    
+Total generated tokens:                  65536     
+Request throughput (req/s):              4.70      
+Output token throughput (tok/s):         2408.74   
+Peak output token throughput (tok/s):    864.00    
+Peak concurrent requests:                28.00     
+Total token throughput (tok/s):          7226.22   
+---------------Time to First Token----------------
+Mean TTFT (ms):                          181.49    
+Median TTFT (ms):                        109.08    
+P50 TTFT (ms):                           109.08    
+P90 TTFT (ms):                           663.01    
+P95 TTFT (ms):                           664.21    
+P99 TTFT (ms):                           664.99    
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          6.10      
+Median TPOT (ms):                        5.81      
+P50 TPOT (ms):                           5.81      
+P90 TPOT (ms):                           7.54      
+P95 TPOT (ms):                           8.42      
+P99 TPOT (ms):                           8.82      
+---------------Inter-token Latency----------------
+Mean ITL (ms):                           21.70     
+Median ITL (ms):                         18.71     
+P50 ITL (ms):                            18.71     
+P90 ITL (ms):                            34.63     
+P95 ITL (ms):                            40.02     
+P99 ITL (ms):                            56.78     
+----------------End-to-end Latency----------------
+Mean E2EL (ms):                          3300.01   
+Median E2EL (ms):                        3094.56   
+P50 E2EL (ms):                           3094.56   
+P90 E2EL (ms):                           4179.66   
+P95 E2EL (ms):                           4454.69   
+P99 E2EL (ms):                           4739.56   
+---------------Speculative Decoding---------------
+Acceptance rate (%):                     86.34     
+Acceptance length:                       3.59      
+Drafts:                                  18263     
+Draft tokens:                            54789     
+Accepted tokens:                         47305     
+Per-position acceptance (%):
+  Position 0:                            92.67     
+  Position 1:                            86.20     
+  Position 2:                            80.15     
+==================================================
+RUN_VALIDATION: formal-r1-mtp-k3-i1024-o512-c16-s44: {'valid': True, 'checks': {'completed_matches': True, 'no_failed_requests': True, 'no_error_strings': True, 'request_level_output_lengths_present': True, 'all_output_lengths_exact': True, 'total_output_tokens_exact': True, 'positive_duration': True, 'positive_output_throughput': True}, 'completed': 128, 'failed': 0, 'total_output_tokens': 65536, 'duration': 27.207587000913918, 'output_throughput': 2408.739885598771, 'mean_tpot_ms': 6.102773124556878, 'spec_decode_acceptance_rate': 86.3403237876216, 'spec_decode_acceptance_length': 3.590209713628648}
+MATRIX_COMMAND: warmup-formal-r1-mtp-k3-c4: ['/usr/bin/env', 'CUDA_VISIBLE_DEVICES=1', '/home/genai/.pixi/envs/default/bin/vllm', 'bench', 'serve', '--backend', 'openai', '--base-url', 'http://127.0.0.1:8101', '--endpoint', '/v1/completions', '--model', 'qwen-target', '--tokenizer', '/home/model/Qwen3.8-27B-FP8', '--dataset-name', 'random', '--random-input-len', '1024', '--random-output-len', '512', '--random-range-ratio', '0', '--request-rate', 'inf', '--ignore-eos', '--temperature', '0', '--top-p', '1', '--top-k', '-1', '--percentile-metrics', 'ttft,tpot,itl,e2el', '--metric-percentiles', '50,90,95,99', '--disable-tqdm', '--num-prompts', '4', '--num-warmups', '0', '--max-concurrency', '4', '--seed', '1004', '--request-id-prefix', 'warmup-formal-r1-mtp-k3-c4-']
++ /usr/bin/env CUDA_VISIBLE_DEVICES=1 /home/genai/.pixi/envs/default/bin/vllm bench serve --backend openai --base-url http://127.0.0.1:8101 --endpoint /v1/completions --model qwen-target --tokenizer /home/model/Qwen3.8-27B-FP8 --dataset-name random --random-input-len 1024 --random-output-len 512 --random-range-ratio 0 --request-rate inf --ignore-eos --temperature 0 --top-p 1 --top-k -1 --percentile-metrics ttft,tpot,itl,e2el --metric-percentiles 50,90,95,99 --disable-tqdm --num-prompts 4 --num-warmups 0 --max-concurrency 4 --seed 1004 --request-id-prefix warmup-formal-r1-mtp-k3-c4-
+W1124 14:34:58.441000 139315 site-packages/torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1124 14:34:58.441000 139315 site-packages/torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1124 14:34:58.442000 139315 site-packages/torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+Namespace(subparser='bench', bench_type='serve', dispatch_function=<function BenchmarkServingSubcommand.cmd at 0x7d34e290a5c0>, trust_remote_code=False, seed=1004, num_prompts=4, dataset_name='random', no_stream=False, dataset_path=None, no_oversample=False, skip_chat_template=False, enable_multimodal_chat=False, disable_shuffle=False, custom_output_len=256, custom_ensure_client_side_data=False, spec_bench_output_len=256, spec_bench_category=None, sharegpt_output_len=None, timed_trace_chunk_hash_size=16, timed_trace_sec_multiplier=1, timed_trace_label_timestamp='timestamp', timed_trace_label_input_length='input_length', timed_trace_label_output_length='output_length', timed_trace_label_hash_ids='hash_ids', blazedit_min_distance=0.0, blazedit_max_distance=1.0, asr_max_audio_len_sec=inf, asr_min_audio_len_sec=0.0, random_input_len=1024, random_output_len=512, random_range_ratio='0', random_prefix_len=0, random_batch_size=1, no_reranker=False, random_mm_base_items_per_request=1, random_mm_num_mm_items_range_ratio=0.0, random_mm_limit_mm_per_prompt={'image': 255, 'video': 1}, random_mm_bucket_config={(256, 256, 1): 0.5, (720, 1280, 1): 0.5, (720, 1280, 16): 0.0}, hf_subset=None, hf_split=None, hf_name=None, hf_output_len=None, bfcl_categories=None, prefix_repetition_prefix_len=256, prefix_repetition_suffix_len=256, prefix_repetition_num_prefixes=10, prefix_repetition_output_len=128, speed_bench_dataset_subset='qualitative', speed_bench_output_len=4096, speed_bench_category=None, label=None, backend='openai', base_url='http://127.0.0.1:8101', host='127.0.0.1', port=8000, endpoint='/v1/completions', header=None, max_concurrency=4, model='qwen-target', input_len=None, output_len=None, tokenizer='/home/model/Qwen3.8-27B-FP8', tokenizer_mode='auto', use_beam_search=False, logprobs=None, request_rate=inf, burstiness=1.0, probe_request_rate=0.0, disable_tqdm=True, num_warmups=0, profile=False, save_result=False, save_detailed=False, append_result=False, metadata=None, result_dir=None, result_filename=None, ignore_eos=True, self_timed=None, percentile_metrics='ttft,tpot,itl,e2el', metric_percentiles='50,90,95,99', goodput=None, request_id_prefix='warmup-formal-r1-mtp-k3-c4-', top_p=1.0, top_k=-1, min_p=None, temperature=0.0, frequency_penalty=None, presence_penalty=None, repetition_penalty=None, served_model_name=None, lora_modules=None, lora_assignment='random', ramp_up_strategy=None, ramp_up_start_rps=None, ramp_up_end_rps=None, ready_check_timeout_sec=0, chat_template_kwargs=None, extra_body=None, skip_tokenizer_init=False, insecure=False, plot_timeline=False, timeline_itl_thresholds='25,50', plot_dataset_stats=False, log_config_file=None, logging_config=LoggingConfig(log_level='INFO', formatter='text', configure_logging=True, pylogging_config_file=None))
+(MainProcess pid=139315) INFO 11-24 14:35:04 [utils.py:88] Sampling input_len from [1024, 1024] and output_len from [512, 512]
+Starting initial single prompt test run...
+Skipping endpoint ready check.
+Starting main benchmark run...
+Traffic request rate: inf
+Burstiness factor: 1.0 (Poisson process)
+Maximum request concurrency: 4
+tip: install termplotlib and gnuplot to plot the metrics
+============ Serving Benchmark Result ============
+Successful requests:                     4         
+Failed requests:                         0         
+Maximum request concurrency:             4         
+Benchmark duration (s):                  2.78      
+Total input tokens:                      4096      
+Total generated tokens:                  2048      
+Request throughput (req/s):              1.44      
+Output token throughput (tok/s):         737.88    
+Peak output token throughput (tok/s):    344.00    
+Peak concurrent requests:                4.00      
+Total token throughput (tok/s):          2213.63   
+---------------Time to First Token----------------
+Mean TTFT (ms):                          142.31    
+Median TTFT (ms):                        131.48    
+P50 TTFT (ms):                           131.48    
+P90 TTFT (ms):                           162.11    
+P95 TTFT (ms):                           168.67    
+P99 TTFT (ms):                           173.91    
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          4.35      
+Median TPOT (ms):                        4.30      
+P50 TPOT (ms):                           4.30      
+P90 TPOT (ms):                           4.89      
+P95 TPOT (ms):                           4.99      
+P99 TPOT (ms):                           5.07      
+---------------Inter-token Latency----------------
+Mean ITL (ms):                           11.53     
+Median ITL (ms):                         11.52     
+P50 ITL (ms):                            11.52     
+P90 ITL (ms):                            11.69     
+P95 ITL (ms):                            11.78     
+P99 ITL (ms):                            12.39     
+----------------End-to-end Latency----------------
+Mean E2EL (ms):                          2365.22   
+Median E2EL (ms):                        2330.88   
+P50 E2EL (ms):                           2330.88   
+P90 E2EL (ms):                           2659.77   
+P95 E2EL (ms):                           2717.28   
+P99 E2EL (ms):                           2763.29   
+---------------Speculative Decoding---------------
+Acceptance rate (%):                     55.58     
+Acceptance length:                       2.67      
+Drafts:                                  767       
+Draft tokens:                            2301      
+Accepted tokens:                         1279      
+Per-position acceptance (%):
+  Position 0:                            76.40     
+  Position 1:                            52.28     
+  Position 2:                            38.07     
+==================================================
+MATRIX_COMMAND: formal-r1-mtp-k3-i1024-o512-c4-s42: ['/usr/bin/env', 'CUDA_VISIBLE_DEVICES=1', '/home/genai/.pixi/envs/default/bin/vllm', 'bench', 'serve', '--backend', 'openai', '--base-url', 'http://127.0.0.1:8101', '--endpoint', '/v1/completions', '--model', 'qwen-target', '--tokenizer', '/home/model/Qwen3.8-27B-FP8', '--dataset-name', 'random', '--random-input-len', '1024', '--random-output-len', '512', '--random-range-ratio', '0', '--request-rate', 'inf', '--ignore-eos', '--temperature', '0', '--top-p', '1', '--top-k', '-1', '--percentile-metrics', 'ttft,tpot,itl,e2el', '--metric-percentiles', '50,90,95,99', '--disable-tqdm', '--num-prompts', '128', '--num-warmups', '0', '--max-concurrency', '4', '--seed', '42', '--request-id-prefix', 'formal-r1-mtp-k3-i1024-o512-c4-s42-', '--save-result', '--save-detailed', '--result-dir', '/home/genai/spec_decoding_study/results/raw', '--result-filename', 'formal-r1-mtp-k3-i1024-o512-c4-s42.json', '--metadata', 'mode=mtp', 'k=3', 'gpu=1', 'phase=formal-r1', 'concurrency=4', 'seed=42', 'prefix_cache=false']
++ /usr/bin/env CUDA_VISIBLE_DEVICES=1 /home/genai/.pixi/envs/default/bin/vllm bench serve --backend openai --base-url http://127.0.0.1:8101 --endpoint /v1/completions --model qwen-target --tokenizer /home/model/Qwen3.8-27B-FP8 --dataset-name random --random-input-len 1024 --random-output-len 512 --random-range-ratio 0 --request-rate inf --ignore-eos --temperature 0 --top-p 1 --top-k -1 --percentile-metrics ttft,tpot,itl,e2el --metric-percentiles 50,90,95,99 --disable-tqdm --num-prompts 128 --num-warmups 0 --max-concurrency 4 --seed 42 --request-id-prefix formal-r1-mtp-k3-i1024-o512-c4-s42- --save-result --save-detailed --result-dir /home/genai/spec_decoding_study/results/raw --result-filename formal-r1-mtp-k3-i1024-o512-c4-s42.json --metadata mode=mtp k=3 gpu=1 phase=formal-r1 concurrency=4 seed=42 prefix_cache=false
+W1124 14:35:08.804000 139806 site-packages/torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1124 14:35:08.804000 139806 site-packages/torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1124 14:35:08.804000 139806 site-packages/torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+Namespace(subparser='bench', bench_type='serve', dispatch_function=<function BenchmarkServingSubcommand.cmd at 0x7a41db30e840>, trust_remote_code=False, seed=42, num_prompts=128, dataset_name='random', no_stream=False, dataset_path=None, no_oversample=False, skip_chat_template=False, enable_multimodal_chat=False, disable_shuffle=False, custom_output_len=256, custom_ensure_client_side_data=False, spec_bench_output_len=256, spec_bench_category=None, sharegpt_output_len=None, timed_trace_chunk_hash_size=16, timed_trace_sec_multiplier=1, timed_trace_label_timestamp='timestamp', timed_trace_label_input_length='input_length', timed_trace_label_output_length='output_length', timed_trace_label_hash_ids='hash_ids', blazedit_min_distance=0.0, blazedit_max_distance=1.0, asr_max_audio_len_sec=inf, asr_min_audio_len_sec=0.0, random_input_len=1024, random_output_len=512, random_range_ratio='0', random_prefix_len=0, random_batch_size=1, no_reranker=False, random_mm_base_items_per_request=1, random_mm_num_mm_items_range_ratio=0.0, random_mm_limit_mm_per_prompt={'image': 255, 'video': 1}, random_mm_bucket_config={(256, 256, 1): 0.5, (720, 1280, 1): 0.5, (720, 1280, 16): 0.0}, hf_subset=None, hf_split=None, hf_name=None, hf_output_len=None, bfcl_categories=None, prefix_repetition_prefix_len=256, prefix_repetition_suffix_len=256, prefix_repetition_num_prefixes=10, prefix_repetition_output_len=128, speed_bench_dataset_subset='qualitative', speed_bench_output_len=4096, speed_bench_category=None, label=None, backend='openai', base_url='http://127.0.0.1:8101', host='127.0.0.1', port=8000, endpoint='/v1/completions', header=None, max_concurrency=4, model='qwen-target', input_len=None, output_len=None, tokenizer='/home/model/Qwen3.8-27B-FP8', tokenizer_mode='auto', use_beam_search=False, logprobs=None, request_rate=inf, burstiness=1.0, probe_request_rate=0.0, disable_tqdm=True, num_warmups=0, profile=False, save_result=True, save_detailed=True, append_result=False, metadata=['mode=mtp', 'k=3', 'gpu=1', 'phase=formal-r1', 'concurrency=4', 'seed=42', 'prefix_cache=false'], result_dir='/home/genai/spec_decoding_study/results/raw', result_filename='formal-r1-mtp-k3-i1024-o512-c4-s42.json', ignore_eos=True, self_timed=None, percentile_metrics='ttft,tpot,itl,e2el', metric_percentiles='50,90,95,99', goodput=None, request_id_prefix='formal-r1-mtp-k3-i1024-o512-c4-s42-', top_p=1.0, top_k=-1, min_p=None, temperature=0.0, frequency_penalty=None, presence_penalty=None, repetition_penalty=None, served_model_name=None, lora_modules=None, lora_assignment='random', ramp_up_strategy=None, ramp_up_start_rps=None, ramp_up_end_rps=None, ready_check_timeout_sec=0, chat_template_kwargs=None, extra_body=None, skip_tokenizer_init=False, insecure=False, plot_timeline=False, timeline_itl_thresholds='25,50', plot_dataset_stats=False, log_config_file=None, logging_config=LoggingConfig(log_level='INFO', formatter='text', configure_logging=True, pylogging_config_file=None))
+(MainProcess pid=139806) INFO 11-24 14:35:14 [utils.py:88] Sampling input_len from [1024, 1024] and output_len from [512, 512]
+Starting initial single prompt test run...
+Skipping endpoint ready check.
+Starting main benchmark run...
+Traffic request rate: inf
+Burstiness factor: 1.0 (Poisson process)
+Maximum request concurrency: 4
+tip: install termplotlib and gnuplot to plot the metrics
+============ Serving Benchmark Result ============
+Successful requests:                     128       
+Failed requests:                         0         
+Maximum request concurrency:             4         
+Benchmark duration (s):                  60.00     
+Total input tokens:                      131072    
+Total generated tokens:                  65536     
+Request throughput (req/s):              2.13      
+Output token throughput (tok/s):         1092.28   
+Peak output token throughput (tok/s):    344.00    
+Peak concurrent requests:                8.00      
+Total token throughput (tok/s):          3276.83   
+---------------Time to First Token----------------
+Mean TTFT (ms):                          80.68     
+Median TTFT (ms):                        76.48     
+P50 TTFT (ms):                           76.48     
+P90 TTFT (ms):                           78.81     
+P95 TTFT (ms):                           109.72    
+P99 TTFT (ms):                           175.96    
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          3.48      
+Median TPOT (ms):                        3.24      
+P50 TPOT (ms):                           3.24      
+P90 TPOT (ms):                           4.26      
+P95 TPOT (ms):                           4.40      
+P99 TPOT (ms):                           4.91      
+---------------Inter-token Latency----------------
+Mean ITL (ms):                           12.35     
+Median ITL (ms):                         11.57     
+P50 ITL (ms):                            11.57     
+P90 ITL (ms):                            11.99     
+P95 ITL (ms):                            12.62     
+P99 ITL (ms):                            34.29     
+----------------End-to-end Latency----------------
+Mean E2EL (ms):                          1857.85   
+Median E2EL (ms):                        1730.48   
+P50 E2EL (ms):                           1730.48   
+P90 E2EL (ms):                           2266.37   
+P95 E2EL (ms):                           2333.51   
+P99 E2EL (ms):                           2583.91   
+---------------Speculative Decoding---------------
+Acceptance rate (%):                     86.15     
+Acceptance length:                       3.58      
+Drafts:                                  18295     
+Draft tokens:                            54885     
+Accepted tokens:                         47283     
+Per-position acceptance (%):
+  Position 0:                            93.15     
+  Position 1:                            86.65     
+  Position 2:                            78.65     
+==================================================
+RUN_VALIDATION: formal-r1-mtp-k3-i1024-o512-c4-s42: {'valid': True, 'checks': {'completed_matches': True, 'no_failed_requests': True, 'no_error_strings': True, 'request_level_output_lengths_present': True, 'all_output_lengths_exact': True, 'total_output_tokens_exact': True, 'positive_duration': True, 'positive_output_throughput': True}, 'completed': 128, 'failed': 0, 'total_output_tokens': 65536, 'duration': 59.99943507113494, 'output_throughput': 1092.2769509796374, 'mean_tpot_ms': 3.4778240442605997, 'spec_decode_acceptance_rate': 86.14922109866083, 'spec_decode_acceptance_length': 3.584476632959825}
+MATRIX_COMMAND: formal-r1-mtp-k3-i1024-o512-c4-s43: ['/usr/bin/env', 'CUDA_VISIBLE_DEVICES=1', '/home/genai/.pixi/envs/default/bin/vllm', 'bench', 'serve', '--backend', 'openai', '--base-url', 'http://127.0.0.1:8101', '--endpoint', '/v1/completions', '--model', 'qwen-target', '--tokenizer', '/home/model/Qwen3.8-27B-FP8', '--dataset-name', 'random', '--random-input-len', '1024', '--random-output-len', '512', '--random-range-ratio', '0', '--request-rate', 'inf', '--ignore-eos', '--temperature', '0', '--top-p', '1', '--top-k', '-1', '--percentile-metrics', 'ttft,tpot,itl,e2el', '--metric-percentiles', '50,90,95,99', '--disable-tqdm', '--num-prompts', '128', '--num-warmups', '0', '--max-concurrency', '4', '--seed', '43', '--request-id-prefix', 'formal-r1-mtp-k3-i1024-o512-c4-s43-', '--save-result', '--save-detailed', '--result-dir', '/home/genai/spec_decoding_study/results/raw', '--result-filename', 'formal-r1-mtp-k3-i1024-o512-c4-s43.json', '--metadata', 'mode=mtp', 'k=3', 'gpu=1', 'phase=formal-r1', 'concurrency=4', 'seed=43', 'prefix_cache=false']
++ /usr/bin/env CUDA_VISIBLE_DEVICES=1 /home/genai/.pixi/envs/default/bin/vllm bench serve --backend openai --base-url http://127.0.0.1:8101 --endpoint /v1/completions --model qwen-target --tokenizer /home/model/Qwen3.8-27B-FP8 --dataset-name random --random-input-len 1024 --random-output-len 512 --random-range-ratio 0 --request-rate inf --ignore-eos --temperature 0 --top-p 1 --top-k -1 --percentile-metrics ttft,tpot,itl,e2el --metric-percentiles 50,90,95,99 --disable-tqdm --num-prompts 128 --num-warmups 0 --max-concurrency 4 --seed 43 --request-id-prefix formal-r1-mtp-k3-i1024-o512-c4-s43- --save-result --save-detailed --result-dir /home/genai/spec_decoding_study/results/raw --result-filename formal-r1-mtp-k3-i1024-o512-c4-s43.json --metadata mode=mtp k=3 gpu=1 phase=formal-r1 concurrency=4 seed=43 prefix_cache=false
+W1124 14:36:17.178000 141541 site-packages/torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1124 14:36:17.179000 141541 site-packages/torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1124 14:36:17.179000 141541 site-packages/torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+Namespace(subparser='bench', bench_type='serve', dispatch_function=<function BenchmarkServingSubcommand.cmd at 0x7dab0570a840>, trust_remote_code=False, seed=43, num_prompts=128, dataset_name='random', no_stream=False, dataset_path=None, no_oversample=False, skip_chat_template=False, enable_multimodal_chat=False, disable_shuffle=False, custom_output_len=256, custom_ensure_client_side_data=False, spec_bench_output_len=256, spec_bench_category=None, sharegpt_output_len=None, timed_trace_chunk_hash_size=16, timed_trace_sec_multiplier=1, timed_trace_label_timestamp='timestamp', timed_trace_label_input_length='input_length', timed_trace_label_output_length='output_length', timed_trace_label_hash_ids='hash_ids', blazedit_min_distance=0.0, blazedit_max_distance=1.0, asr_max_audio_len_sec=inf, asr_min_audio_len_sec=0.0, random_input_len=1024, random_output_len=512, random_range_ratio='0', random_prefix_len=0, random_batch_size=1, no_reranker=False, random_mm_base_items_per_request=1, random_mm_num_mm_items_range_ratio=0.0, random_mm_limit_mm_per_prompt={'image': 255, 'video': 1}, random_mm_bucket_config={(256, 256, 1): 0.5, (720, 1280, 1): 0.5, (720, 1280, 16): 0.0}, hf_subset=None, hf_split=None, hf_name=None, hf_output_len=None, bfcl_categories=None, prefix_repetition_prefix_len=256, prefix_repetition_suffix_len=256, prefix_repetition_num_prefixes=10, prefix_repetition_output_len=128, speed_bench_dataset_subset='qualitative', speed_bench_output_len=4096, speed_bench_category=None, label=None, backend='openai', base_url='http://127.0.0.1:8101', host='127.0.0.1', port=8000, endpoint='/v1/completions', header=None, max_concurrency=4, model='qwen-target', input_len=None, output_len=None, tokenizer='/home/model/Qwen3.8-27B-FP8', tokenizer_mode='auto', use_beam_search=False, logprobs=None, request_rate=inf, burstiness=1.0, probe_request_rate=0.0, disable_tqdm=True, num_warmups=0, profile=False, save_result=True, save_detailed=True, append_result=False, metadata=['mode=mtp', 'k=3', 'gpu=1', 'phase=formal-r1', 'concurrency=4', 'seed=43', 'prefix_cache=false'], result_dir='/home/genai/spec_decoding_study/results/raw', result_filename='formal-r1-mtp-k3-i1024-o512-c4-s43.json', ignore_eos=True, self_timed=None, percentile_metrics='ttft,tpot,itl,e2el', metric_percentiles='50,90,95,99', goodput=None, request_id_prefix='formal-r1-mtp-k3-i1024-o512-c4-s43-', top_p=1.0, top_k=-1, min_p=None, temperature=0.0, frequency_penalty=None, presence_penalty=None, repetition_penalty=None, served_model_name=None, lora_modules=None, lora_assignment='random', ramp_up_strategy=None, ramp_up_start_rps=None, ramp_up_end_rps=None, ready_check_timeout_sec=0, chat_template_kwargs=None, extra_body=None, skip_tokenizer_init=False, insecure=False, plot_timeline=False, timeline_itl_thresholds='25,50', plot_dataset_stats=False, log_config_file=None, logging_config=LoggingConfig(log_level='INFO', formatter='text', configure_logging=True, pylogging_config_file=None))
+(MainProcess pid=141541) INFO 11-24 14:36:22 [utils.py:88] Sampling input_len from [1024, 1024] and output_len from [512, 512]
+Starting initial single prompt test run...
+Skipping endpoint ready check.
+Starting main benchmark run...
+Traffic request rate: inf
+Burstiness factor: 1.0 (Poisson process)
+Maximum request concurrency: 4
+tip: install termplotlib and gnuplot to plot the metrics
+============ Serving Benchmark Result ============
+Successful requests:                     128       
+Failed requests:                         0         
+Maximum request concurrency:             4         
+Benchmark duration (s):                  60.74     
+Total input tokens:                      131072    
+Total generated tokens:                  65536     
+Request throughput (req/s):              2.11      
+Output token throughput (tok/s):         1079.02   
+Peak output token throughput (tok/s):    348.00    
+Peak concurrent requests:                8.00      
+Total token throughput (tok/s):          3237.07   
+---------------Time to First Token----------------
+Mean TTFT (ms):                          81.60     
+Median TTFT (ms):                        76.58     
+P50 TTFT (ms):                           76.58     
+P90 TTFT (ms):                           90.83     
+P95 TTFT (ms):                           109.98    
+P99 TTFT (ms):                           175.38    
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          3.52      
+Median TPOT (ms):                        3.23      
+P50 TPOT (ms):                           3.23      
+P90 TPOT (ms):                           4.38      
+P95 TPOT (ms):                           4.64      
+P99 TPOT (ms):                           5.00      
+---------------Inter-token Latency----------------
+Mean ITL (ms):                           12.34     
+Median ITL (ms):                         11.57     
+P50 ITL (ms):                            11.57     
+P90 ITL (ms):                            11.91     
+P95 ITL (ms):                            12.57     
+P99 ITL (ms):                            34.66     
+----------------End-to-end Latency----------------
+Mean E2EL (ms):                          1879.38   
+Median E2EL (ms):                        1727.04   
+P50 E2EL (ms):                           1727.04   
+P90 E2EL (ms):                           2313.09   
+P95 E2EL (ms):                           2449.20   
+P99 E2EL (ms):                           2657.09   
+---------------Speculative Decoding---------------
+Acceptance rate (%):                     84.67     
+Acceptance length:                       3.54      
+Drafts:                                  18524     
+Draft tokens:                            55572     
+Accepted tokens:                         47054     
+Per-position acceptance (%):
+  Position 0:                            92.46     
+  Position 1:                            84.81     
+  Position 2:                            76.74     
+==================================================
+RUN_VALIDATION: formal-r1-mtp-k3-i1024-o512-c4-s43: {'valid': True, 'checks': {'completed_matches': True, 'no_failed_requests': True, 'no_error_strings': True, 'request_level_output_lengths_present': True, 'all_output_lengths_exact': True, 'total_output_tokens_exact': True, 'positive_duration': True, 'positive_output_throughput': True}, 'completed': 128, 'failed': 0, 'total_output_tokens': 65536, 'duration': 60.73649365501478, 'output_throughput': 1079.0217883213109, 'mean_tpot_ms': 3.5181756877222083, 'spec_decode_acceptance_rate': 84.67213704743396, 'spec_decode_acceptance_length': 3.5401641114230187}
+MATRIX_COMMAND: formal-r1-mtp-k3-i1024-o512-c4-s44: ['/usr/bin/env', 'CUDA_VISIBLE_DEVICES=1', '/home/genai/.pixi/envs/default/bin/vllm', 'bench', 'serve', '--backend', 'openai', '--base-url', 'http://127.0.0.1:8101', '--endpoint', '/v1/completions', '--model', 'qwen-target', '--tokenizer', '/home/model/Qwen3.8-27B-FP8', '--dataset-name', 'random', '--random-input-len', '1024', '--random-output-len', '512', '--random-range-ratio', '0', '--request-rate', 'inf', '--ignore-eos', '--temperature', '0', '--top-p', '1', '--top-k', '-1', '--percentile-metrics', 'ttft,tpot,itl,e2el', '--metric-percentiles', '50,90,95,99', '--disable-tqdm', '--num-prompts', '128', '--num-warmups', '0', '--max-concurrency', '4', '--seed', '44', '--request-id-prefix', 'formal-r1-mtp-k3-i1024-o512-c4-s44-', '--save-result', '--save-detailed', '--result-dir', '/home/genai/spec_decoding_study/results/raw', '--result-filename', 'formal-r1-mtp-k3-i1024-o512-c4-s44.json', '--metadata', 'mode=mtp', 'k=3', 'gpu=1', 'phase=formal-r1', 'concurrency=4', 'seed=44', 'prefix_cache=false']
++ /usr/bin/env CUDA_VISIBLE_DEVICES=1 /home/genai/.pixi/envs/default/bin/vllm bench serve --backend openai --base-url http://127.0.0.1:8101 --endpoint /v1/completions --model qwen-target --tokenizer /home/model/Qwen3.8-27B-FP8 --dataset-name random --random-input-len 1024 --random-output-len 512 --random-range-ratio 0 --request-rate inf --ignore-eos --temperature 0 --top-p 1 --top-k -1 --percentile-metrics ttft,tpot,itl,e2el --metric-percentiles 50,90,95,99 --disable-tqdm --num-prompts 128 --num-warmups 0 --max-concurrency 4 --seed 44 --request-id-prefix formal-r1-mtp-k3-i1024-o512-c4-s44- --save-result --save-detailed --result-dir /home/genai/spec_decoding_study/results/raw --result-filename formal-r1-mtp-k3-i1024-o512-c4-s44.json --metadata mode=mtp k=3 gpu=1 phase=formal-r1 concurrency=4 seed=44 prefix_cache=false
+W1124 14:37:25.852000 143687 site-packages/torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1124 14:37:25.852000 143687 site-packages/torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1124 14:37:25.853000 143687 site-packages/torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+Namespace(subparser='bench', bench_type='serve', dispatch_function=<function BenchmarkServingSubcommand.cmd at 0x78a85adda840>, trust_remote_code=False, seed=44, num_prompts=128, dataset_name='random', no_stream=False, dataset_path=None, no_oversample=False, skip_chat_template=False, enable_multimodal_chat=False, disable_shuffle=False, custom_output_len=256, custom_ensure_client_side_data=False, spec_bench_output_len=256, spec_bench_category=None, sharegpt_output_len=None, timed_trace_chunk_hash_size=16, timed_trace_sec_multiplier=1, timed_trace_label_timestamp='timestamp', timed_trace_label_input_length='input_length', timed_trace_label_output_length='output_length', timed_trace_label_hash_ids='hash_ids', blazedit_min_distance=0.0, blazedit_max_distance=1.0, asr_max_audio_len_sec=inf, asr_min_audio_len_sec=0.0, random_input_len=1024, random_output_len=512, random_range_ratio='0', random_prefix_len=0, random_batch_size=1, no_reranker=False, random_mm_base_items_per_request=1, random_mm_num_mm_items_range_ratio=0.0, random_mm_limit_mm_per_prompt={'image': 255, 'video': 1}, random_mm_bucket_config={(256, 256, 1): 0.5, (720, 1280, 1): 0.5, (720, 1280, 16): 0.0}, hf_subset=None, hf_split=None, hf_name=None, hf_output_len=None, bfcl_categories=None, prefix_repetition_prefix_len=256, prefix_repetition_suffix_len=256, prefix_repetition_num_prefixes=10, prefix_repetition_output_len=128, speed_bench_dataset_subset='qualitative', speed_bench_output_len=4096, speed_bench_category=None, label=None, backend='openai', base_url='http://127.0.0.1:8101', host='127.0.0.1', port=8000, endpoint='/v1/completions', header=None, max_concurrency=4, model='qwen-target', input_len=None, output_len=None, tokenizer='/home/model/Qwen3.8-27B-FP8', tokenizer_mode='auto', use_beam_search=False, logprobs=None, request_rate=inf, burstiness=1.0, probe_request_rate=0.0, disable_tqdm=True, num_warmups=0, profile=False, save_result=True, save_detailed=True, append_result=False, metadata=['mode=mtp', 'k=3', 'gpu=1', 'phase=formal-r1', 'concurrency=4', 'seed=44', 'prefix_cache=false'], result_dir='/home/genai/spec_decoding_study/results/raw', result_filename='formal-r1-mtp-k3-i1024-o512-c4-s44.json', ignore_eos=True, self_timed=None, percentile_metrics='ttft,tpot,itl,e2el', metric_percentiles='50,90,95,99', goodput=None, request_id_prefix='formal-r1-mtp-k3-i1024-o512-c4-s44-', top_p=1.0, top_k=-1, min_p=None, temperature=0.0, frequency_penalty=None, presence_penalty=None, repetition_penalty=None, served_model_name=None, lora_modules=None, lora_assignment='random', ramp_up_strategy=None, ramp_up_start_rps=None, ramp_up_end_rps=None, ready_check_timeout_sec=0, chat_template_kwargs=None, extra_body=None, skip_tokenizer_init=False, insecure=False, plot_timeline=False, timeline_itl_thresholds='25,50', plot_dataset_stats=False, log_config_file=None, logging_config=LoggingConfig(log_level='INFO', formatter='text', configure_logging=True, pylogging_config_file=None))
+(MainProcess pid=143687) INFO 11-24 14:37:31 [utils.py:88] Sampling input_len from [1024, 1024] and output_len from [512, 512]
+Starting initial single prompt test run...
+Skipping endpoint ready check.
+Starting main benchmark run...
+Traffic request rate: inf
+Burstiness factor: 1.0 (Poisson process)
+Maximum request concurrency: 4
+tip: install termplotlib and gnuplot to plot the metrics
+============ Serving Benchmark Result ============
+Successful requests:                     128       
+Failed requests:                         0         
+Maximum request concurrency:             4         
+Benchmark duration (s):                  60.37     
+Total input tokens:                      131072    
+Total generated tokens:                  65536     
+Request throughput (req/s):              2.12      
+Output token throughput (tok/s):         1085.59   
+Peak output token throughput (tok/s):    331.00    
+Peak concurrent requests:                7.00      
+Total token throughput (tok/s):          3256.76   
+---------------Time to First Token----------------
+Mean TTFT (ms):                          79.69     
+Median TTFT (ms):                        76.68     
+P50 TTFT (ms):                           76.68     
+P90 TTFT (ms):                           78.01     
+P95 TTFT (ms):                           87.43     
+P99 TTFT (ms):                           131.12    
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          3.48      
+Median TPOT (ms):                        3.24      
+P50 TPOT (ms):                           3.24      
+P90 TPOT (ms):                           4.30      
+P95 TPOT (ms):                           4.58      
+P99 TPOT (ms):                           5.12      
+---------------Inter-token Latency----------------
+Mean ITL (ms):                           12.37     
+Median ITL (ms):                         11.57     
+P50 ITL (ms):                            11.57     
+P90 ITL (ms):                            11.95     
+P95 ITL (ms):                            12.72     
+P99 ITL (ms):                            34.38     
+----------------End-to-end Latency----------------
+Mean E2EL (ms):                          1857.07   
+Median E2EL (ms):                        1735.33   
+P50 E2EL (ms):                           1735.33   
+P90 E2EL (ms):                           2289.20   
+P95 E2EL (ms):                           2416.77   
+P99 E2EL (ms):                           2690.68   
+---------------Speculative Decoding---------------
+Acceptance rate (%):                     86.41     
+Acceptance length:                       3.59      
+Drafts:                                  18260     
+Draft tokens:                            54780     
+Accepted tokens:                         47338     
+Per-position acceptance (%):
+  Position 0:                            92.40     
+  Position 1:                            86.32     
+  Position 2:                            80.53     
+==================================================
+RUN_VALIDATION: formal-r1-mtp-k3-i1024-o512-c4-s44: {'valid': True, 'checks': {'completed_matches': True, 'no_failed_requests': True, 'no_error_strings': True, 'request_level_output_lengths_present': True, 'all_output_lengths_exact': True, 'total_output_tokens_exact': True, 'positive_duration': True, 'positive_output_throughput': True}, 'completed': 128, 'failed': 0, 'total_output_tokens': 65536, 'duration': 60.36921712895855, 'output_throughput': 1085.5863818807582, 'mean_tpot_ms': 3.478247136689327, 'spec_decode_acceptance_rate': 86.41474990872581, 'spec_decode_acceptance_length': 3.5924424972617746}
+MATRIX_COMMAND: warmup-formal-r1-mtp-k3-c1: ['/usr/bin/env', 'CUDA_VISIBLE_DEVICES=1', '/home/genai/.pixi/envs/default/bin/vllm', 'bench', 'serve', '--backend', 'openai', '--base-url', 'http://127.0.0.1:8101', '--endpoint', '/v1/completions', '--model', 'qwen-target', '--tokenizer', '/home/model/Qwen3.8-27B-FP8', '--dataset-name', 'random', '--random-input-len', '1024', '--random-output-len', '512', '--random-range-ratio', '0', '--request-rate', 'inf', '--ignore-eos', '--temperature', '0', '--top-p', '1', '--top-k', '-1', '--percentile-metrics', 'ttft,tpot,itl,e2el', '--metric-percentiles', '50,90,95,99', '--disable-tqdm', '--num-prompts', '4', '--num-warmups', '0', '--max-concurrency', '1', '--seed', '1001', '--request-id-prefix', 'warmup-formal-r1-mtp-k3-c1-']
++ /usr/bin/env CUDA_VISIBLE_DEVICES=1 /home/genai/.pixi/envs/default/bin/vllm bench serve --backend openai --base-url http://127.0.0.1:8101 --endpoint /v1/completions --model qwen-target --tokenizer /home/model/Qwen3.8-27B-FP8 --dataset-name random --random-input-len 1024 --random-output-len 512 --random-range-ratio 0 --request-rate inf --ignore-eos --temperature 0 --top-p 1 --top-k -1 --percentile-metrics ttft,tpot,itl,e2el --metric-percentiles 50,90,95,99 --disable-tqdm --num-prompts 4 --num-warmups 0 --max-concurrency 1 --seed 1001 --request-id-prefix warmup-formal-r1-mtp-k3-c1-
+W1124 14:38:34.060000 144606 site-packages/torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1124 14:38:34.061000 144606 site-packages/torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1124 14:38:34.061000 144606 site-packages/torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+Namespace(subparser='bench', bench_type='serve', dispatch_function=<function BenchmarkServingSubcommand.cmd at 0x7eb397716840>, trust_remote_code=False, seed=1001, num_prompts=4, dataset_name='random', no_stream=False, dataset_path=None, no_oversample=False, skip_chat_template=False, enable_multimodal_chat=False, disable_shuffle=False, custom_output_len=256, custom_ensure_client_side_data=False, spec_bench_output_len=256, spec_bench_category=None, sharegpt_output_len=None, timed_trace_chunk_hash_size=16, timed_trace_sec_multiplier=1, timed_trace_label_timestamp='timestamp', timed_trace_label_input_length='input_length', timed_trace_label_output_length='output_length', timed_trace_label_hash_ids='hash_ids', blazedit_min_distance=0.0, blazedit_max_distance=1.0, asr_max_audio_len_sec=inf, asr_min_audio_len_sec=0.0, random_input_len=1024, random_output_len=512, random_range_ratio='0', random_prefix_len=0, random_batch_size=1, no_reranker=False, random_mm_base_items_per_request=1, random_mm_num_mm_items_range_ratio=0.0, random_mm_limit_mm_per_prompt={'image': 255, 'video': 1}, random_mm_bucket_config={(256, 256, 1): 0.5, (720, 1280, 1): 0.5, (720, 1280, 16): 0.0}, hf_subset=None, hf_split=None, hf_name=None, hf_output_len=None, bfcl_categories=None, prefix_repetition_prefix_len=256, prefix_repetition_suffix_len=256, prefix_repetition_num_prefixes=10, prefix_repetition_output_len=128, speed_bench_dataset_subset='qualitative', speed_bench_output_len=4096, speed_bench_category=None, label=None, backend='openai', base_url='http://127.0.0.1:8101', host='127.0.0.1', port=8000, endpoint='/v1/completions', header=None, max_concurrency=1, model='qwen-target', input_len=None, output_len=None, tokenizer='/home/model/Qwen3.8-27B-FP8', tokenizer_mode='auto', use_beam_search=False, logprobs=None, request_rate=inf, burstiness=1.0, probe_request_rate=0.0, disable_tqdm=True, num_warmups=0, profile=False, save_result=False, save_detailed=False, append_result=False, metadata=None, result_dir=None, result_filename=None, ignore_eos=True, self_timed=None, percentile_metrics='ttft,tpot,itl,e2el', metric_percentiles='50,90,95,99', goodput=None, request_id_prefix='warmup-formal-r1-mtp-k3-c1-', top_p=1.0, top_k=-1, min_p=None, temperature=0.0, frequency_penalty=None, presence_penalty=None, repetition_penalty=None, served_model_name=None, lora_modules=None, lora_assignment='random', ramp_up_strategy=None, ramp_up_start_rps=None, ramp_up_end_rps=None, ready_check_timeout_sec=0, chat_template_kwargs=None, extra_body=None, skip_tokenizer_init=False, insecure=False, plot_timeline=False, timeline_itl_thresholds='25,50', plot_dataset_stats=False, log_config_file=None, logging_config=LoggingConfig(log_level='INFO', formatter='text', configure_logging=True, pylogging_config_file=None))
+(MainProcess pid=144606) INFO 11-24 14:38:39 [utils.py:88] Sampling input_len from [1024, 1024] and output_len from [512, 512]
+Starting initial single prompt test run...
+Skipping endpoint ready check.
+Starting main benchmark run...
+Traffic request rate: inf
+Burstiness factor: 1.0 (Poisson process)
+Maximum request concurrency: 1
+tip: install termplotlib and gnuplot to plot the metrics
+============ Serving Benchmark Result ============
+Successful requests:                     4         
+Failed requests:                         0         
+Maximum request concurrency:             1         
+Benchmark duration (s):                  6.78      
+Total input tokens:                      4096      
+Total generated tokens:                  2048      
+Request throughput (req/s):              0.59      
+Output token throughput (tok/s):         302.16    
+Peak output token throughput (tok/s):    94.00     
+Peak concurrent requests:                2.00      
+Total token throughput (tok/s):          906.47    
+---------------Time to First Token----------------
+Mean TTFT (ms):                          51.88     
+Median TTFT (ms):                        51.98     
+P50 TTFT (ms):                           51.98     
+P90 TTFT (ms):                           55.26     
+P95 TTFT (ms):                           55.29     
+P99 TTFT (ms):                           55.30     
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          3.21      
+Median TPOT (ms):                        3.24      
+P50 TPOT (ms):                           3.24      
+P90 TPOT (ms):                           3.58      
+P95 TPOT (ms):                           3.61      
+P99 TPOT (ms):                           3.62      
+---------------Inter-token Latency----------------
+Mean ITL (ms):                           10.58     
+Median ITL (ms):                         10.65     
+P50 ITL (ms):                            10.65     
+P90 ITL (ms):                            10.87     
+P95 ITL (ms):                            10.99     
+P99 ITL (ms):                            11.22     
+----------------End-to-end Latency----------------
+Mean E2EL (ms):                          1694.37   
+Median E2EL (ms):                        1707.42   
+P50 E2EL (ms):                           1707.42   
+P90 E2EL (ms):                           1884.31   
+P95 E2EL (ms):                           1896.52   
+P99 E2EL (ms):                           1906.29   
+---------------Speculative Decoding---------------
+Acceptance rate (%):                     77.31     
+Acceptance length:                       3.32      
+Drafts:                                  617       
+Draft tokens:                            1851      
+Accepted tokens:                         1431      
+Per-position acceptance (%):
+  Position 0:                            90.76     
+  Position 1:                            78.77     
+  Position 2:                            62.40     
+==================================================
+MATRIX_COMMAND: formal-r1-mtp-k3-i1024-o512-c1-s42: ['/usr/bin/env', 'CUDA_VISIBLE_DEVICES=1', '/home/genai/.pixi/envs/default/bin/vllm', 'bench', 'serve', '--backend', 'openai', '--base-url', 'http://127.0.0.1:8101', '--endpoint', '/v1/completions', '--model', 'qwen-target', '--tokenizer', '/home/model/Qwen3.8-27B-FP8', '--dataset-name', 'random', '--random-input-len', '1024', '--random-output-len', '512', '--random-range-ratio', '0', '--request-rate', 'inf', '--ignore-eos', '--temperature', '0', '--top-p', '1', '--top-k', '-1', '--percentile-metrics', 'ttft,tpot,itl,e2el', '--metric-percentiles', '50,90,95,99', '--disable-tqdm', '--num-prompts', '128', '--num-warmups', '0', '--max-concurrency', '1', '--seed', '42', '--request-id-prefix', 'formal-r1-mtp-k3-i1024-o512-c1-s42-', '--save-result', '--save-detailed', '--result-dir', '/home/genai/spec_decoding_study/results/raw', '--result-filename', 'formal-r1-mtp-k3-i1024-o512-c1-s42.json', '--metadata', 'mode=mtp', 'k=3', 'gpu=1', 'phase=formal-r1', 'concurrency=1', 'seed=42', 'prefix_cache=false']
++ /usr/bin/env CUDA_VISIBLE_DEVICES=1 /home/genai/.pixi/envs/default/bin/vllm bench serve --backend openai --base-url http://127.0.0.1:8101 --endpoint /v1/completions --model qwen-target --tokenizer /home/model/Qwen3.8-27B-FP8 --dataset-name random --random-input-len 1024 --random-output-len 512 --random-range-ratio 0 --request-rate inf --ignore-eos --temperature 0 --top-p 1 --top-k -1 --percentile-metrics ttft,tpot,itl,e2el --metric-percentiles 50,90,95,99 --disable-tqdm --num-prompts 128 --num-warmups 0 --max-concurrency 1 --seed 42 --request-id-prefix formal-r1-mtp-k3-i1024-o512-c1-s42- --save-result --save-detailed --result-dir /home/genai/spec_decoding_study/results/raw --result-filename formal-r1-mtp-k3-i1024-o512-c1-s42.json --metadata mode=mtp k=3 gpu=1 phase=formal-r1 concurrency=1 seed=42 prefix_cache=false
+W1124 14:38:48.818000 145104 site-packages/torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1124 14:38:48.818000 145104 site-packages/torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1124 14:38:48.818000 145104 site-packages/torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+Namespace(subparser='bench', bench_type='serve', dispatch_function=<function BenchmarkServingSubcommand.cmd at 0x77d1b8bfa520>, trust_remote_code=False, seed=42, num_prompts=128, dataset_name='random', no_stream=False, dataset_path=None, no_oversample=False, skip_chat_template=False, enable_multimodal_chat=False, disable_shuffle=False, custom_output_len=256, custom_ensure_client_side_data=False, spec_bench_output_len=256, spec_bench_category=None, sharegpt_output_len=None, timed_trace_chunk_hash_size=16, timed_trace_sec_multiplier=1, timed_trace_label_timestamp='timestamp', timed_trace_label_input_length='input_length', timed_trace_label_output_length='output_length', timed_trace_label_hash_ids='hash_ids', blazedit_min_distance=0.0, blazedit_max_distance=1.0, asr_max_audio_len_sec=inf, asr_min_audio_len_sec=0.0, random_input_len=1024, random_output_len=512, random_range_ratio='0', random_prefix_len=0, random_batch_size=1, no_reranker=False, random_mm_base_items_per_request=1, random_mm_num_mm_items_range_ratio=0.0, random_mm_limit_mm_per_prompt={'image': 255, 'video': 1}, random_mm_bucket_config={(256, 256, 1): 0.5, (720, 1280, 1): 0.5, (720, 1280, 16): 0.0}, hf_subset=None, hf_split=None, hf_name=None, hf_output_len=None, bfcl_categories=None, prefix_repetition_prefix_len=256, prefix_repetition_suffix_len=256, prefix_repetition_num_prefixes=10, prefix_repetition_output_len=128, speed_bench_dataset_subset='qualitative', speed_bench_output_len=4096, speed_bench_category=None, label=None, backend='openai', base_url='http://127.0.0.1:8101', host='127.0.0.1', port=8000, endpoint='/v1/completions', header=None, max_concurrency=1, model='qwen-target', input_len=None, output_len=None, tokenizer='/home/model/Qwen3.8-27B-FP8', tokenizer_mode='auto', use_beam_search=False, logprobs=None, request_rate=inf, burstiness=1.0, probe_request_rate=0.0, disable_tqdm=True, num_warmups=0, profile=False, save_result=True, save_detailed=True, append_result=False, metadata=['mode=mtp', 'k=3', 'gpu=1', 'phase=formal-r1', 'concurrency=1', 'seed=42', 'prefix_cache=false'], result_dir='/home/genai/spec_decoding_study/results/raw', result_filename='formal-r1-mtp-k3-i1024-o512-c1-s42.json', ignore_eos=True, self_timed=None, percentile_metrics='ttft,tpot,itl,e2el', metric_percentiles='50,90,95,99', goodput=None, request_id_prefix='formal-r1-mtp-k3-i1024-o512-c1-s42-', top_p=1.0, top_k=-1, min_p=None, temperature=0.0, frequency_penalty=None, presence_penalty=None, repetition_penalty=None, served_model_name=None, lora_modules=None, lora_assignment='random', ramp_up_strategy=None, ramp_up_start_rps=None, ramp_up_end_rps=None, ready_check_timeout_sec=0, chat_template_kwargs=None, extra_body=None, skip_tokenizer_init=False, insecure=False, plot_timeline=False, timeline_itl_thresholds='25,50', plot_dataset_stats=False, log_config_file=None, logging_config=LoggingConfig(log_level='INFO', formatter='text', configure_logging=True, pylogging_config_file=None))
+(MainProcess pid=145104) INFO 11-24 14:38:54 [utils.py:88] Sampling input_len from [1024, 1024] and output_len from [512, 512]
+Starting initial single prompt test run...
+Skipping endpoint ready check.
+Starting main benchmark run...
+Traffic request rate: inf
+Burstiness factor: 1.0 (Poisson process)
+Maximum request concurrency: 1
+tip: install termplotlib and gnuplot to plot the metrics
+============ Serving Benchmark Result ============
+Successful requests:                     128       
+Failed requests:                         0         
+Maximum request concurrency:             1         
+Benchmark duration (s):                  201.67    
+Total input tokens:                      131072    
+Total generated tokens:                  65536     
+Request throughput (req/s):              0.63      
+Output token throughput (tok/s):         324.97    
+Peak output token throughput (tok/s):    95.00     
+Peak concurrent requests:                2.00      
+Total token throughput (tok/s):          974.90    
+---------------Time to First Token----------------
+Mean TTFT (ms):                          53.08     
+Median TTFT (ms):                        54.57     
+P50 TTFT (ms):                           54.57     
+P90 TTFT (ms):                           55.06     
+P95 TTFT (ms):                           55.25     
+P99 TTFT (ms):                           55.54     
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          2.98      
+Median TPOT (ms):                        2.77      
+P50 TPOT (ms):                           2.77      
+P90 TPOT (ms):                           3.67      
+P95 TPOT (ms):                           3.78      
+P99 TPOT (ms):                           4.28      
+---------------Inter-token Latency----------------
+Mean ITL (ms):                           10.58     
+Median ITL (ms):                         10.65     
+P50 ITL (ms):                            10.65     
+P90 ITL (ms):                            10.82     
+P95 ITL (ms):                            10.91     
+P99 ITL (ms):                            11.21     
+----------------End-to-end Latency----------------
+Mean E2EL (ms):                          1575.45   
+Median E2EL (ms):                        1471.38   
+P50 E2EL (ms):                           1471.38   
+P90 E2EL (ms):                           1928.62   
+P95 E2EL (ms):                           1988.14   
+P99 E2EL (ms):                           2236.10   
+---------------Speculative Decoding---------------
+Acceptance rate (%):                     86.16     
+Acceptance length:                       3.58      
+Drafts:                                  18298     
+Draft tokens:                            54894     
+Accepted tokens:                         47296     
+Per-position acceptance (%):
+  Position 0:                            92.50     
+  Position 1:                            86.47     
+  Position 2:                            79.51     
+==================================================
+RUN_VALIDATION: formal-r1-mtp-k3-i1024-o512-c1-s42: {'valid': True, 'checks': {'completed_matches': True, 'no_failed_requests': True, 'no_error_strings': True, 'request_level_output_lengths_present': True, 'all_output_lengths_exact': True, 'total_output_tokens_exact': True, 'positive_duration': True, 'positive_output_throughput': True}, 'completed': 128, 'failed': 0, 'total_output_tokens': 65536, 'duration': 201.67074000299908, 'output_throughput': 324.96533705893773, 'mean_tpot_ms': 2.9791990290809407, 'spec_decode_acceptance_rate': 86.15877873720261, 'spec_decode_acceptance_length': 3.584763362116078}
+MATRIX_COMMAND: formal-r1-mtp-k3-i1024-o512-c1-s43: ['/usr/bin/env', 'CUDA_VISIBLE_DEVICES=1', '/home/genai/.pixi/envs/default/bin/vllm', 'bench', 'serve', '--backend', 'openai', '--base-url', 'http://127.0.0.1:8101', '--endpoint', '/v1/completions', '--model', 'qwen-target', '--tokenizer', '/home/model/Qwen3.8-27B-FP8', '--dataset-name', 'random', '--random-input-len', '1024', '--random-output-len', '512', '--random-range-ratio', '0', '--request-rate', 'inf', '--ignore-eos', '--temperature', '0', '--top-p', '1', '--top-k', '-1', '--percentile-metrics', 'ttft,tpot,itl,e2el', '--metric-percentiles', '50,90,95,99', '--disable-tqdm', '--num-prompts', '128', '--num-warmups', '0', '--max-concurrency', '1', '--seed', '43', '--request-id-prefix', 'formal-r1-mtp-k3-i1024-o512-c1-s43-', '--save-result', '--save-detailed', '--result-dir', '/home/genai/spec_decoding_study/results/raw', '--result-filename', 'formal-r1-mtp-k3-i1024-o512-c1-s43.json', '--metadata', 'mode=mtp', 'k=3', 'gpu=1', 'phase=formal-r1', 'concurrency=1', 'seed=43', 'prefix_cache=false']
++ /usr/bin/env CUDA_VISIBLE_DEVICES=1 /home/genai/.pixi/envs/default/bin/vllm bench serve --backend openai --base-url http://127.0.0.1:8101 --endpoint /v1/completions --model qwen-target --tokenizer /home/model/Qwen3.8-27B-FP8 --dataset-name random --random-input-len 1024 --random-output-len 512 --random-range-ratio 0 --request-rate inf --ignore-eos --temperature 0 --top-p 1 --top-k -1 --percentile-metrics ttft,tpot,itl,e2el --metric-percentiles 50,90,95,99 --disable-tqdm --num-prompts 128 --num-warmups 0 --max-concurrency 1 --seed 43 --request-id-prefix formal-r1-mtp-k3-i1024-o512-c1-s43- --save-result --save-detailed --result-dir /home/genai/spec_decoding_study/results/raw --result-filename formal-r1-mtp-k3-i1024-o512-c1-s43.json --metadata mode=mtp k=3 gpu=1 phase=formal-r1 concurrency=1 seed=43 prefix_cache=false
+W1124 14:42:18.653000 148112 site-packages/torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1124 14:42:18.653000 148112 site-packages/torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1124 14:42:18.653000 148112 site-packages/torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+Namespace(subparser='bench', bench_type='serve', dispatch_function=<function BenchmarkServingSubcommand.cmd at 0x7b5216c87ba0>, trust_remote_code=False, seed=43, num_prompts=128, dataset_name='random', no_stream=False, dataset_path=None, no_oversample=False, skip_chat_template=False, enable_multimodal_chat=False, disable_shuffle=False, custom_output_len=256, custom_ensure_client_side_data=False, spec_bench_output_len=256, spec_bench_category=None, sharegpt_output_len=None, timed_trace_chunk_hash_size=16, timed_trace_sec_multiplier=1, timed_trace_label_timestamp='timestamp', timed_trace_label_input_length='input_length', timed_trace_label_output_length='output_length', timed_trace_label_hash_ids='hash_ids', blazedit_min_distance=0.0, blazedit_max_distance=1.0, asr_max_audio_len_sec=inf, asr_min_audio_len_sec=0.0, random_input_len=1024, random_output_len=512, random_range_ratio='0', random_prefix_len=0, random_batch_size=1, no_reranker=False, random_mm_base_items_per_request=1, random_mm_num_mm_items_range_ratio=0.0, random_mm_limit_mm_per_prompt={'image': 255, 'video': 1}, random_mm_bucket_config={(256, 256, 1): 0.5, (720, 1280, 1): 0.5, (720, 1280, 16): 0.0}, hf_subset=None, hf_split=None, hf_name=None, hf_output_len=None, bfcl_categories=None, prefix_repetition_prefix_len=256, prefix_repetition_suffix_len=256, prefix_repetition_num_prefixes=10, prefix_repetition_output_len=128, speed_bench_dataset_subset='qualitative', speed_bench_output_len=4096, speed_bench_category=None, label=None, backend='openai', base_url='http://127.0.0.1:8101', host='127.0.0.1', port=8000, endpoint='/v1/completions', header=None, max_concurrency=1, model='qwen-target', input_len=None, output_len=None, tokenizer='/home/model/Qwen3.8-27B-FP8', tokenizer_mode='auto', use_beam_search=False, logprobs=None, request_rate=inf, burstiness=1.0, probe_request_rate=0.0, disable_tqdm=True, num_warmups=0, profile=False, save_result=True, save_detailed=True, append_result=False, metadata=['mode=mtp', 'k=3', 'gpu=1', 'phase=formal-r1', 'concurrency=1', 'seed=43', 'prefix_cache=false'], result_dir='/home/genai/spec_decoding_study/results/raw', result_filename='formal-r1-mtp-k3-i1024-o512-c1-s43.json', ignore_eos=True, self_timed=None, percentile_metrics='ttft,tpot,itl,e2el', metric_percentiles='50,90,95,99', goodput=None, request_id_prefix='formal-r1-mtp-k3-i1024-o512-c1-s43-', top_p=1.0, top_k=-1, min_p=None, temperature=0.0, frequency_penalty=None, presence_penalty=None, repetition_penalty=None, served_model_name=None, lora_modules=None, lora_assignment='random', ramp_up_strategy=None, ramp_up_start_rps=None, ramp_up_end_rps=None, ready_check_timeout_sec=0, chat_template_kwargs=None, extra_body=None, skip_tokenizer_init=False, insecure=False, plot_timeline=False, timeline_itl_thresholds='25,50', plot_dataset_stats=False, log_config_file=None, logging_config=LoggingConfig(log_level='INFO', formatter='text', configure_logging=True, pylogging_config_file=None))
+(MainProcess pid=148112) INFO 11-24 14:42:24 [utils.py:88] Sampling input_len from [1024, 1024] and output_len from [512, 512]
+Starting initial single prompt test run...
+Skipping endpoint ready check.
+Starting main benchmark run...
+Traffic request rate: inf
+Burstiness factor: 1.0 (Poisson process)
+Maximum request concurrency: 1
+tip: install termplotlib and gnuplot to plot the metrics
+============ Serving Benchmark Result ============
+Successful requests:                     128       
+Failed requests:                         0         
+Maximum request concurrency:             1         
+Benchmark duration (s):                  200.85    
+Total input tokens:                      131072    
+Total generated tokens:                  65536     
+Request throughput (req/s):              0.64      
+Output token throughput (tok/s):         326.30    
+Peak output token throughput (tok/s):    95.00     
+Peak concurrent requests:                2.00      
+Total token throughput (tok/s):          978.89    
+---------------Time to First Token----------------
+Mean TTFT (ms):                          53.41     
+Median TTFT (ms):                        54.65     
+P50 TTFT (ms):                           54.65     
+P90 TTFT (ms):                           55.15     
+P95 TTFT (ms):                           55.34     
+P99 TTFT (ms):                           56.18     
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          2.97      
+Median TPOT (ms):                        2.78      
+P50 TPOT (ms):                           2.78      
+P90 TPOT (ms):                           3.53      
+P95 TPOT (ms):                           3.74      
+P99 TPOT (ms):                           4.00      
+---------------Inter-token Latency----------------
+Mean ITL (ms):                           10.58     
+Median ITL (ms):                         10.65     
+P50 ITL (ms):                            10.65     
+P90 ITL (ms):                            10.85     
+P95 ITL (ms):                            10.98     
+P99 ITL (ms):                            11.27     
+----------------End-to-end Latency----------------
+Mean E2EL (ms):                          1569.03   
+Median E2EL (ms):                        1476.58   
+P50 E2EL (ms):                           1476.58   
+P90 E2EL (ms):                           1859.05   
+P95 E2EL (ms):                           1965.01   
+P99 E2EL (ms):                           2092.73   
+---------------Speculative Decoding---------------
+Acceptance rate (%):                     86.68     
+Acceptance length:                       3.60      
+Drafts:                                  18216     
+Draft tokens:                            54648     
+Accepted tokens:                         47367     
+Per-position acceptance (%):
+  Position 0:                            93.39     
+  Position 1:                            86.85     
+  Position 2:                            79.79     
+==================================================
+RUN_VALIDATION: formal-r1-mtp-k3-i1024-o512-c1-s43: {'valid': True, 'checks': {'completed_matches': True, 'no_failed_requests': True, 'no_error_strings': True, 'request_level_output_lengths_present': True, 'all_output_lengths_exact': True, 'total_output_tokens_exact': True, 'positive_duration': True, 'positive_output_throughput': True}, 'completed': 128, 'failed': 0, 'total_output_tokens': 65536, 'duration': 200.84834287501872, 'output_throughput': 326.29594579618157, 'mean_tpot_ms': 2.9659978421274817, 'spec_decode_acceptance_rate': 86.67654808959156, 'spec_decode_acceptance_length': 3.600296442687747}
+MATRIX_COMMAND: formal-r1-mtp-k3-i1024-o512-c1-s44: ['/usr/bin/env', 'CUDA_VISIBLE_DEVICES=1', '/home/genai/.pixi/envs/default/bin/vllm', 'bench', 'serve', '--backend', 'openai', '--base-url', 'http://127.0.0.1:8101', '--endpoint', '/v1/completions', '--model', 'qwen-target', '--tokenizer', '/home/model/Qwen3.8-27B-FP8', '--dataset-name', 'random', '--random-input-len', '1024', '--random-output-len', '512', '--random-range-ratio', '0', '--request-rate', 'inf', '--ignore-eos', '--temperature', '0', '--top-p', '1', '--top-k', '-1', '--percentile-metrics', 'ttft,tpot,itl,e2el', '--metric-percentiles', '50,90,95,99', '--disable-tqdm', '--num-prompts', '128', '--num-warmups', '0', '--max-concurrency', '1', '--seed', '44', '--request-id-prefix', 'formal-r1-mtp-k3-i1024-o512-c1-s44-', '--save-result', '--save-detailed', '--result-dir', '/home/genai/spec_decoding_study/results/raw', '--result-filename', 'formal-r1-mtp-k3-i1024-o512-c1-s44.json', '--metadata', 'mode=mtp', 'k=3', 'gpu=1', 'phase=formal-r1', 'concurrency=1', 'seed=44', 'prefix_cache=false']
++ /usr/bin/env CUDA_VISIBLE_DEVICES=1 /home/genai/.pixi/envs/default/bin/vllm bench serve --backend openai --base-url http://127.0.0.1:8101 --endpoint /v1/completions --model qwen-target --tokenizer /home/model/Qwen3.8-27B-FP8 --dataset-name random --random-input-len 1024 --random-output-len 512 --random-range-ratio 0 --request-rate inf --ignore-eos --temperature 0 --top-p 1 --top-k -1 --percentile-metrics ttft,tpot,itl,e2el --metric-percentiles 50,90,95,99 --disable-tqdm --num-prompts 128 --num-warmups 0 --max-concurrency 1 --seed 44 --request-id-prefix formal-r1-mtp-k3-i1024-o512-c1-s44- --save-result --save-detailed --result-dir /home/genai/spec_decoding_study/results/raw --result-filename formal-r1-mtp-k3-i1024-o512-c1-s44.json --metadata mode=mtp k=3 gpu=1 phase=formal-r1 concurrency=1 seed=44 prefix_cache=false
+W1124 14:45:48.032000 152443 site-packages/torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1124 14:45:48.032000 152443 site-packages/torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1124 14:45:48.032000 152443 site-packages/torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+Namespace(subparser='bench', bench_type='serve', dispatch_function=<function BenchmarkServingSubcommand.cmd at 0x73b186477ba0>, trust_remote_code=False, seed=44, num_prompts=128, dataset_name='random', no_stream=False, dataset_path=None, no_oversample=False, skip_chat_template=False, enable_multimodal_chat=False, disable_shuffle=False, custom_output_len=256, custom_ensure_client_side_data=False, spec_bench_output_len=256, spec_bench_category=None, sharegpt_output_len=None, timed_trace_chunk_hash_size=16, timed_trace_sec_multiplier=1, timed_trace_label_timestamp='timestamp', timed_trace_label_input_length='input_length', timed_trace_label_output_length='output_length', timed_trace_label_hash_ids='hash_ids', blazedit_min_distance=0.0, blazedit_max_distance=1.0, asr_max_audio_len_sec=inf, asr_min_audio_len_sec=0.0, random_input_len=1024, random_output_len=512, random_range_ratio='0', random_prefix_len=0, random_batch_size=1, no_reranker=False, random_mm_base_items_per_request=1, random_mm_num_mm_items_range_ratio=0.0, random_mm_limit_mm_per_prompt={'image': 255, 'video': 1}, random_mm_bucket_config={(256, 256, 1): 0.5, (720, 1280, 1): 0.5, (720, 1280, 16): 0.0}, hf_subset=None, hf_split=None, hf_name=None, hf_output_len=None, bfcl_categories=None, prefix_repetition_prefix_len=256, prefix_repetition_suffix_len=256, prefix_repetition_num_prefixes=10, prefix_repetition_output_len=128, speed_bench_dataset_subset='qualitative', speed_bench_output_len=4096, speed_bench_category=None, label=None, backend='openai', base_url='http://127.0.0.1:8101', host='127.0.0.1', port=8000, endpoint='/v1/completions', header=None, max_concurrency=1, model='qwen-target', input_len=None, output_len=None, tokenizer='/home/model/Qwen3.8-27B-FP8', tokenizer_mode='auto', use_beam_search=False, logprobs=None, request_rate=inf, burstiness=1.0, probe_request_rate=0.0, disable_tqdm=True, num_warmups=0, profile=False, save_result=True, save_detailed=True, append_result=False, metadata=['mode=mtp', 'k=3', 'gpu=1', 'phase=formal-r1', 'concurrency=1', 'seed=44', 'prefix_cache=false'], result_dir='/home/genai/spec_decoding_study/results/raw', result_filename='formal-r1-mtp-k3-i1024-o512-c1-s44.json', ignore_eos=True, self_timed=None, percentile_metrics='ttft,tpot,itl,e2el', metric_percentiles='50,90,95,99', goodput=None, request_id_prefix='formal-r1-mtp-k3-i1024-o512-c1-s44-', top_p=1.0, top_k=-1, min_p=None, temperature=0.0, frequency_penalty=None, presence_penalty=None, repetition_penalty=None, served_model_name=None, lora_modules=None, lora_assignment='random', ramp_up_strategy=None, ramp_up_start_rps=None, ramp_up_end_rps=None, ready_check_timeout_sec=0, chat_template_kwargs=None, extra_body=None, skip_tokenizer_init=False, insecure=False, plot_timeline=False, timeline_itl_thresholds='25,50', plot_dataset_stats=False, log_config_file=None, logging_config=LoggingConfig(log_level='INFO', formatter='text', configure_logging=True, pylogging_config_file=None))
+(MainProcess pid=152443) INFO 11-24 14:45:54 [utils.py:88] Sampling input_len from [1024, 1024] and output_len from [512, 512]
+Starting initial single prompt test run...
+Skipping endpoint ready check.
+Starting main benchmark run...
+Traffic request rate: inf
+Burstiness factor: 1.0 (Poisson process)
+Maximum request concurrency: 1
+tip: install termplotlib and gnuplot to plot the metrics
+============ Serving Benchmark Result ============
+Successful requests:                     128       
+Failed requests:                         0         
+Maximum request concurrency:             1         
+Benchmark duration (s):                  200.90    
+Total input tokens:                      131072    
+Total generated tokens:                  65536     
+Request throughput (req/s):              0.64      
+Output token throughput (tok/s):         326.21    
+Peak output token throughput (tok/s):    94.00     
+Peak concurrent requests:                2.00      
+Total token throughput (tok/s):          978.63    
+---------------Time to First Token----------------
+Mean TTFT (ms):                          52.85     
+Median TTFT (ms):                        54.59     
+P50 TTFT (ms):                           54.59     
+P90 TTFT (ms):                           55.07     
+P95 TTFT (ms):                           55.26     
+P99 TTFT (ms):                           55.93     
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          2.97      
+Median TPOT (ms):                        2.75      
+P50 TPOT (ms):                           2.75      
+P90 TPOT (ms):                           3.61      
+P95 TPOT (ms):                           3.85      
+P99 TPOT (ms):                           4.68      
+---------------Inter-token Latency----------------
+Mean ITL (ms):                           10.58     
+Median ITL (ms):                         10.65     
+P50 ITL (ms):                            10.65     
+P90 ITL (ms):                            10.86     
+P95 ITL (ms):                            10.98     
+P99 ITL (ms):                            11.29     
+----------------End-to-end Latency----------------
+Mean E2EL (ms):                          1569.44   
+Median E2EL (ms):                        1461.66   
+P50 E2EL (ms):                           1461.66   
+P90 E2EL (ms):                           1899.07   
+P95 E2EL (ms):                           2020.85   
+P99 E2EL (ms):                           2438.21   
+---------------Speculative Decoding---------------
+Acceptance rate (%):                     86.67     
+Acceptance length:                       3.60      
+Drafts:                                  18223     
+Draft tokens:                            54669     
+Accepted tokens:                         47383     
+Per-position acceptance (%):
+  Position 0:                            92.53     
+  Position 1:                            86.34     
+  Position 2:                            81.14     
+==================================================
+RUN_VALIDATION: formal-r1-mtp-k3-i1024-o512-c1-s44: {'valid': True, 'checks': {'completed_matches': True, 'no_failed_requests': True, 'no_error_strings': True, 'request_level_output_lengths_present': True, 'all_output_lengths_exact': True, 'total_output_tokens_exact': True, 'positive_duration': True, 'positive_output_throughput': True}, 'completed': 128, 'failed': 0, 'total_output_tokens': 65536, 'duration': 200.90175658999942, 'output_throughput': 326.2091935499895, 'mean_tpot_ms': 2.9678858855338617, 'spec_decode_acceptance_rate': 86.67252007536264, 'spec_decode_acceptance_length': 3.600175602260879}
+MATRIX_COMPLETE: /home/genai/spec_decoding_study/results/processed/formal-r1-mtp-k3-matrix-manifest.json

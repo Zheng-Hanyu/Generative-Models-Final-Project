@@ -1,0 +1,11 @@
+COMMAND: zsh -c 'mkdir -p "/home/genai/spec_decoding_study/data/spec_bench" && curl -fL "https://raw.githubusercontent.com/hemingkx/Spec-Bench/refs/heads/main/data/spec_bench/question.jsonl" -o "/home/genai/spec_decoding_study/data/spec_bench/question.jsonl"'
+CWD: /home/genai/spec_decoding_study
+STARTED_AT: 2026-11-24T14:47:49.485320+00:00
+
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+  0     0    0     0    0     0      0      0 --:--:--  0:00:01 --:--:--     0
+  0     0    0     0    0     0      0      0 --:--:--  0:00:01 --:--:--     0
+100  682k  100  682k    0     0   291k      0  0:00:02  0:00:02 --:--:--  291k

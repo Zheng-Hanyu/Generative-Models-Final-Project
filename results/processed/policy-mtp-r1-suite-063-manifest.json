@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "phase": "policy-mtp-r1",
+  "config_path": "/home/genai/spec_decoding_study/config/mtp_policy_comparison.json",
+  "gpu": 3,
+  "port": 8103,
+  "num_prompts": 32,
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "concurrencies": [
+    32,
+    16,
+    4,
+    1
+  ],
+  "dataset_name": "random",
+  "dataset_path": null,
+  "input_len": 1024,
+  "output_len": 512,
+  "started_at": "2026-11-24T15:35:25.819903+00:00",
+  "status": "completed",
+  "configurations": [
+    {
+      "method": "normal",
+      "speculative_config": null,
+      "server_label": "063-server-normal-gpu3",
+      "started_at": "2026-11-24T15:35:25.820092+00:00",
+      "status": "completed",
+      "stop_exit_code": 0,
+      "finished_at": "2026-11-24T15:49:01.417629+00:00"
+    },
+    {
+      "method": "mtp-k3",
+      "speculative_config": {
+        "method": "mtp",
+        "num_speculative_tokens": 3
+      },
+      "server_label": "063-server-mtp-k3-gpu3",
+      "started_at": "2026-11-24T15:49:01.417939+00:00",
+      "status": "completed",
+      "stop_exit_code": 0,
+      "finished_at": "2026-11-24T15:56:27.849042+00:00"
+    },
+    {
+      "method": "mtp-k5",
+      "speculative_config": {
+        "method": "mtp",
+        "num_speculative_tokens": 5
+      },
+      "server_label": "063-server-mtp-k5-gpu3",
+      "started_at": "2026-11-24T15:56:27.849376+00:00",
+      "status": "completed",
+      "stop_exit_code": 0,
+      "finished_at": "2026-11-24T16:03:18.102291+00:00"
+    },
+    {
+      "method": "mtp-k6",
+      "speculative_config": {
+        "method": "mtp",
+        "num_speculative_tokens": 6
+      },
+      "server_label": "063-server-mtp-k6-gpu3",
+      "started_at": "2026-11-24T16:03:18.102677+00:00",
+      "status": "completed",
+      "stop_exit_code": 0,
+      "finished_at": "2026-11-24T16:10:09.863327+00:00"
+    },
+    {
+      "method": "mtp-k7",
+      "speculative_config": {
+        "method": "mtp",
+        "num_speculative_tokens": 7
+      },
+      "server_label": "063-server-mtp-k7-gpu3",
+      "started_at": "2026-11-24T16:10:09.863738+00:00",
+      "status": "completed",
+      "stop_exit_code": 0,
+      "finished_at": "2026-11-24T16:17:04.881503+00:00"
+    },
+    {
+      "method": "mtp-dynamic-oracle",
+      "speculative_config": {
+        "method": "mtp",
+        "num_speculative_tokens": 7,
+        "num_speculative_tokens_per_batch_size": [
+          [
+            1,
+            1,
+            7
+          ],
+          [
+            2,
+            4,
+            6
+          ],
+          [
+            5,
+            16,
+            7
+          ],
+          [
+            17,
+            256,
+            5
+          ]
+        ]
+      },
+      "server_label": "063-server-mtp-dynamic-oracle-gpu3",
+      "started_at": "2026-11-24T16:17:04.881934+00:00",
+      "status": "completed",
+      "stop_exit_code": 0,
+      "finished_at": "2026-11-24T16:23:55.076146+00:00"
+    },
+    {
+      "method": "mtp-dynamic-smooth",
+      "speculative_config": {
+        "method": "mtp",
+        "num_speculative_tokens": 6,
+        "num_speculative_tokens_per_batch_size": [
+          [
+            1,
+            4,
+            6
+          ],
+          [
+            5,
+            256,
+            5
+          ]
+        ]
+      },
+      "server_label": "063-server-mtp-dynamic-smooth-gpu3",
+      "started_at": "2026-11-24T16:23:55.076673+00:00",
+      "status": "completed",
+      "stop_exit_code": 0,
+      "finished_at": "2026-11-24T16:30:49.519032+00:00"
+    }
+  ],
+  "finished_at": "2026-11-24T16:30:49.519414+00:00"
+}

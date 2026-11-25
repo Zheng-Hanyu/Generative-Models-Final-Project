@@ -1,0 +1,9 @@
+COMMAND: python src/summarize_benchmarks.py --phase policy-mtp-r1 --methods normal mtp-k3 mtp-k5 mtp-k6 mtp-k7 mtp-dynamic-oracle mtp-dynamic-smooth --additional-baseline-methods mtp-k3 mtp-k5 mtp-k6 mtp-k7 mtp-dynamic-smooth --best-fixed-methods mtp-k3 mtp-k5 mtp-k6 mtp-k7 --concurrencies 1 4 16 32 --seeds 42 43 44 --num-prompts 32
+CWD: /home/genai/spec_decoding_study
+STARTED_AT: 2026-11-24T16:36:14.841997+00:00
+
+{
+  "summary": "/home/genai/spec_decoding_study/results/processed/policy-mtp-r1-summary.json",
+  "status": "complete",
+  "runs": 84
+}

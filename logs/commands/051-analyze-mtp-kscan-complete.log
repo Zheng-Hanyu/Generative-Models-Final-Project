@@ -1,0 +1,94 @@
+COMMAND: /home/genai/.pixi/envs/default/bin/python /home/genai/spec_decoding_study/src/analyze_k_scan.py --method mtp --ks 1 2 3 4 5
+CWD: /home/genai/spec_decoding_study
+STARTED_AT: 2026-11-24T15:09:42.360883+00:00
+
+{
+  "output": "/home/genai/spec_decoding_study/results/processed/kscan-r1-mtp-cost-analysis.json",
+  "status": "complete",
+  "oracle": [
+    {
+      "concurrency": 1,
+      "available_ks": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "best_fixed_k": 5,
+      "best_output_tps": 370.9444526284938,
+      "reference_k": 3,
+      "reference_output_tps": 319.3972679164792,
+      "configuration_oracle_speedup_over_reference": 1.1613889343771528,
+      "linear_cycle_cost_fit": {
+        "intercept_ms": 8.931410285325615,
+        "marginal_ms_per_k": 0.6222267410451359,
+        "r_squared": 0.9987068573564427,
+        "interpretation": "Descriptive fit of TPOT*acceptance_length, not a standalone draft/verify profiler measurement."
+      }
+    },
+    {
+      "concurrency": 4,
+      "available_ks": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "best_fixed_k": 5,
+      "best_output_tps": 1137.6564034285107,
+      "reference_k": 3,
+      "reference_output_tps": 1017.1758109047281,
+      "configuration_oracle_speedup_over_reference": 1.1184461832774228,
+      "linear_cycle_cost_fit": {
+        "intercept_ms": 9.402248178407612,
+        "marginal_ms_per_k": 1.0290286786053355,
+        "r_squared": 0.9971722097477781,
+        "interpretation": "Descriptive fit of TPOT*acceptance_length, not a standalone draft/verify profiler measurement."
+      }
+    },
+    {
+      "concurrency": 16,
+      "available_ks": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "best_fixed_k": 5,
+      "best_output_tps": 2834.8781932093625,
+      "reference_k": 3,
+      "reference_output_tps": 2285.9139352137227,
+      "configuration_oracle_speedup_over_reference": 1.2401508864962207,
+      "linear_cycle_cost_fit": {
+        "intercept_ms": 12.078267536923542,
+        "marginal_ms_per_k": 1.7298998632997236,
+        "r_squared": 0.7265973190883188,
+        "interpretation": "Descriptive fit of TPOT*acceptance_length, not a standalone draft/verify profiler measurement."
+      }
+    },
+    {
+      "concurrency": 32,
+      "available_ks": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "best_fixed_k": 5,
+      "best_output_tps": 3646.6401525909323,
+      "reference_k": 3,
+      "reference_output_tps": 3363.497414583147,
+      "configuration_oracle_speedup_over_reference": 1.0841810482089747,
+      "linear_cycle_cost_fit": {
+        "intercept_ms": 15.69503844890683,
+        "marginal_ms_per_k": 1.1429799205114397,
+        "r_squared": 0.6748066788599062,
+        "interpretation": "Descriptive fit of TPOT*acceptance_length, not a standalone draft/verify profiler measurement."
+      }
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+COMMAND: /home/genai/.pixi/envs/default/bin/python -m py_compile bin/run_logged.py bin/launch_detached.py bin/stop_logged.py src/smoke_generate.py src/compare_smoke.py src/run_benchmark_matrix.py
+CWD: /home/genai/spec_decoding_study
+STARTED_AT: 2026-11-24T14:30:33.289042+00:00
+

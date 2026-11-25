@@ -1,0 +1,9 @@
+COMMAND: python src/summarize_benchmarks.py --phase semantic-r1 --methods normal mtp-k3 dspark-k7 dspark-adaptive --concurrencies 1 4 16 32 --seeds 42 43 44 --dataset-name spec_bench --num-prompts 128 --output-len 256
+CWD: /home/genai/spec_decoding_study
+STARTED_AT: 2026-11-24T16:26:37.315676+00:00
+
+{
+  "summary": "/home/genai/spec_decoding_study/results/processed/semantic-r1-summary.json",
+  "status": "complete",
+  "runs": 48
+}

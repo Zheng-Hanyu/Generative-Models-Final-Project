@@ -1,0 +1,9 @@
+COMMAND: /home/genai/.pixi/envs/default/bin/python /home/genai/spec_decoding_study/src/summarize_benchmarks.py --phase kscan-r1 --methods mtp-k1 mtp-k2 mtp-k3 mtp-k4 mtp-k5 --concurrencies 1 4 16 32 --seeds 42 --num-prompts 32
+CWD: /home/genai/spec_decoding_study
+STARTED_AT: 2026-11-24T15:09:42.664979+00:00
+
+{
+  "summary": "/home/genai/spec_decoding_study/results/processed/kscan-r1-summary.json",
+  "status": "complete",
+  "runs": 20
+}

@@ -1,0 +1,19 @@
+COMMAND: /home/genai/.local/bin/uv pip install --python /home/genai/.pixi/envs/default/bin/python pandas tiktoken datasets
+CWD: /home/genai/spec_decoding_study
+STARTED_AT: 2026-11-24T14:38:43.416511+00:00
+
+Using Python 3.12.16 environment at: /home/genai/.pixi/envs/default
+Resolved 30 packages in 1.96s
+Downloading pandas (11.5MiB)
+Downloading pyarrow (52.5MiB)
+ Downloaded pandas
+ Downloaded pyarrow
+Prepared 7 packages in 25.43s
+Installed 7 packages in 34ms
+ + datasets==5.2.0
+ + multiprocess==0.70.19
+ + pandas==3.1.1
+ + pyarrow==26.0.1
+ + python-dateutil==4.0.0
+ + tzdata==2026.6
+ + xxhash==4.1.0

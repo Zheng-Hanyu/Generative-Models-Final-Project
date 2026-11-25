@@ -1,0 +1,5 @@
+COMMAND: /home/genai/.pixi/envs/default/bin/python /home/genai/spec_decoding_study/src/make_figures.py
+CWD: /home/genai/spec_decoding_study
+STARTED_AT: 2026-11-24T15:08:11.616897+00:00
+
+Figures written to /home/genai/spec_decoding_study/report/figures

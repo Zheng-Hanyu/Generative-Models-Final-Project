@@ -1,0 +1,1242 @@
+{
+  "schema_version": 1,
+  "phase": "semantic-r1",
+  "generated_at": "2026-11-24T16:26:48.856133+00:00",
+  "status": "complete",
+  "expected_run_count": 24,
+  "loaded_run_count": 24,
+  "missing_files": [],
+  "methodology": {
+    "run_statistics": "Arithmetic mean and sample standard deviation (ddof=1) across independent benchmark runs.",
+    "request_percentiles": "Computed after pooling request-level values from all runs (384 requests per complete configuration), using NumPy linear interpolation.",
+    "tpot_definition": "1000 * (end-to-end latency - TTFT) / (output tokens - 1), in milliseconds per request.",
+    "itl_definition": "Intervals between recorded streaming output events/chunks; a speculative-decoding chunk may contain multiple tokens, so ITL is not a complete per-token arrival distribution.",
+    "paired_speedup": "For each seed, candidate output throughput / dspark-k7 output throughput; report mean and sample stdev of the run-level ratios. Ratio of mean throughputs is also provided.",
+    "confidence_intervals": "Not computed; three-run sample stdev is not a confidence interval.",
+    "cross_gpu_caveat": "Formal round 1 runs methods concurrently on separate B200 GPUs. Final interpretation requires same-GPU checks and rotation.",
+    "best_fixed_selection": "When requested, the best fixed method is selected using the same three runs used for descriptive paired comparisons; this is a post-selection comparison, not an independent generalization estimate."
+  },
+  "groups": [
+    {
+      "phase": "semantic-r1",
+      "method": "dspark-k7",
+      "mode": "dspark",
+      "k": 7,
+      "gpu": 2,
+      "concurrency": 1,
+      "input_len": null,
+      "dataset_name": "spec_bench",
+      "output_len": 256,
+      "complete": true,
+      "seeds": [
+        42,
+        43,
+        44
+      ],
+      "total_completed_requests": 384,
+      "total_failed_requests": 0,
+      "output_throughput_tokens_s": {
+        "n": 3,
+        "mean": 319.99984233422117,
+        "sample_stdev": 0.07605674337982431,
+        "min": 319.9143669373862,
+        "max": 320.06004701908375
+      },
+      "request_throughput_req_s": {
+        "n": 3,
+        "mean": 1.2499993841180514,
+        "sample_stdev": 0.0002970966538274387,
+        "min": 1.2496654958491649,
+        "max": 1.250234558668296
+      },
+      "duration_s": {
+        "n": 3,
+        "mean": 102.4000543099052,
+        "sample_stdev": 0.024340748072124246,
+        "min": 102.38078855886124,
+        "max": 102.42740991502069
+      },
+      "mean_ttft_ms": {
+        "n": 3,
+        "mean": 37.652226944677146,
+        "sample_stdev": 0.1466366620889716,
+        "min": 37.54489003767958,
+        "max": 37.819303519427194
+      },
+      "mean_tpot_ms": {
+        "n": 3,
+        "mean": 2.989218834580457,
+        "sample_stdev": 0.00027511757334715514,
+        "min": 2.9889041567752,
+        "max": 2.9894138973259925
+      },
+      "mean_itl_ms": {
+        "n": 3,
+        "mean": 10.779814690167505,
+        "sample_stdev": 0.0009921376194945667,
+        "min": 10.778679889199264,
+        "max": 10.780518131556777
+      },
+      "mean_e2el_ms": {
+        "n": 3,
+        "mean": 799.9030297626936,
+        "sample_stdev": 0.1904056076199769,
+        "min": 799.7630472546007,
+        "max": 800.1198473375553
+      },
+      "acceptance_rate_percent": {
+        "n": 3,
+        "mean": 38.401562575046825,
+        "sample_stdev": 0.0,
+        "min": 38.401562575046825,
+        "max": 38.401562575046825
+      },
+      "acceptance_length": {
+        "n": 3,
+        "mean": 3.688109380253278,
+        "sample_stdev": 0.0,
+        "min": 3.688109380253278,
+        "max": 3.688109380253278
+      },
+      "pooled_request_input_tokens": {
+        "n": 384,
+        "mean": 336.8046875,
+        "p50": 114.5,
+        "p95": 1173.0,
+        "p99": 1431.0
+      },
+      "pooled_request_ttft_ms": {
+        "n": 384,
+        "mean": 37.652226944677146,
+        "p50": 34.49151408858597,
+        "p95": 61.89998524496331,
+        "p99": 71.98531578062102
+      },
+      "pooled_request_tpot_ms": {
+        "n": 384,
+        "mean": 2.989218834580456,
+        "p50": 2.9824273651648383,
+        "p95": 4.160121223140581,
+        "p99": 4.587050220180376
+      },
+      "pooled_request_itl_ms": {
+        "n": 27153,
+        "mean": 10.779814690167505,
+        "p50": 10.9465760178864,
+        "p95": 11.224769288673997,
+        "p99": 11.497617494314909
+      },
+      "pooled_request_e2el_ms": {
+        "n": 384,
+        "mean": 799.9030297626936,
+        "p50": 798.8579474622384,
+        "p95": 1095.0324917095713,
+        "p99": 1204.4579160120338
+      },
+      "per_position_acceptance_rates_percent": [
+        74.63857447046958,
+        56.841869326459715,
+        42.72105794015466,
+        32.76924801075871,
+        25.57435839964138,
+        20.217415667376443,
+        16.04841421046733
+      ],
+      "draft_tokens_total": 187383,
+      "accepted_tokens_total": 71958,
+      "token_weighted_acceptance_rate_percent": 38.40156257504683,
+      "raw_files": [
+        "results/raw/semantic-r1-dspark-k7-specbench-o256-c1-s42.json",
+        "results/raw/semantic-r1-dspark-k7-specbench-o256-c1-s43.json",
+        "results/raw/semantic-r1-dspark-k7-specbench-o256-c1-s44.json"
+      ]
+    },
+    {
+      "phase": "semantic-r1",
+      "method": "dspark-k7",
+      "mode": "dspark",
+      "k": 7,
+      "gpu": 2,
+      "concurrency": 4,
+      "input_len": null,
+      "dataset_name": "spec_bench",
+      "output_len": 256,
+      "complete": true,
+      "seeds": [
+        42,
+        43,
+        44
+      ],
+      "total_completed_requests": 384,
+      "total_failed_requests": 0,
+      "output_throughput_tokens_s": {
+        "n": 3,
+        "mean": 1014.2978621918859,
+        "sample_stdev": 7.607080334302376,
+        "min": 1005.5142244831707,
+        "max": 1018.7484404204446
+      },
+      "request_throughput_req_s": {
+        "n": 3,
+        "mean": 3.9621010241870542,
+        "sample_stdev": 0.029715157555868656,
+        "min": 3.9277899393873854,
+        "max": 3.9794860953923616
+      },
+      "duration_s": {
+        "n": 3,
+        "mean": 32.307308691631384,
+        "sample_stdev": 0.24335337218112416,
+        "min": 32.1649572160095,
+        "max": 32.58830079389736
+      },
+      "mean_ttft_ms": {
+        "n": 3,
+        "mean": 59.22653635692162,
+        "sample_stdev": 0.7292730643609842,
+        "min": 58.38586804748047,
+        "max": 59.68925916022272
+      },
+      "mean_tpot_ms": {
+        "n": 3,
+        "mean": 3.662888180213699,
+        "sample_stdev": 0.04417971886296937,
+        "min": 3.637315233208937,
+        "max": 3.71390246878482
+      },
+      "mean_itl_ms": {
+        "n": 3,
+        "mean": 13.026462132776695,
+        "sample_stdev": 0.0026651750394480465,
+        "min": 13.023396710478783,
+        "max": 13.028230529293232
+      },
+      "mean_e2el_ms": {
+        "n": 3,
+        "mean": 993.263022311415,
+        "sample_stdev": 10.537941812054743,
+        "min": 987.1198663313407,
+        "max": 1005.4309975876095
+      },
+      "acceptance_rate_percent": {
+        "n": 3,
+        "mean": 37.661652430711975,
+        "sample_stdev": 0.632575698388684,
+        "min": 36.93121693121693,
+        "max": 38.0268701804595
+      },
+      "acceptance_length": {
+        "n": 3,
+        "mean": 3.636315670149838,
+        "sample_stdev": 0.04428029888720778,
+        "min": 3.585185185185185,
+        "max": 3.6618809126321645
+      },
+      "pooled_request_input_tokens": {
+        "n": 384,
+        "mean": 336.8046875,
+        "p50": 114.5,
+        "p95": 1173.0,
+        "p99": 1431.0
+      },
+      "pooled_request_ttft_ms": {
+        "n": 384,
+        "mean": 59.22653635692162,
+        "p50": 50.51859293598682,
+        "p95": 86.85541809536514,
+        "p99": 99.67249049572276
+      },
+      "pooled_request_tpot_ms": {
+        "n": 384,
+        "mean": 3.662888180213699,
+        "p50": 3.6058892664846542,
+        "p95": 4.955750438476017,
+        "p99": 5.543281453734667
+      },
+      "pooled_request_itl_ms": {
+        "n": 27534,
+        "mean": 13.02644042298705,
+        "p50": 12.55053945351392,
+        "p95": 13.919984060339626,
+        "p99": 35.13414777116849
+      },
+      "pooled_request_e2el_ms": {
+        "n": 384,
+        "mean": 993.263022311415,
+        "p50": 988.7084700167179,
+        "p95": 1323.853433446493,
+        "p99": 1463.7566649611113
+      },
+      "per_position_acceptance_rates_percent": [
+        73.96227433037149,
+        55.22159905822218,
+        41.40155524276117,
+        32.08110709812893,
+        24.829060295360335,
+        20.09786948230105,
+        16.03810150783865
+      ],
+      "draft_tokens_total": 190050,
+      "accepted_tokens_total": 71566,
+      "token_weighted_acceptance_rate_percent": 37.6564062088924,
+      "raw_files": [
+        "results/raw/semantic-r1-dspark-k7-specbench-o256-c4-s42.json",
+        "results/raw/semantic-r1-dspark-k7-specbench-o256-c4-s43.json",
+        "results/raw/semantic-r1-dspark-k7-specbench-o256-c4-s44.json"
+      ]
+    },
+    {
+      "phase": "semantic-r1",
+      "method": "dspark-k7",
+      "mode": "dspark",
+      "k": 7,
+      "gpu": 2,
+      "concurrency": 16,
+      "input_len": null,
+      "dataset_name": "spec_bench",
+      "output_len": 256,
+      "complete": true,
+      "seeds": [
+        42,
+        43,
+        44
+      ],
+      "total_completed_requests": 384,
+      "total_failed_requests": 0,
+      "output_throughput_tokens_s": {
+        "n": 3,
+        "mean": 2638.929767126341,
+        "sample_stdev": 12.888608617380903,
+        "min": 2624.260755302449,
+        "max": 2648.4394284752407
+      },
+      "request_throughput_req_s": {
+        "n": 3,
+        "mean": 10.30831940283727,
+        "sample_stdev": 0.050346127411644154,
+        "min": 10.251018575400192,
+        "max": 10.345466517481409
+      },
+      "duration_s": {
+        "n": 3,
+        "mean": 12.4173529727074,
+        "sample_stdev": 0.06079660319975763,
+        "min": 12.372569161932915,
+        "max": 12.486564048100263
+      },
+      "mean_ttft_ms": {
+        "n": 3,
+        "mean": 88.4904551476211,
+        "sample_stdev": 0.5529204327252322,
+        "min": 88.0630698902678,
+        "max": 89.11491216895229
+      },
+      "mean_tpot_ms": {
+        "n": 3,
+        "mean": 5.463614588665389,
+        "sample_stdev": 0.029713700584632668,
+        "min": 5.44394401370607,
+        "max": 5.497795417071686
+      },
+      "mean_itl_ms": {
+        "n": 3,
+        "mean": 19.70368876810571,
+        "sample_stdev": 0.04850034034189294,
+        "min": 19.66688794768856,
+        "max": 19.758648140631998
+      },
+      "mean_e2el_ms": {
+        "n": 3,
+        "mean": 1481.7121752572955,
+        "sample_stdev": 7.472085036291159,
+        "min": 1476.2687933853158,
+        "max": 1490.231214736923
+      },
+      "acceptance_rate_percent": {
+        "n": 3,
+        "mean": 38.35520710807768,
+        "sample_stdev": 0.11920901058581725,
+        "min": 38.21755639937458,
+        "max": 38.42403246242923
+      },
+      "acceptance_length": {
+        "n": 3,
+        "mean": 3.6848644975654374,
+        "sample_stdev": 0.008344630741006961,
+        "min": 3.675228947956221,
+        "max": 3.689682272370046
+      },
+      "pooled_request_input_tokens": {
+        "n": 384,
+        "mean": 336.8046875,
+        "p50": 114.5,
+        "p95": 1173.0,
+        "p99": 1431.0
+      },
+      "pooled_request_ttft_ms": {
+        "n": 384,
+        "mean": 88.4904551476211,
+        "p50": 83.26951309572905,
+        "p95": 147.99703595926985,
+        "p99": 152.23941507050768
+      },
+      "pooled_request_tpot_ms": {
+        "n": 384,
+        "mean": 5.463614588665389,
+        "p50": 5.4729840960171,
+        "p95": 7.52082658831176,
+        "p99": 8.215749261225119
+      },
+      "pooled_request_itl_ms": {
+        "n": 27152,
+        "mean": 19.70378390255285,
+        "p50": 16.88055752310902,
+        "p95": 35.009955998975784,
+        "p99": 50.67035178886725
+      },
+      "pooled_request_e2el_ms": {
+        "n": 384,
+        "mean": 1481.7121752572955,
+        "p50": 1504.1940929368138,
+        "p95": 2034.4779544044272,
+        "p99": 2157.167617136148
+      },
+      "per_position_acceptance_rates_percent": [
+        74.5491468492785,
+        56.15351593030027,
+        42.13632656787683,
+        32.635987701972574,
+        25.795544520857604,
+        20.62513384507322,
+        16.590794341184736
+      ],
+      "draft_tokens_total": 187376,
+      "accepted_tokens_total": 71868,
+      "token_weighted_acceptance_rate_percent": 38.35496541712919,
+      "raw_files": [
+        "results/raw/semantic-r1-dspark-k7-specbench-o256-c16-s42.json",
+        "results/raw/semantic-r1-dspark-k7-specbench-o256-c16-s43.json",
+        "results/raw/semantic-r1-dspark-k7-specbench-o256-c16-s44.json"
+      ]
+    },
+    {
+      "phase": "semantic-r1",
+      "method": "dspark-k7",
+      "mode": "dspark",
+      "k": 7,
+      "gpu": 2,
+      "concurrency": 32,
+      "input_len": null,
+      "dataset_name": "spec_bench",
+      "output_len": 256,
+      "complete": true,
+      "seeds": [
+        42,
+        43,
+        44
+      ],
+      "total_completed_requests": 384,
+      "total_failed_requests": 0,
+      "output_throughput_tokens_s": {
+        "n": 3,
+        "mean": 3367.168472221411,
+        "sample_stdev": 6.12476013161564,
+        "min": 3363.1818497602117,
+        "max": 3374.220717893543
+      },
+      "request_throughput_req_s": {
+        "n": 3,
+        "mean": 13.153001844614886,
+        "sample_stdev": 0.023924844264123595,
+        "min": 13.137429100625827,
+        "max": 13.180549679271653
+      },
+      "duration_s": {
+        "n": 3,
+        "mean": 9.731640241574496,
+        "sample_stdev": 0.01768341075735901,
+        "min": 9.711279355920851,
+        "max": 9.743154388852417
+      },
+      "mean_ttft_ms": {
+        "n": 3,
+        "mean": 184.61538146645276,
+        "sample_stdev": 1.5794720457791263,
+        "min": 183.22809649907867,
+        "max": 186.33435914307483
+      },
+      "mean_tpot_ms": {
+        "n": 3,
+        "mean": 7.9018990746441515,
+        "sample_stdev": 0.02156174269447077,
+        "min": 7.888880023664587,
+        "max": 7.926787582198134
+      },
+      "mean_itl_ms": {
+        "n": 3,
+        "mean": 28.417571690563562,
+        "sample_stdev": 0.007303199846631334,
+        "min": 28.411458013065445,
+        "max": 28.425658831349935
+      },
+      "mean_e2el_ms": {
+        "n": 3,
+        "mean": 2199.5996455007116,
+        "sample_stdev": 6.995364065382671,
+        "min": 2195.185649106861,
+        "max": 2207.6651926035993
+      },
+      "acceptance_rate_percent": {
+        "n": 3,
+        "mean": 38.258303690758005,
+        "sample_stdev": 0.13110902276636285,
+        "min": 38.106912031583306,
+        "max": 38.33399952034535
+      },
+      "acceptance_length": {
+        "n": 3,
+        "mean": 3.67808125835306,
+        "sample_stdev": 0.009177631593645482,
+        "min": 3.667483842210831,
+        "max": 3.6833799664241744
+      },
+      "pooled_request_input_tokens": {
+        "n": 384,
+        "mean": 336.8046875,
+        "p50": 114.5,
+        "p95": 1173.0,
+        "p99": 1431.0
+      },
+      "pooled_request_ttft_ms": {
+        "n": 384,
+        "mean": 184.61538146645276,
+        "p50": 124.65899798553437,
+        "p95": 396.7348742415197,
+        "p99": 398.76568210776895
+      },
+      "pooled_request_tpot_ms": {
+        "n": 384,
+        "mean": 7.901899074644152,
+        "p50": 7.718363212074573,
+        "p95": 11.239933623822735,
+        "p99": 12.492681917570096
+      },
+      "pooled_request_itl_ms": {
+        "n": 27228,
+        "mean": 28.417583274172006,
+        "p50": 23.240851936861873,
+        "p95": 61.82715855538845,
+        "p99": 77.79877242166549
+      },
+      "pooled_request_e2el_ms": {
+        "n": 384,
+        "mean": 2199.5996455007116,
+        "p50": 2169.485945487395,
+        "p95": 3028.420649119653,
+        "p99": 3455.6493123597475
+      },
+      "per_position_acceptance_rates_percent": [
+        74.14688964247354,
+        56.53426527180201,
+        42.32668588860431,
+        32.73393671377201,
+        25.4732652812388,
+        20.287824383708422,
+        16.30525865370693
+      ],
+      "draft_tokens_total": 187908,
+      "accepted_tokens_total": 71890,
+      "token_weighted_acceptance_rate_percent": 38.25808374310833,
+      "raw_files": [
+        "results/raw/semantic-r1-dspark-k7-specbench-o256-c32-s42.json",
+        "results/raw/semantic-r1-dspark-k7-specbench-o256-c32-s43.json",
+        "results/raw/semantic-r1-dspark-k7-specbench-o256-c32-s44.json"
+      ]
+    },
+    {
+      "phase": "semantic-r1",
+      "method": "dspark-adaptive",
+      "mode": "dspark",
+      "k": -1,
+      "gpu": 2,
+      "concurrency": 1,
+      "input_len": null,
+      "dataset_name": "spec_bench",
+      "output_len": 256,
+      "complete": true,
+      "seeds": [
+        42,
+        43,
+        44
+      ],
+      "total_completed_requests": 384,
+      "total_failed_requests": 0,
+      "output_throughput_tokens_s": {
+        "n": 3,
+        "mean": 291.7651156511508,
+        "sample_stdev": 0.08486266486836262,
+        "min": 291.68863211886554,
+        "max": 291.8564080898192
+      },
+      "request_throughput_req_s": {
+        "n": 3,
+        "mean": 1.1397074830123077,
+        "sample_stdev": 0.0003314947846420415,
+        "min": 1.1394087192143185,
+        "max": 1.1400640941008562
+      },
+      "duration_s": {
+        "n": 3,
+        "mean": 112.30952602004011,
+        "sample_stdev": 0.03266388612825716,
+        "min": 112.27438936312683,
+        "max": 112.33896831003949
+      },
+      "mean_ttft_ms": {
+        "n": 3,
+        "mean": 39.01421325038731,
+        "sample_stdev": 0.3293606247707523,
+        "min": 38.655599833873566,
+        "max": 39.30318186758086
+      },
+      "mean_tpot_ms": {
+        "n": 3,
+        "mean": 3.2874509366985305,
+        "sample_stdev": 0.00030534445828824414,
+        "min": 3.2872363338908914,
+        "max": 3.2878005075069856
+      },
+      "mean_itl_ms": {
+        "n": 3,
+        "mean": 11.520549556993776,
+        "sample_stdev": 0.0010700497228407588,
+        "min": 11.519797502490732,
+        "max": 11.521774593625512
+      },
+      "mean_e2el_ms": {
+        "n": 3,
+        "mean": 877.3142021085126,
+        "sample_stdev": 0.2536999264210338,
+        "min": 877.0447292481549,
+        "max": 877.5484470097581
+      },
+      "acceptance_rate_percent": {
+        "n": 3,
+        "mean": 36.82933656806942,
+        "sample_stdev": 0.0,
+        "min": 36.82933656806942,
+        "max": 36.82933656806942
+      },
+      "acceptance_length": {
+        "n": 3,
+        "mean": 3.5780535597648595,
+        "sample_stdev": 0.0,
+        "min": 3.5780535597648595,
+        "max": 3.5780535597648595
+      },
+      "pooled_request_input_tokens": {
+        "n": 384,
+        "mean": 336.8046875,
+        "p50": 114.5,
+        "p95": 1173.0,
+        "p99": 1431.0
+      },
+      "pooled_request_ttft_ms": {
+        "n": 384,
+        "mean": 39.01421325038731,
+        "p50": 34.72714684903622,
+        "p95": 63.339592248667024,
+        "p99": 73.48924836842343
+      },
+      "pooled_request_tpot_ms": {
+        "n": 384,
+        "mean": 3.2874509366985305,
+        "p50": 3.2809789178381656,
+        "p95": 4.621856875315893,
+        "p99": 4.918405639098994
+      },
+      "pooled_request_itl_ms": {
+        "n": 27942,
+        "mean": 11.520549556993776,
+        "p50": 11.811154196038842,
+        "p95": 12.133089650887996,
+        "p99": 12.31858408311382
+      },
+      "pooled_request_e2el_ms": {
+        "n": 384,
+        "mean": 877.3142021085126,
+        "p50": 873.6585933947936,
+        "p95": 1212.5291427480988,
+        "p99": 1281.5594760421664
+      },
+      "per_position_acceptance_rates_percent": [
+        74.12366644894405,
+        55.43217940344002,
+        41.43261484868278,
+        28.90267798824298,
+        23.274548225560636,
+        19.039843239712607,
+        15.599825821902897
+      ],
+      "draft_tokens_total": 192906,
+      "accepted_tokens_total": 71046,
+      "token_weighted_acceptance_rate_percent": 36.82933656806942,
+      "raw_files": [
+        "results/raw/semantic-r1-dspark-adaptive-specbench-o256-c1-s42.json",
+        "results/raw/semantic-r1-dspark-adaptive-specbench-o256-c1-s43.json",
+        "results/raw/semantic-r1-dspark-adaptive-specbench-o256-c1-s44.json"
+      ]
+    },
+    {
+      "phase": "semantic-r1",
+      "method": "dspark-adaptive",
+      "mode": "dspark",
+      "k": -1,
+      "gpu": 2,
+      "concurrency": 4,
+      "input_len": null,
+      "dataset_name": "spec_bench",
+      "output_len": 256,
+      "complete": true,
+      "seeds": [
+        42,
+        43,
+        44
+      ],
+      "total_completed_requests": 384,
+      "total_failed_requests": 0,
+      "output_throughput_tokens_s": {
+        "n": 3,
+        "mean": 956.8007800197023,
+        "sample_stdev": 2.3845267434744026,
+        "min": 954.6561264971896,
+        "max": 959.36853773611
+      },
+      "request_throughput_req_s": {
+        "n": 3,
+        "mean": 3.737503046951962,
+        "sample_stdev": 0.009314557591696885,
+        "min": 3.729125494129647,
+        "max": 3.74753335053168
+      },
+      "duration_s": {
+        "n": 3,
+        "mean": 34.247605436015874,
+        "sample_stdev": 0.08529686229198567,
+        "min": 34.15580010297708,
+        "max": 34.324401311110705
+      },
+      "mean_ttft_ms": {
+        "n": 3,
+        "mean": 60.594666689818645,
+        "sample_stdev": 1.837064946036706,
+        "min": 58.4734725925955,
+        "max": 61.66973154358857
+      },
+      "mean_tpot_ms": {
+        "n": 3,
+        "mean": 3.9027490758694126,
+        "sample_stdev": 0.012511243628998057,
+        "min": 3.8912696035207346,
+        "max": 3.916084699292197
+      },
+      "mean_itl_ms": {
+        "n": 3,
+        "mean": 13.235819794793036,
+        "sample_stdev": 0.022920540702569204,
+        "min": 13.217924847426037,
+        "max": 13.261654521958004
+      },
+      "mean_e2el_ms": {
+        "n": 3,
+        "mean": 1055.7956810365188,
+        "sample_stdev": 4.787822486698785,
+        "min": 1050.7472214903828,
+        "max": 1060.2713298630988
+      },
+      "acceptance_rate_percent": {
+        "n": 3,
+        "mean": 35.17343816534097,
+        "sample_stdev": 0.20502730320689488,
+        "min": 34.94044497715185,
+        "max": 35.326291681106575
+      },
+      "acceptance_length": {
+        "n": 3,
+        "mean": 3.462140671573868,
+        "sample_stdev": 0.014351911224482759,
+        "min": 3.445831148400629,
+        "max": 3.4728404176774603
+      },
+      "pooled_request_input_tokens": {
+        "n": 384,
+        "mean": 336.8046875,
+        "p50": 114.5,
+        "p95": 1173.0,
+        "p99": 1431.0
+      },
+      "pooled_request_ttft_ms": {
+        "n": 384,
+        "mean": 60.594666689818645,
+        "p50": 52.29634349234402,
+        "p95": 89.91193425608797,
+        "p99": 108.41300264000918
+      },
+      "pooled_request_tpot_ms": {
+        "n": 384,
+        "mean": 3.9027490758694126,
+        "p50": 3.9675042471464943,
+        "p95": 5.46591582712626,
+        "p99": 5.980571145200919
+      },
+      "pooled_request_itl_ms": {
+        "n": 28873,
+        "mean": 13.235797787176008,
+        "p50": 12.859723065048456,
+        "p95": 13.662430504336951,
+        "p99": 35.6960101891309
+      },
+      "pooled_request_e2el_ms": {
+        "n": 384,
+        "mean": 1055.7956810365188,
+        "p50": 1075.6417660741135,
+        "p95": 1453.1737646204415,
+        "p99": 1576.6098055033947
+      },
+      "per_position_acceptance_rates_percent": [
+        73.77245338025767,
+        54.56150203156941,
+        39.6767020349325,
+        29.166565776415325,
+        21.233172103183442,
+        15.886945116874038,
+        11.916726714154365
+      ],
+      "draft_tokens_total": 199423,
+      "accepted_tokens_total": 70143,
+      "token_weighted_acceptance_rate_percent": 35.17297403007677,
+      "raw_files": [
+        "results/raw/semantic-r1-dspark-adaptive-specbench-o256-c4-s42.json",
+        "results/raw/semantic-r1-dspark-adaptive-specbench-o256-c4-s43.json",
+        "results/raw/semantic-r1-dspark-adaptive-specbench-o256-c4-s44.json"
+      ]
+    },
+    {
+      "phase": "semantic-r1",
+      "method": "dspark-adaptive",
+      "mode": "dspark",
+      "k": -1,
+      "gpu": 2,
+      "concurrency": 16,
+      "input_len": null,
+      "dataset_name": "spec_bench",
+      "output_len": 256,
+      "complete": true,
+      "seeds": [
+        42,
+        43,
+        44
+      ],
+      "total_completed_requests": 384,
+      "total_failed_requests": 0,
+      "output_throughput_tokens_s": {
+        "n": 3,
+        "mean": 2568.3437645902313,
+        "sample_stdev": 5.80408407931612,
+        "min": 2562.4805390070487,
+        "max": 2574.0868416480557
+      },
+      "request_throughput_req_s": {
+        "n": 3,
+        "mean": 10.032592830430591,
+        "sample_stdev": 0.022672203434828595,
+        "min": 10.009689605496284,
+        "max": 10.055026725187718
+      },
+      "duration_s": {
+        "n": 3,
+        "mean": 12.75846014971224,
+        "sample_stdev": 0.028834363751359473,
+        "min": 12.729951247107238,
+        "max": 12.78760931105353
+      },
+      "mean_ttft_ms": {
+        "n": 3,
+        "mean": 83.06067423048565,
+        "sample_stdev": 0.45628583602356976,
+        "min": 82.74627456194139,
+        "max": 83.58401802615845
+      },
+      "mean_tpot_ms": {
+        "n": 3,
+        "mean": 5.652079823511741,
+        "sample_stdev": 0.025432777448273405,
+        "min": 5.630669015804683,
+        "max": 5.6801923854828935
+      },
+      "mean_itl_ms": {
+        "n": 3,
+        "mean": 18.264478591275964,
+        "sample_stdev": 0.03331322580439107,
+        "min": 18.227217760177016,
+        "max": 18.291385108737337
+      },
+      "mean_e2el_ms": {
+        "n": 3,
+        "mean": 1524.3410292259796,
+        "sample_stdev": 6.90636237127985,
+        "min": 1518.672329133551,
+        "max": 1532.0330763242964
+      },
+      "acceptance_rate_percent": {
+        "n": 3,
+        "mean": 32.783265339607006,
+        "sample_stdev": 0.15902890442305134,
+        "min": 32.59963457805185,
+        "max": 32.87508072038459
+      },
+      "acceptance_length": {
+        "n": 3,
+        "mean": 3.2948285737724903,
+        "sample_stdev": 0.011132023309613626,
+        "min": 3.281974420463629,
+        "max": 3.301255650426921
+      },
+      "pooled_request_input_tokens": {
+        "n": 384,
+        "mean": 336.8046875,
+        "p50": 114.5,
+        "p95": 1173.0,
+        "p99": 1431.0
+      },
+      "pooled_request_ttft_ms": {
+        "n": 384,
+        "mean": 83.06067423048565,
+        "p50": 80.16587141901255,
+        "p95": 146.1670784978196,
+        "p99": 151.73391275573522
+      },
+      "pooled_request_tpot_ms": {
+        "n": 384,
+        "mean": 5.652079823511741,
+        "p50": 5.837915850547599,
+        "p95": 7.61968074348189,
+        "p99": 8.904560878325034
+      },
+      "pooled_request_itl_ms": {
+        "n": 30302,
+        "mean": 18.26452565237508,
+        "p50": 16.13671751692891,
+        "p95": 34.9524557008408,
+        "p99": 48.32761495606974
+      },
+      "pooled_request_e2el_ms": {
+        "n": 384,
+        "mean": 1524.3410292259796,
+        "p50": 1578.9039224619046,
+        "p95": 2043.504118092823,
+        "p99": 2324.1593941673636
+      },
+      "per_position_acceptance_rates_percent": [
+        71.9973132493503,
+        50.507804370934856,
+        35.40040995832164,
+        26.158766942581877,
+        19.43713704743555,
+        14.810893960204346,
+        11.170531848420476
+      ],
+      "draft_tokens_total": 209426,
+      "accepted_tokens_total": 68656,
+      "token_weighted_acceptance_rate_percent": 32.78294003609867,
+      "raw_files": [
+        "results/raw/semantic-r1-dspark-adaptive-specbench-o256-c16-s42.json",
+        "results/raw/semantic-r1-dspark-adaptive-specbench-o256-c16-s43.json",
+        "results/raw/semantic-r1-dspark-adaptive-specbench-o256-c16-s44.json"
+      ]
+    },
+    {
+      "phase": "semantic-r1",
+      "method": "dspark-adaptive",
+      "mode": "dspark",
+      "k": -1,
+      "gpu": 2,
+      "concurrency": 32,
+      "input_len": null,
+      "dataset_name": "spec_bench",
+      "output_len": 256,
+      "complete": true,
+      "seeds": [
+        42,
+        43,
+        44
+      ],
+      "total_completed_requests": 384,
+      "total_failed_requests": 0,
+      "output_throughput_tokens_s": {
+        "n": 3,
+        "mean": 3566.5182663458386,
+        "sample_stdev": 45.61548576237066,
+        "min": 3513.8842719310137,
+        "max": 3594.572938808342
+      },
+      "request_throughput_req_s": {
+        "n": 3,
+        "mean": 13.931711977913432,
+        "sample_stdev": 0.1781854912592604,
+        "min": 13.726110437230522,
+        "max": 14.041300542220085
+      },
+      "duration_s": {
+        "n": 3,
+        "mean": 9.188681471627206,
+        "sample_stdev": 0.11839115785924025,
+        "min": 9.115964693948627,
+        "max": 9.325292885070667
+      },
+      "mean_ttft_ms": {
+        "n": 3,
+        "mean": 174.54999047185993,
+        "sample_stdev": 1.4238256325779304,
+        "min": 173.35972211185435,
+        "max": 176.12732898669492
+      },
+      "mean_tpot_ms": {
+        "n": 3,
+        "mean": 7.451444470208634,
+        "sample_stdev": 0.033590213344303455,
+        "min": 7.413610926460915,
+        "max": 7.47776189463027
+      },
+      "mean_itl_ms": {
+        "n": 3,
+        "mean": 23.005131157519752,
+        "sample_stdev": 0.09444616430138202,
+        "min": 22.924217924366676,
+        "max": 23.108911264814825
+      },
+      "mean_e2el_ms": {
+        "n": 3,
+        "mean": 2074.6683303750615,
+        "sample_stdev": 8.70480502569885,
+        "min": 2064.633706564564,
+        "max": 2080.1890052425733
+      },
+      "acceptance_rate_percent": {
+        "n": 3,
+        "mean": 30.671227366026624,
+        "sample_stdev": 0.27609986400962344,
+        "min": 30.353238357801533,
+        "max": 30.850055626519428
+      },
+      "acceptance_length": {
+        "n": 3,
+        "mean": 3.146985915621863,
+        "sample_stdev": 0.019326990480673937,
+        "min": 3.124726685046107,
+        "max": 3.15950389385636
+      },
+      "pooled_request_input_tokens": {
+        "n": 384,
+        "mean": 336.8046875,
+        "p50": 114.5,
+        "p95": 1173.0,
+        "p99": 1431.0
+      },
+      "pooled_request_ttft_ms": {
+        "n": 384,
+        "mean": 174.54999047185993,
+        "p50": 107.23468009382486,
+        "p95": 407.0109782158397,
+        "p99": 409.0142837492749
+      },
+      "pooled_request_tpot_ms": {
+        "n": 384,
+        "mean": 7.451444470208634,
+        "p50": 7.590237658872616,
+        "p95": 10.621054426346916,
+        "p99": 11.552417351928195
+      },
+      "pooled_request_itl_ms": {
+        "n": 31717,
+        "mean": 23.004869392528594,
+        "p50": 18.06861814111471,
+        "p95": 45.780230173840934,
+        "p99": 63.1131633836776
+      },
+      "pooled_request_e2el_ms": {
+        "n": 384,
+        "mean": 2074.6683303750615,
+        "p50": 2075.291134067811,
+        "p95": 2844.836628634948,
+        "p99": 3146.621414709371
+      },
+      "per_position_acceptance_rates_percent": [
+        72.82899631556623,
+        49.24454718613782,
+        32.758295098573356,
+        22.657675467640086,
+        15.993604599014384,
+        12.026499638313505,
+        9.188973256940953
+      ],
+      "draft_tokens_total": 219331,
+      "accepted_tokens_total": 67269,
+      "token_weighted_acceptance_rate_percent": 30.670083116385737,
+      "raw_files": [
+        "results/raw/semantic-r1-dspark-adaptive-specbench-o256-c32-s42.json",
+        "results/raw/semantic-r1-dspark-adaptive-specbench-o256-c32-s43.json",
+        "results/raw/semantic-r1-dspark-adaptive-specbench-o256-c32-s44.json"
+      ]
+    }
+  ],
+  "paired_speedups": [
+    {
+      "method": "dspark-adaptive",
+      "baseline_method": "dspark-k7",
+      "concurrency": 1,
+      "pairs": [
+        {
+          "seed": 42,
+          "baseline_method": "dspark-k7",
+          "baseline_output_tps": 319.9143669373862,
+          "candidate_output_tps": 291.68863211886554,
+          "speedup": 0.9117709683102634
+        },
+        {
+          "seed": 43,
+          "baseline_method": "dspark-k7",
+          "baseline_output_tps": 320.02511304619355,
+          "candidate_output_tps": 291.7503067447675,
+          "speedup": 0.9116481640072266
+        },
+        {
+          "seed": 44,
+          "baseline_method": "dspark-k7",
+          "baseline_output_tps": 320.06004701908375,
+          "candidate_output_tps": 291.8564080898192,
+          "speedup": 0.9118801637631987
+        }
+      ],
+      "paired_speedup": {
+        "n": 3,
+        "mean": 0.9117664320268962,
+        "sample_stdev": 0.00011606638226837692,
+        "min": 0.9116481640072266,
+        "max": 0.9118801637631987
+      },
+      "ratio_of_mean_output_tps": 0.9117664356422374
+    },
+    {
+      "method": "dspark-adaptive",
+      "baseline_method": "dspark-k7",
+      "concurrency": 4,
+      "pairs": [
+        {
+          "seed": 42,
+          "baseline_method": "dspark-k7",
+          "baseline_output_tps": 1018.6309216720425,
+          "candidate_output_tps": 959.36853773611,
+          "speedup": 0.9418215344978379
+        },
+        {
+          "seed": 43,
+          "baseline_method": "dspark-k7",
+          "baseline_output_tps": 1018.7484404204446,
+          "candidate_output_tps": 954.6561264971896,
+          "speedup": 0.9370872029047684
+        },
+        {
+          "seed": 44,
+          "baseline_method": "dspark-k7",
+          "baseline_output_tps": 1005.5142244831707,
+          "candidate_output_tps": 956.3776758258074,
+          "speedup": 0.9511329154168662
+        }
+      ],
+      "paired_speedup": {
+        "n": 3,
+        "mean": 0.9433472176064909,
+        "sample_stdev": 0.007146068268925678,
+        "min": 0.9370872029047684,
+        "max": 0.9511329154168662
+      },
+      "ratio_of_mean_output_tps": 0.9433134148109776
+    },
+    {
+      "method": "dspark-adaptive",
+      "baseline_method": "dspark-k7",
+      "concurrency": 16,
+      "pairs": [
+        {
+          "seed": 42,
+          "baseline_method": "dspark-k7",
+          "baseline_output_tps": 2624.260755302449,
+          "candidate_output_tps": 2574.0868416480557,
+          "speedup": 0.9808807438235646
+        },
+        {
+          "seed": 43,
+          "baseline_method": "dspark-k7",
+          "baseline_output_tps": 2648.4394284752407,
+          "candidate_output_tps": 2562.4805390070487,
+          "speedup": 0.9675435697928421
+        },
+        {
+          "seed": 44,
+          "baseline_method": "dspark-k7",
+          "baseline_output_tps": 2644.0891176013342,
+          "candidate_output_tps": 2568.4639131155895,
+          "speedup": 0.9713983904769631
+        }
+      ],
+      "paired_speedup": {
+        "n": 3,
+        "mean": 0.97327423469779,
+        "sample_stdev": 0.006863610306322179,
+        "min": 0.9675435697928421,
+        "max": 0.9808807438235646
+      },
+      "ratio_of_mean_output_tps": 0.9732520344363031
+    },
+    {
+      "method": "dspark-adaptive",
+      "baseline_method": "dspark-k7",
+      "concurrency": 32,
+      "pairs": [
+        {
+          "seed": 42,
+          "baseline_method": "dspark-k7",
+          "baseline_output_tps": 3374.220717893543,
+          "candidate_output_tps": 3513.8842719310137,
+          "speedup": 1.0413913509856758
+        },
+        {
+          "seed": 43,
+          "baseline_method": "dspark-k7",
+          "baseline_output_tps": 3363.1818497602117,
+          "candidate_output_tps": 3594.572938808342,
+          "speedup": 1.0688012422119333
+        },
+        {
+          "seed": 44,
+          "baseline_method": "dspark-k7",
+          "baseline_output_tps": 3364.102849010478,
+          "candidate_output_tps": 3591.097588298161,
+          "speedup": 1.0674755646529805
+        }
+      ],
+      "paired_speedup": {
+        "n": 3,
+        "mean": 1.05922271928353,
+        "sample_stdev": 0.015456636981499699,
+        "min": 1.0413913509856758,
+        "max": 1.0688012422119333
+      },
+      "ratio_of_mean_output_tps": 1.059203985713525
+    }
+  ],
+  "paired_speedups_vs_normal": [],
+  "best_fixed_by_concurrency": [],
+  "paired_speedups_vs_best_fixed": []
+}

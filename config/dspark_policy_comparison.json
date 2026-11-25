@@ -1,0 +1,22 @@
+{
+  "description": "Same-GPU comparison of fixed-width DSpark and confidence-guided adaptive verification.",
+  "configurations": [
+    {
+      "name": "dspark-k7",
+      "speculative_config": {
+        "method": "dspark",
+        "model": "/home/genai/models/Qwen3.8-27B-DSpark-vLLM",
+        "num_speculative_tokens": 7
+      }
+    },
+    {
+      "name": "dspark-adaptive",
+      "speculative_config": {
+        "method": "dspark",
+        "model": "/home/genai/models/Qwen3.8-27B-DSpark-vLLM",
+        "num_speculative_tokens": 7,
+        "enable_adaptive_verification": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,638 @@
+{
+  "schema_version": 1,
+  "phase": "kscan-r1",
+  "method": "dspark",
+  "generated_at": "2026-11-24T15:37:01.977999+00:00",
+  "status": "complete",
+  "missing_files": [],
+  "definitions": {
+    "estimated_cycle_ms": "mean TPOT * acceptance length. It is an end-to-end effective cycle-cost estimate, not a kernel-level timing.",
+    "per_position_acceptance": "vLLM per-position unconditional acceptance fractions; acceptance length is approximately 1 + their sum.",
+    "configuration_oracle": "Best measured fixed K at each concurrency. This is not a per-step oracle and does not claim an upper bound for every possible online policy."
+  },
+  "configuration_oracle_by_concurrency": [
+    {
+      "concurrency": 1,
+      "available_ks": [
+        1,
+        3,
+        5,
+        7
+      ],
+      "best_fixed_k": 7,
+      "best_output_tps": 211.73290527521024,
+      "reference_k": 7,
+      "reference_output_tps": 211.73290527521024,
+      "configuration_oracle_speedup_over_reference": 1.0,
+      "linear_cycle_cost_fit": {
+        "intercept_ms": 10.175620729272355,
+        "marginal_ms_per_k": 0.11982027833414882,
+        "r_squared": 0.9994817512142802,
+        "interpretation": "Descriptive fit of TPOT*acceptance_length, not a standalone draft/verify profiler measurement."
+      }
+    },
+    {
+      "concurrency": 4,
+      "available_ks": [
+        1,
+        3,
+        5,
+        7
+      ],
+      "best_fixed_k": 7,
+      "best_output_tps": 655.899520512312,
+      "reference_k": 7,
+      "reference_output_tps": 655.899520512312,
+      "configuration_oracle_speedup_over_reference": 1.0,
+      "linear_cycle_cost_fit": {
+        "intercept_ms": 10.78984899553333,
+        "marginal_ms_per_k": 0.3424763841268859,
+        "r_squared": 0.9895684250988571,
+        "interpretation": "Descriptive fit of TPOT*acceptance_length, not a standalone draft/verify profiler measurement."
+      }
+    },
+    {
+      "concurrency": 16,
+      "available_ks": [
+        1,
+        3,
+        5,
+        7
+      ],
+      "best_fixed_k": 1,
+      "best_output_tps": 1476.411371208299,
+      "reference_k": 7,
+      "reference_output_tps": 1344.7701281990642,
+      "configuration_oracle_speedup_over_reference": 1.0978912605573197,
+      "linear_cycle_cost_fit": {
+        "intercept_ms": 13.704885712947068,
+        "marginal_ms_per_k": 0.6952353016795231,
+        "r_squared": 0.6121563663745451,
+        "interpretation": "Descriptive fit of TPOT*acceptance_length, not a standalone draft/verify profiler measurement."
+      }
+    },
+    {
+      "concurrency": 32,
+      "available_ks": [
+        1,
+        3,
+        5,
+        7
+      ],
+      "best_fixed_k": 3,
+      "best_output_tps": 1905.255152920339,
+      "reference_k": 7,
+      "reference_output_tps": 1491.2371147182025,
+      "configuration_oracle_speedup_over_reference": 1.2776339417225229,
+      "linear_cycle_cost_fit": {
+        "intercept_ms": 15.473306832611621,
+        "marginal_ms_per_k": 0.6579641419150374,
+        "r_squared": 0.5963859262987226,
+        "interpretation": "Descriptive fit of TPOT*acceptance_length, not a standalone draft/verify profiler measurement."
+      }
+    }
+  ],
+  "suggested_batch_size_schedule": {
+    "method": "dspark",
+    "num_speculative_tokens": 7,
+    "num_speculative_tokens_per_batch_size": [
+      [
+        1,
+        1,
+        7
+      ],
+      [
+        2,
+        4,
+        7
+      ],
+      [
+        5,
+        16,
+        1
+      ],
+      [
+        17,
+        256,
+        3
+      ]
+    ],
+    "model": "/home/genai/models/Qwen3.8-27B-DSpark-vLLM"
+  },
+  "max_k_prefix_acceptance_predictions": [
+    {
+      "concurrency": 1,
+      "k": 1,
+      "max_k_trace": 7,
+      "predicted_acceptance_length_from_max_k_marginals": 1.3786407766990292,
+      "measured_acceptance_length": 1.5741774100442563,
+      "absolute_error": 0.19553663334522708,
+      "relative_error_percent": 12.42151183834672
+    },
+    {
+      "concurrency": 1,
+      "k": 3,
+      "max_k_trace": 7,
+      "predicted_acceptance_length_from_max_k_marginals": 1.8390088392986523,
+      "measured_acceptance_length": 2.126557632398754,
+      "absolute_error": 0.2875487931001015,
+      "relative_error_percent": 13.521796386761778
+    },
+    {
+      "concurrency": 1,
+      "k": 5,
+      "max_k_trace": 7,
+      "predicted_acceptance_length_from_max_k_marginals": 2.1505578901608464,
+      "measured_acceptance_length": 2.286331938633194,
+      "absolute_error": 0.13577404847234753,
+      "relative_error_percent": 5.938509897802304
+    },
+    {
+      "concurrency": 1,
+      "k": 7,
+      "max_k_trace": 7,
+      "predicted_acceptance_length_from_max_k_marginals": 2.377771337487321,
+      "measured_acceptance_length": 2.377771337487321,
+      "absolute_error": 0.0,
+      "relative_error_percent": 0.0
+    },
+    {
+      "concurrency": 4,
+      "k": 1,
+      "max_k_trace": 7,
+      "predicted_acceptance_length_from_max_k_marginals": 1.3822337962962963,
+      "measured_acceptance_length": 1.5586778433987427,
+      "absolute_error": 0.17644404710244643,
+      "relative_error_percent": 11.320110043888544
+    },
+    {
+      "concurrency": 4,
+      "k": 3,
+      "max_k_trace": 7,
+      "predicted_acceptance_length_from_max_k_marginals": 1.8315972222222223,
+      "measured_acceptance_length": 2.101551480959097,
+      "absolute_error": 0.26995425873687484,
+      "relative_error_percent": 12.845474459358677
+    },
+    {
+      "concurrency": 4,
+      "k": 5,
+      "max_k_trace": 7,
+      "predicted_acceptance_length_from_max_k_marginals": 2.1443865740740744,
+      "measured_acceptance_length": 2.167107001321004,
+      "absolute_error": 0.022720427246929464,
+      "relative_error_percent": 1.0484220314492902
+    },
+    {
+      "concurrency": 4,
+      "k": 7,
+      "max_k_trace": 7,
+      "predicted_acceptance_length_from_max_k_marginals": 2.376012731481482,
+      "measured_acceptance_length": 2.3760127314814814,
+      "absolute_error": 4.440892098500626e-16,
+      "relative_error_percent": 1.8690523159493593e-14
+    },
+    {
+      "concurrency": 16,
+      "k": 1,
+      "max_k_trace": 7,
+      "predicted_acceptance_length_from_max_k_marginals": 1.3560570443504152,
+      "measured_acceptance_length": 1.5716069541830757,
+      "absolute_error": 0.21554990983266054,
+      "relative_error_percent": 13.715255538857281
+    },
+    {
+      "concurrency": 16,
+      "k": 3,
+      "max_k_trace": 7,
+      "predicted_acceptance_length_from_max_k_marginals": 1.851904090267983,
+      "measured_acceptance_length": 2.089379064133622,
+      "absolute_error": 0.23747497386563898,
+      "relative_error_percent": 11.365815707745206
+    },
+    {
+      "concurrency": 16,
+      "k": 5,
+      "max_k_trace": 7,
+      "predicted_acceptance_length_from_max_k_marginals": 2.251684688920232,
+      "measured_acceptance_length": 2.383531803659599,
+      "absolute_error": 0.13184711473936694,
+      "relative_error_percent": 5.531586133523919
+    },
+    {
+      "concurrency": 16,
+      "k": 7,
+      "max_k_trace": 7,
+      "predicted_acceptance_length_from_max_k_marginals": 2.5749882463563702,
+      "measured_acceptance_length": 2.5749882463563702,
+      "absolute_error": 0.0,
+      "relative_error_percent": 0.0
+    },
+    {
+      "concurrency": 32,
+      "k": 1,
+      "max_k_trace": 7,
+      "predicted_acceptance_length_from_max_k_marginals": 1.3544323483670295,
+      "measured_acceptance_length": 1.553013763644993,
+      "absolute_error": 0.19858141527796347,
+      "relative_error_percent": 12.78684194091648
+    },
+    {
+      "concurrency": 32,
+      "k": 3,
+      "max_k_trace": 7,
+      "predicted_acceptance_length_from_max_k_marginals": 1.8860031104199066,
+      "measured_acceptance_length": 2.0932668966398364,
+      "absolute_error": 0.2072637862199298,
+      "relative_error_percent": 9.90145052943964
+    },
+    {
+      "concurrency": 32,
+      "k": 5,
+      "max_k_trace": 7,
+      "predicted_acceptance_length_from_max_k_marginals": 2.2743390357698288,
+      "measured_acceptance_length": 2.4046047807596422,
+      "absolute_error": 0.13026574498981347,
+      "relative_error_percent": 5.417345338083418
+    },
+    {
+      "concurrency": 32,
+      "k": 7,
+      "max_k_trace": 7,
+      "predicted_acceptance_length_from_max_k_marginals": 2.5514774494556764,
+      "measured_acceptance_length": 2.5514774494556764,
+      "absolute_error": 0.0,
+      "relative_error_percent": 0.0
+    }
+  ],
+  "records": [
+    {
+      "method": "dspark",
+      "k": 1,
+      "concurrency": 1,
+      "output_tps": 150.91417726647956,
+      "request_tps": 0.2947542524735929,
+      "mean_tpot_ms": 6.538119981697703,
+      "mean_itl_ms": 10.254300588981474,
+      "mean_e2el_ms": 3392.5627117132535,
+      "acceptance_length": 1.5741774100442563,
+      "acceptance_rate_percent": 57.41774100442563,
+      "estimated_cycle_ms": 10.29216077934749,
+      "num_drafts": 10394,
+      "draft_tokens": 10394,
+      "accepted_tokens": 5968,
+      "per_position_unconditional_acceptance": [
+        0.5741774100442563
+      ],
+      "raw_file": "results/raw/kscan-r1-dspark-k1-i1024-o512-c1-s42.json"
+    },
+    {
+      "method": "dspark",
+      "k": 1,
+      "concurrency": 4,
+      "output_tps": 533.6539534447846,
+      "request_tps": 1.042292877821845,
+      "mean_tpot_ms": 7.118736070361163,
+      "mean_itl_ms": 11.054660230061323,
+      "mean_e2el_ms": 3721.8012151424773,
+      "acceptance_length": 1.5586778433987427,
+      "acceptance_rate_percent": 55.86778433987426,
+      "estimated_cycle_ms": 11.095816185875378,
+      "num_drafts": 10498,
+      "draft_tokens": 10498,
+      "accepted_tokens": 5865,
+      "per_position_unconditional_acceptance": [
+        0.5586778433987426
+      ],
+      "raw_file": "results/raw/kscan-r1-dspark-k1-i1024-o512-c4-s42.json"
+    },
+    {
+      "method": "dspark",
+      "k": 1,
+      "concurrency": 16,
+      "output_tps": 1476.411371208299,
+      "request_tps": 2.883615959391209,
+      "mean_tpot_ms": 8.35226598271937,
+      "mean_itl_ms": 13.078258484097207,
+      "mean_e2el_ms": 4662.870407337323,
+      "acceptance_length": 1.5716069541830757,
+      "acceptance_rate_percent": 57.16069541830756,
+      "estimated_cycle_ms": 13.126479301628503,
+      "num_drafts": 10411,
+      "draft_tokens": 10411,
+      "accepted_tokens": 5951,
+      "per_position_unconditional_acceptance": [
+        0.5716069541830756
+      ],
+      "raw_file": "results/raw/kscan-r1-dspark-k1-i1024-o512-c16-s42.json"
+    },
+    {
+      "method": "dspark",
+      "k": 1,
+      "concurrency": 32,
+      "output_tps": 1791.5529056063594,
+      "request_tps": 3.499126768762421,
+      "mean_tpot_ms": 11.238122199231567,
+      "mean_itl_ms": 17.3905341347435,
+      "mean_e2el_ms": 7053.229320321407,
+      "acceptance_length": 1.553013763644993,
+      "acceptance_rate_percent": 55.30137636449929,
+      "estimated_cycle_ms": 17.45295845293096,
+      "num_drafts": 10535,
+      "draft_tokens": 10535,
+      "accepted_tokens": 5826,
+      "per_position_unconditional_acceptance": [
+        0.5530137636449929
+      ],
+      "raw_file": "results/raw/kscan-r1-dspark-k1-i1024-o512-c32-s42.json"
+    },
+    {
+      "method": "dspark",
+      "k": 3,
+      "concurrency": 1,
+      "output_tps": 198.1179562975508,
+      "request_tps": 0.3869491333936539,
+      "mean_tpot_ms": 4.9540698655156294,
+      "mean_itl_ms": 10.4716843899834,
+      "mean_e2el_ms": 2584.2338505535736,
+      "acceptance_length": 2.126557632398754,
+      "acceptance_rate_percent": 37.55192107995846,
+      "estimated_cycle_ms": 10.535115083948929,
+      "num_drafts": 7704,
+      "draft_tokens": 23112,
+      "accepted_tokens": 8679,
+      "per_position_unconditional_acceptance": [
+        0.44820872274143303,
+        0.35864485981308414,
+        0.3197040498442368
+      ],
+      "raw_file": "results/raw/kscan-r1-dspark-k3-i1024-o512-c1-s42.json"
+    },
+    {
+      "method": "dspark",
+      "k": 3,
+      "concurrency": 4,
+      "output_tps": 649.6692886020732,
+      "request_tps": 1.2688853293009241,
+      "mean_tpot_ms": 5.618616451828015,
+      "mean_itl_ms": 11.73229679738114,
+      "mean_e2el_ms": 2961.204357095994,
+      "acceptance_length": 2.101551480959097,
+      "acceptance_rate_percent": 36.718382698636574,
+      "estimated_cycle_ms": 11.807811725280313,
+      "num_drafts": 7799,
+      "draft_tokens": 23397,
+      "accepted_tokens": 8591,
+      "per_position_unconditional_acceptance": [
+        0.4335171175791768,
+        0.3535068598538274,
+        0.3145275035260931
+      ],
+      "raw_file": "results/raw/kscan-r1-dspark-k3-i1024-o512-c4-s42.json"
+    },
+    {
+      "method": "dspark",
+      "k": 3,
+      "concurrency": 16,
+      "output_tps": 1326.946409175108,
+      "request_tps": 2.591692205420133,
+      "mean_tpot_ms": 8.535835871985205,
+      "mean_itl_ms": 17.72418897507328,
+      "mean_e2el_ms": 4749.792595153849,
+      "acceptance_length": 2.089379064133622,
+      "acceptance_rate_percent": 36.31263547112075,
+      "estimated_cycle_ms": 17.834596765806648,
+      "num_drafts": 7843,
+      "draft_tokens": 23529,
+      "accepted_tokens": 8544,
+      "per_position_unconditional_acceptance": [
+        0.44625780951166644,
+        0.3420884865485146,
+        0.30103276807344126
+      ],
+      "raw_file": "results/raw/kscan-r1-dspark-k3-i1024-o512-c16-s42.json"
+    },
+    {
+      "method": "dspark",
+      "k": 3,
+      "concurrency": 32,
+      "output_tps": 1905.255152920339,
+      "request_tps": 3.721201470547537,
+      "mean_tpot_ms": 7.530467912731073,
+      "mean_itl_ms": 15.668432537088497,
+      "mean_e2el_ms": 5166.741717439436,
+      "acceptance_length": 2.0932668966398364,
+      "acceptance_rate_percent": 36.44222988799455,
+      "estimated_cycle_ms": 15.763279197928439,
+      "num_drafts": 7827,
+      "draft_tokens": 23481,
+      "accepted_tokens": 8557,
+      "per_position_unconditional_acceptance": [
+        0.4492142583365274,
+        0.3463651462884886,
+        0.2976874920148205
+      ],
+      "raw_file": "results/raw/kscan-r1-dspark-k3-i1024-o512-c32-s42.json"
+    },
+    {
+      "method": "dspark",
+      "k": 5,
+      "concurrency": 1,
+      "output_tps": 207.87703827537874,
+      "request_tps": 0.4060098403815991,
+      "mean_tpot_ms": 4.7169422707793816,
+      "mean_itl_ms": 10.709725078003949,
+      "mean_e2el_ms": 2462.8959703768487,
+      "acceptance_length": 2.286331938633194,
+      "acceptance_rate_percent": 25.72663877266388,
+      "estimated_cycle_ms": 10.784495766371883,
+      "num_drafts": 7170,
+      "draft_tokens": 35850,
+      "accepted_tokens": 9223,
+      "per_position_unconditional_acceptance": [
+        0.401534170153417,
+        0.29581589958158994,
+        0.2288702928870293,
+        0.1900976290097629,
+        0.1700139470013947
+      ],
+      "raw_file": "results/raw/kscan-r1-dspark-k5-i1024-o512-c1-s42.json"
+    },
+    {
+      "method": "dspark",
+      "k": 5,
+      "concurrency": 4,
+      "output_tps": 627.6114855832213,
+      "request_tps": 1.2258036827797292,
+      "mean_tpot_ms": 5.828365343792589,
+      "mean_itl_ms": 12.536888989962694,
+      "mean_e2el_ms": 3064.9160375542124,
+      "acceptance_length": 2.167107001321004,
+      "acceptance_rate_percent": 23.34214002642008,
+      "estimated_cycle_ms": 12.63069134278962,
+      "num_drafts": 7570,
+      "draft_tokens": 37850,
+      "accepted_tokens": 8835,
+      "per_position_unconditional_acceptance": [
+        0.3833553500660502,
+        0.2597093791281374,
+        0.2105680317040951,
+        0.17080581241743725,
+        0.142668428005284
+      ],
+      "raw_file": "results/raw/kscan-r1-dspark-k5-i1024-o512-c4-s42.json"
+    },
+    {
+      "method": "dspark",
+      "k": 5,
+      "concurrency": 16,
+      "output_tps": 1405.094077013799,
+      "request_tps": 2.7443243691675763,
+      "mean_tpot_ms": 7.0961826641992864,
+      "mean_itl_ms": 16.77316839042884,
+      "mean_e2el_ms": 4003.439923253609,
+      "acceptance_length": 2.383531803659599,
+      "acceptance_rate_percent": 27.670636073191986,
+      "estimated_cycle_ms": 16.913977064696905,
+      "num_drafts": 6886,
+      "draft_tokens": 34430,
+      "accepted_tokens": 9527,
+      "per_position_unconditional_acceptance": [
+        0.38919546906767355,
+        0.29175137961080455,
+        0.25747894278245714,
+        0.23104850421144352,
+        0.21405750798722045
+      ],
+      "raw_file": "results/raw/kscan-r1-dspark-k5-i1024-o512-c16-s42.json"
+    },
+    {
+      "method": "dspark",
+      "k": 5,
+      "concurrency": 32,
+      "output_tps": 1748.0089156636404,
+      "request_tps": 3.4140799134055477,
+      "mean_tpot_ms": 7.55463241742855,
+      "mean_itl_ms": 18.031433263726708,
+      "mean_e2el_ms": 5042.9921406757785,
+      "acceptance_length": 2.4046047807596422,
+      "acceptance_rate_percent": 28.092095615192843,
+      "estimated_cycle_ms": 18.165905227830464,
+      "num_drafts": 6819,
+      "draft_tokens": 34095,
+      "accepted_tokens": 9578,
+      "per_position_unconditional_acceptance": [
+        0.39961871242117614,
+        0.30283032702742335,
+        0.2622085349758029,
+        0.2300923889133304,
+        0.20985481742190937
+      ],
+      "raw_file": "results/raw/kscan-r1-dspark-k5-i1024-o512-c32-s42.json"
+    },
+    {
+      "method": "dspark",
+      "k": 7,
+      "concurrency": 1,
+      "output_tps": 211.73290527521024,
+      "request_tps": 0.413540830615645,
+      "mean_tpot_ms": 4.6294761683854295,
+      "mean_itl_ms": 10.918966436670786,
+      "mean_e2el_ms": 2418.0572400946403,
+      "acceptance_length": 2.377771337487321,
+      "acceptance_rate_percent": 19.682447678390293,
+      "estimated_cycle_ms": 11.0078357407675,
+      "num_drafts": 6901,
+      "draft_tokens": 48307,
+      "accepted_tokens": 9508,
+      "per_position_unconditional_acceptance": [
+        0.3786407766990291,
+        0.26372989421822923,
+        0.196638168381394,
+        0.16519345022460513,
+        0.14635560063758876,
+        0.11969279814519634,
+        0.10752064918127807
+      ],
+      "raw_file": "results/raw/kscan-r1-dspark-k7-i1024-o512-c1-s42.json"
+    },
+    {
+      "method": "dspark",
+      "k": 7,
+      "concurrency": 4,
+      "output_tps": 655.899520512312,
+      "request_tps": 1.2810537510006095,
+      "mean_tpot_ms": 5.51541610050515,
+      "mean_itl_ms": 12.98791533344761,
+      "mean_e2el_ms": 2905.4477932222653,
+      "acceptance_length": 2.3760127314814814,
+      "acceptance_rate_percent": 19.657324735449734,
+      "estimated_cycle_ms": 13.104698874218183,
+      "num_drafts": 6912,
+      "draft_tokens": 48384,
+      "accepted_tokens": 9511,
+      "per_position_unconditional_acceptance": [
+        0.3822337962962963,
+        0.2562210648148148,
+        0.1931423611111111,
+        0.1662326388888889,
+        0.14655671296296297,
+        0.12080439814814815,
+        0.11082175925925926
+      ],
+      "raw_file": "results/raw/kscan-r1-dspark-k7-i1024-o512-c4-s42.json"
+    },
+    {
+      "method": "dspark",
+      "k": 7,
+      "concurrency": 16,
+      "output_tps": 1344.7701281990642,
+      "request_tps": 2.626504156638797,
+      "mean_tpot_ms": 7.016829910620099,
+      "mean_itl_ms": 17.891657991339443,
+      "mean_e2el_ms": 3963.324995005678,
+      "acceptance_length": 2.5749882463563702,
+      "acceptance_rate_percent": 22.499832090805292,
+      "estimated_cycle_ms": 18.068254546528575,
+      "num_drafts": 6381,
+      "draft_tokens": 44667,
+      "accepted_tokens": 10050,
+      "per_position_unconditional_acceptance": [
+        0.3560570443504153,
+        0.2637517630465444,
+        0.23209528287102335,
+        0.20843128036357939,
+        0.1913493182886695,
+        0.16737188528443817,
+        0.15593167215170037
+      ],
+      "raw_file": "results/raw/kscan-r1-dspark-k7-i1024-o512-c16-s42.json"
+    },
+    {
+      "method": "dspark",
+      "k": 7,
+      "concurrency": 32,
+      "output_tps": 1491.2371147182025,
+      "request_tps": 2.9125724896839893,
+      "mean_tpot_ms": 8.245618916555776,
+      "mean_itl_ms": 20.865422550838755,
+      "mean_e2el_ms": 5379.406447798829,
+      "acceptance_length": 2.5514774494556764,
+      "acceptance_rate_percent": 22.163963563652523,
+      "estimated_cycle_ms": 21.03851072239721,
+      "num_drafts": 6430,
+      "draft_tokens": 45010,
+      "accepted_tokens": 9976,
+      "per_position_unconditional_acceptance": [
+        0.3544323483670295,
+        0.2953343701399689,
+        0.23623639191290824,
+        0.2108864696734059,
+        0.17744945567651632,
+        0.14541213063763608,
+        0.13172628304821152
+      ],
+      "raw_file": "results/raw/kscan-r1-dspark-k7-i1024-o512-c32-s42.json"
+    }
+  ]
+}

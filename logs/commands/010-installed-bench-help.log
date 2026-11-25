@@ -1,0 +1,7 @@
+COMMAND: zsh -c '/home/genai/.pixi/envs/default/bin/vllm bench serve --help > /home/genai/spec_decoding_study/config/installed-vllm-bench-serve-help.txt'
+CWD: /home/genai/spec_decoding_study
+STARTED_AT: 2026-11-24T14:08:27.443313+00:00
+
+W1124 14:08:28.522000 116497 site-packages/torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1124 14:08:28.522000 116497 site-packages/torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1124 14:08:28.523000 116497 site-packages/torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead

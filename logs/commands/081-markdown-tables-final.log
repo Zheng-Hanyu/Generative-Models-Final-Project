@@ -1,0 +1,5 @@
+COMMAND: python src/export_markdown_tables.py --phases formal-r1 semantic-r1 policy-mtp-fixed-r1 policy-mtp-r1 policy-dspark-r1 policy-dspark-high-r1 semantic-r1-dspark-adaptive semantic-r1-dspark-high
+CWD: /home/genai/spec_decoding_study
+STARTED_AT: 2026-11-24T16:39:30.588093+00:00
+
+Markdown tables written to /home/genai/spec_decoding_study/report/tables

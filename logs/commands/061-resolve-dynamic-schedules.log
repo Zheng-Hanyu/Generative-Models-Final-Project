@@ -1,0 +1,26 @@
+COMMAND: /home/genai/.pixi/envs/default/bin/python -c 'import json; from pathlib import Path; from vllm.v1.spec_decode.dynamic.utils import build_dynamic_sd_schedule_lookup; cs=json.loads(Path("config/mtp_policy_comparison.json").read_text())["configurations"]; out={}; [(out.update({c["name"]: {str(b): build_dynamic_sd_schedule_lookup(c["speculative_config"]["num_speculative_tokens_per_batch_size"],256,c["speculative_config"]["num_speculative_tokens"])[b] for b in [1,2,4,5,16,17,32,256]}})) for c in cs if c["speculative_config"] and "num_speculative_tokens_per_batch_size" in c["speculative_config"]]; Path("results/processed/mtp-dynamic-schedule-lookup.json").write_text(json.dumps(out,indent=2)+"\n"); print(json.dumps(out,indent=2))'
+CWD: /home/genai/spec_decoding_study
+STARTED_AT: 2026-11-24T15:19:00.840219+00:00
+
+{
+  "mtp-dynamic-oracle": {
+    "1": 7,
+    "2": 6,
+    "4": 6,
+    "5": 7,
+    "16": 7,
+    "17": 5,
+    "32": 5,
+    "256": 5
+  },
+  "mtp-dynamic-smooth": {
+    "1": 6,
+    "2": 6,
+    "4": 6,
+    "5": 5,
+    "16": 5,
+    "17": 5,
+    "32": 5,
+    "256": 5
+  }
+}

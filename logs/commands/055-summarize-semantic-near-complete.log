@@ -1,0 +1,9 @@
+COMMAND: /home/genai/.pixi/envs/default/bin/python /home/genai/spec_decoding_study/src/summarize_benchmarks.py --phase semantic-r1 --methods normal mtp-k3 dspark-k7 --concurrencies 1 4 16 32 --seeds 42 43 44 --dataset-name spec_bench --num-prompts 128 --output-len 256 --allow-partial
+CWD: /home/genai/spec_decoding_study
+STARTED_AT: 2026-11-24T15:12:31.035880+00:00
+
+{
+  "summary": "/home/genai/spec_decoding_study/results/processed/semantic-r1-summary.json",
+  "status": "partial",
+  "runs": 32
+}

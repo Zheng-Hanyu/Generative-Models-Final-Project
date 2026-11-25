@@ -1,0 +1,26 @@
+COMMAND: /home/genai/.pixi/envs/default/bin/python /home/genai/spec_decoding_study/config/prepare_speed_bench.py --config qualitative --output_dir /home/genai/spec_decoding_study/data/speed_bench
+CWD: /home/genai/spec_decoding_study
+STARTED_AT: 2026-11-24T14:39:25.047805+00:00
+
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+
+Generating test split:   0%|          | 0/880 [00:00<?, ? examples/s]
+Generating test split: 100%|██████████| 880/880 [00:00<00:00, 120333.44 examples/s]
+/home/genai/.pixi/envs/default/lib/python3.12/site-packages/dill/_dill.py:423: PicklingWarning: Cannot locate reference to <enum 'BenchmarkDataset'>.
+  StockPickler.save(self, obj, save_persistent_id)
+/home/genai/.pixi/envs/default/lib/python3.12/site-packages/dill/_dill.py:423: PicklingWarning: Cannot pickle <enum 'BenchmarkDataset'>: __main__.BenchmarkDataset has recursive self-references that trigger a RecursionError.
+  StockPickler.save(self, obj, save_persistent_id)
+
+Preparing config qualitative:   0%|          | 0/880 [00:00<?, ? examples/s]
+
+Downloading data:   0%|          | 0/39 [00:00<?, ?files/s][A
+
+Downloading data:   3%|▎         | 1/39 [01:31<57:57, 91.51s/files][A
+
+Downloading data:   5%|▌         | 2/39 [03:02<56:10, 91.10s/files][A
+
+Downloading data:   8%|▊         | 3/39 [04:39<55:50, 93.07s/files][A
+
+Downloading data:  10%|█         | 4/39 [05:50<51:02, 87.51s/files][A
+
+Downloading data:  13%|█▎        | 5/39 [07:25<50:26, 89.00s/files][A

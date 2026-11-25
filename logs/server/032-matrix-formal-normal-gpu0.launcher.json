@@ -1,0 +1,29 @@
+{
+  "label": "032-matrix-formal-normal-gpu0",
+  "launcher_pid": 129940,
+  "launched_at": "2026-11-24T14:31:31.193153+00:00",
+  "run_logged_argv": [
+    "/home/genai/.pixi/envs/default/bin/python",
+    "/home/genai/spec_decoding_study/bin/run_logged.py",
+    "--label",
+    "032-matrix-formal-normal-gpu0",
+    "--cwd",
+    "/home/genai/spec_decoding_study",
+    "--",
+    "/home/genai/.pixi/envs/default/bin/python",
+    "src/run_benchmark_matrix.py",
+    "--method",
+    "normal",
+    "--port",
+    "8100",
+    "--gpu",
+    "0",
+    "--phase",
+    "formal-r1",
+    "--vllm",
+    "/home/genai/.pixi/envs/default/bin/vllm"
+  ],
+  "server_command": "/home/genai/.pixi/envs/default/bin/python src/run_benchmark_matrix.py --method normal --port 8100 --gpu 0 --phase formal-r1 --vllm /home/genai/.pixi/envs/default/bin/vllm",
+  "console_log": "/home/genai/spec_decoding_study/logs/server/032-matrix-formal-normal-gpu0.console.log",
+  "server_pid_file": "/home/genai/spec_decoding_study/logs/032-matrix-formal-normal-gpu0.pid"
+}

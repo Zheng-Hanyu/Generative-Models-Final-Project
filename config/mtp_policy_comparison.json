@@ -1,0 +1,61 @@
+{
+  "description": "Same-GPU MTP policy confirmation. The oracle schedule uses per-concurrency argmax from the single-run K=1..7 scan; the smooth schedule removes non-monotonic one-run argmax choices and uses K=6 at batch sizes 1..4 and K=5 thereafter.",
+  "configurations": [
+    {
+      "name": "normal",
+      "speculative_config": null
+    },
+    {
+      "name": "mtp-k3",
+      "speculative_config": {
+        "method": "mtp",
+        "num_speculative_tokens": 3
+      }
+    },
+    {
+      "name": "mtp-k5",
+      "speculative_config": {
+        "method": "mtp",
+        "num_speculative_tokens": 5
+      }
+    },
+    {
+      "name": "mtp-k6",
+      "speculative_config": {
+        "method": "mtp",
+        "num_speculative_tokens": 6
+      }
+    },
+    {
+      "name": "mtp-k7",
+      "speculative_config": {
+        "method": "mtp",
+        "num_speculative_tokens": 7
+      }
+    },
+    {
+      "name": "mtp-dynamic-oracle",
+      "speculative_config": {
+        "method": "mtp",
+        "num_speculative_tokens": 7,
+        "num_speculative_tokens_per_batch_size": [
+          [1, 1, 7],
+          [2, 4, 6],
+          [5, 16, 7],
+          [17, 256, 5]
+        ]
+      }
+    },
+    {
+      "name": "mtp-dynamic-smooth",
+      "speculative_config": {
+        "method": "mtp",
+        "num_speculative_tokens": 6,
+        "num_speculative_tokens_per_batch_size": [
+          [1, 4, 6],
+          [5, 256, 5]
+        ]
+      }
+    }
+  ]
+}

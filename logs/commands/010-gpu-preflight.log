@@ -1,0 +1,12 @@
+COMMAND: /usr/bin/nvidia-smi --query-gpu=index,name,uuid,memory.total,memory.used,utilization.gpu --format=csv,noheader
+CWD: /home/genai/spec_decoding_study
+STARTED_AT: 2026-11-24T14:13:00.241025+00:00
+
+0, NVIDIA B200, GPU-40f23920-6ba0-cdc4-e7e7-64b6cb470b32, 183359 MiB, 8 MiB, 0 %
+1, NVIDIA B200, GPU-9a94015a-6a0d-1ae1-82db-b6736b77562e, 183359 MiB, 0 MiB, 0 %
+2, NVIDIA B200, GPU-7e25f95a-29b7-9f94-ce9a-2a2871cf7c0c, 183359 MiB, 0 MiB, 0 %
+3, NVIDIA B200, GPU-ceeff2f7-3f39-50b4-8d29-576159781b9d, 183359 MiB, 0 MiB, 0 %
+4, NVIDIA B200, GPU-57c04c1a-9ae4-b231-f31a-5f4367e759a8, 183359 MiB, 0 MiB, 0 %
+5, NVIDIA B200, GPU-b79a7675-b3d5-9a92-e2c5-fa4769d6d281, 183359 MiB, 0 MiB, 0 %
+6, NVIDIA B200, GPU-d4d87d81-ea84-5dd0-7167-3e1c48fde29b, 183359 MiB, 0 MiB, 0 %
+7, NVIDIA B200, GPU-3c08cbc3-d8b3-c723-c086-a775f6a17f2a, 183359 MiB, 0 MiB, 0 %

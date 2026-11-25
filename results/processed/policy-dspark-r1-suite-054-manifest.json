@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "phase": "policy-dspark-r1",
+  "config_path": "/home/genai/spec_decoding_study/config/dspark_policy_comparison.json",
+  "gpu": 2,
+  "port": 8102,
+  "num_prompts": 32,
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "concurrencies": [
+    32,
+    16,
+    4,
+    1
+  ],
+  "dataset_name": "random",
+  "dataset_path": null,
+  "input_len": 1024,
+  "output_len": 512,
+  "started_at": "2026-11-24T15:12:18.503939+00:00",
+  "status": "completed",
+  "configurations": [
+    {
+      "method": "dspark-k7",
+      "speculative_config": {
+        "method": "dspark",
+        "model": "/home/genai/models/Qwen3.8-27B-DSpark-vLLM",
+        "num_speculative_tokens": 7
+      },
+      "server_label": "054-server-dspark-k7-gpu2",
+      "started_at": "2026-11-24T15:12:18.504066+00:00",
+      "status": "completed",
+      "stop_exit_code": 0,
+      "finished_at": "2026-11-24T15:21:54.722125+00:00"
+    },
+    {
+      "method": "dspark-adaptive",
+      "speculative_config": {
+        "method": "dspark",
+        "model": "/home/genai/models/Qwen3.8-27B-DSpark-vLLM",
+        "num_speculative_tokens": 7,
+        "enable_adaptive_verification": true
+      },
+      "server_label": "054-server-dspark-adaptive-gpu2",
+      "started_at": "2026-11-24T15:21:54.722398+00:00",
+      "status": "completed",
+      "stop_exit_code": 0,
+      "finished_at": "2026-11-24T15:32:25.222652+00:00"
+    }
+  ],
+  "finished_at": "2026-11-24T15:32:25.222989+00:00"
+}

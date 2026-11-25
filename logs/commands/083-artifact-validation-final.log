@@ -1,0 +1,81 @@
+COMMAND: python src/validate_results.py --required-summaries formal-r1 kscan-r1 semantic-r1 policy-mtp-fixed-r1 policy-mtp-r1 policy-dspark-r1 policy-dspark-high-r1 semantic-r1-dspark-adaptive semantic-r1-dspark-high
+CWD: /home/genai/spec_decoding_study
+STARTED_AT: 2026-11-24T16:41:26.893028+00:00
+
+{
+  "schema_version": 1,
+  "generated_at": "2026-11-24T16:41:27.705919+00:00",
+  "raw_json_files": 274,
+  "total_completed_requests": 17816,
+  "required_summary_checks": [
+    {
+      "file": "formal-r1-summary.json",
+      "status": "complete",
+      "expected_run_count": 36,
+      "loaded_run_count": 36,
+      "missing_files": []
+    },
+    {
+      "file": "kscan-r1-summary.json",
+      "status": "complete",
+      "expected_run_count": 28,
+      "loaded_run_count": 28,
+      "missing_files": []
+    },
+    {
+      "file": "semantic-r1-summary.json",
+      "status": "complete",
+      "expected_run_count": 48,
+      "loaded_run_count": 48,
+      "missing_files": []
+    },
+    {
+      "file": "policy-mtp-fixed-r1-summary.json",
+      "status": "complete",
+      "expected_run_count": 60,
+      "loaded_run_count": 60,
+      "missing_files": []
+    },
+    {
+      "file": "policy-mtp-r1-summary.json",
+      "status": "complete",
+      "expected_run_count": 84,
+      "loaded_run_count": 84,
+      "missing_files": []
+    },
+    {
+      "file": "policy-dspark-r1-summary.json",
+      "status": "complete",
+      "expected_run_count": 24,
+      "loaded_run_count": 24,
+      "missing_files": []
+    },
+    {
+      "file": "policy-dspark-high-r1-summary.json",
+      "status": "complete",
+      "expected_run_count": 24,
+      "loaded_run_count": 24,
+      "missing_files": []
+    },
+    {
+      "file": "semantic-r1-dspark-adaptive-summary.json",
+      "status": "complete",
+      "expected_run_count": 24,
+      "loaded_run_count": 24,
+      "missing_files": []
+    },
+    {
+      "file": "semantic-r1-dspark-high-summary.json",
+      "status": "complete",
+      "expected_run_count": 24,
+      "loaded_run_count": 24,
+      "missing_files": []
+    }
+  ],
+  "status": "complete",
+  "checksum_file": "results/processed/raw-sha256.csv"
+}
+{
+  "error_count": 0,
+  "first_errors": []
+}

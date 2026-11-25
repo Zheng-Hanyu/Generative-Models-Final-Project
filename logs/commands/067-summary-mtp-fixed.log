@@ -1,0 +1,9 @@
+COMMAND: python src/summarize_benchmarks.py --phase policy-mtp-r1 --output-stem policy-mtp-fixed-r1 --methods normal mtp-k3 mtp-k5 mtp-k6 mtp-k7 --best-fixed-methods mtp-k3 mtp-k5 mtp-k6 mtp-k7 --concurrencies 1 4 16 32 --seeds 42 43 44 --num-prompts 32
+CWD: /home/genai/spec_decoding_study
+STARTED_AT: 2026-11-24T16:21:33.152761+00:00
+
+{
+  "summary": "/home/genai/spec_decoding_study/results/processed/policy-mtp-fixed-r1-summary.json",
+  "status": "complete",
+  "runs": 60
+}

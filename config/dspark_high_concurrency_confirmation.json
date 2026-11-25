@@ -1,0 +1,21 @@
+{
+  "description": "Repeated high-concurrency confirmation of shorter fixed DSpark blocks selected by the initial K scan.",
+  "configurations": [
+    {
+      "name": "dspark-k1",
+      "speculative_config": {
+        "method": "dspark",
+        "model": "/home/genai/models/Qwen3.8-27B-DSpark-vLLM",
+        "num_speculative_tokens": 1
+      }
+    },
+    {
+      "name": "dspark-k3",
+      "speculative_config": {
+        "method": "dspark",
+        "model": "/home/genai/models/Qwen3.8-27B-DSpark-vLLM",
+        "num_speculative_tokens": 3
+      }
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "label": "036-prepare-speed-bench-qualitative",
+  "launcher_pid": 145812,
+  "launched_at": "2026-11-24T14:39:25.024260+00:00",
+  "run_logged_argv": [
+    "/home/genai/.pixi/envs/default/bin/python",
+    "/home/genai/spec_decoding_study/bin/run_logged.py",
+    "--label",
+    "036-prepare-speed-bench-qualitative",
+    "--cwd",
+    "/home/genai/spec_decoding_study",
+    "--",
+    "/home/genai/.pixi/envs/default/bin/python",
+    "/home/genai/spec_decoding_study/config/prepare_speed_bench.py",
+    "--config",
+    "qualitative",
+    "--output_dir",
+    "/home/genai/spec_decoding_study/data/speed_bench"
+  ],
+  "server_command": "/home/genai/.pixi/envs/default/bin/python /home/genai/spec_decoding_study/config/prepare_speed_bench.py --config qualitative --output_dir /home/genai/spec_decoding_study/data/speed_bench",
+  "console_log": "/home/genai/spec_decoding_study/logs/server/036-prepare-speed-bench-qualitative.console.log",
+  "server_pid_file": "/home/genai/spec_decoding_study/logs/036-prepare-speed-bench-qualitative.pid"
+}
