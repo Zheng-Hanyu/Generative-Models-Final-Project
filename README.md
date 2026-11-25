@@ -4,6 +4,8 @@
 
 完整分析见 **[中文技术报告](report/speculative_decoding_report.md)**；
 
+补充实验在 B200 上完成两轮调参和三轮留出集复测，纳入了表现最佳的 **Suffix Decoding**。[补充报告与复跑方法](report/supplemental_speculative_decoding.md)
+
 ## 1. 模型与方法
 
 | 名称 | 使用的模型 | 工作方式 |

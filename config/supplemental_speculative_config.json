@@ -1,0 +1,5 @@
+{
+  "method": "suffix",
+  "num_speculative_tokens": 4,
+  "suffix_decoding_max_tree_depth": 12
+}

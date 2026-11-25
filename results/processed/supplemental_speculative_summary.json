@@ -1,0 +1,125 @@
+{
+  "score": 1.2493000860272794,
+  "rows": {
+    "1": {
+      "normal_output_tps_median": 116.90228681821758,
+      "selected_output_tps_median": 174.88576927836007,
+      "paired_speedups": [
+        1.446376529093831,
+        1.4939747548322915,
+        1.5472944617481328
+      ],
+      "paired_speedup_median": 1.4939747548322915,
+      "normal_p95_tpot_ms_median": 8.422218216766465,
+      "selected_p95_tpot_ms_median": 6.92778697233721,
+      "normal_p95_ttft_ms_median": 51.592768880072974,
+      "selected_p95_ttft_ms_median": 53.28635427867993,
+      "draft_acceptance_percent_median": 17.37613895216401,
+      "normal_output_tokens": 18075,
+      "selected_output_tokens": 18118,
+      "exact_text_matches": 23,
+      "requests_per_configuration": 144
+    },
+    "16": {
+      "normal_output_tps_median": 1349.9637843536357,
+      "selected_output_tps_median": 1415.7111185376793,
+      "paired_speedups": [
+        1.0446968396885477,
+        1.0830157149849722,
+        1.0370122345981048
+      ],
+      "paired_speedup_median": 1.0446968396885477,
+      "normal_p95_tpot_ms_median": 11.358063563506057,
+      "selected_p95_tpot_ms_median": 11.84203030380497,
+      "normal_p95_ttft_ms_median": 246.36201864341274,
+      "selected_p95_ttft_ms_median": 223.93766718450934,
+      "draft_acceptance_percent_median": 19.09117733844792,
+      "normal_output_tokens": 17776,
+      "selected_output_tokens": 17724,
+      "exact_text_matches": 36,
+      "requests_per_configuration": 144
+    }
+  },
+  "config": {
+    "method": "suffix",
+    "num_speculative_tokens": 4,
+    "suffix_decoding_max_tree_depth": 12
+  },
+  "model": "Qwen3.8-27B-FP8",
+  "vllm": "0.34.0",
+  "attention_backend": "TRITON_ATTN",
+  "environment": {
+    "method": "suffix",
+    "attention_backend": "TRITON_ATTN",
+    "gpu": {
+      "index": "7",
+      "name": "NVIDIA B200",
+      "driver": "590.48.01"
+    },
+    "data_sha256": "4b6d33e79484f9841c487ee87d1cf6aa8c6066f61d5d482ff09e5a007fafdf04"
+  },
+  "seeds": [
+    43,
+    44,
+    45
+  ],
+  "cell_sha256": {
+    "holdout-c1-s43.jsonl": "05c2ab41dfc75f2d4b8597a2ae04c1ae967bb51f3fb4dfc81cb90a52aa0d4339",
+    "holdout-c1-s44.jsonl": "25f0191488c3808d4aa77cd21364b0287cf15b2d789b382c809bfef5cbe87784",
+    "holdout-c1-s45.jsonl": "87a716456b530f26c4a4de467c037030718ba01d10d81ffe6fc2663fad59eee0",
+    "holdout-c16-s43.jsonl": "e8fab6f9109a21f2a273b6ad5e80f84f876a36a5480edcbc64565376f1f8e43c",
+    "holdout-c16-s44.jsonl": "2d367429c72b0af4485a17aae1b30af5562e9853d1ef1d63eb822d6275c2b9ba",
+    "holdout-c16-s45.jsonl": "7f467d1db0a064a67b116b2ffa9aaf32f348eff2bfa48f573dd2b36811eaaa7f"
+  },
+  "tuning": {
+    "1": [
+      {
+        "round": 1,
+        "length": 4,
+        "matching": "24",
+        "tps_c1": 173.1466056548785,
+        "tps_c16": 1611.4992110907515,
+        "score": 528.2287557639003,
+        "selected": false
+      },
+      {
+        "round": 1,
+        "length": 8,
+        "matching": "24",
+        "tps_c1": 177.5129228668274,
+        "tps_c16": 1561.2787569802995,
+        "score": 526.4476759958774,
+        "selected": false
+      },
+      {
+        "round": 1,
+        "length": 12,
+        "matching": "24",
+        "tps_c1": 153.65508375948403,
+        "tps_c16": 1454.7011435989123,
+        "score": 472.7813723749152,
+        "selected": false
+      }
+    ],
+    "2": [
+      {
+        "round": 2,
+        "length": 4,
+        "matching": "12",
+        "tps_c1": 172.76809972255177,
+        "tps_c16": 1678.5615473790117,
+        "score": 538.518234424813,
+        "selected": true
+      },
+      {
+        "round": 2,
+        "length": 4,
+        "matching": "36",
+        "tps_c1": 172.9115656260389,
+        "tps_c16": 1636.304904882755,
+        "score": 531.917327171097,
+        "selected": false
+      }
+    ]
+  }
+}
