@@ -6,11 +6,13 @@ from math import isclose
 from pathlib import Path
 from statistics import geometric_mean, median
 
+from plot_style import BASELINE, DFLASH, DSPARK, INK, MTP, MUTED, save_plot, setup_plots
 from unified_framework import CONFIG, cell_name, read_json, stress_cells, write_json
 
 
 LABELS = {"mtp": "Native MTP", "dspark": "DSpark", "dflash": "DFlash 2", "suffix": "Suffix"}
-COLORS = {"mtp": "#125A98", "dspark": "#047F72", "dflash": "#B25527", "suffix": "#B25527"}
+COLORS = {"mtp": MTP, "dspark": DSPARK, "dflash": DFLASH, "suffix": DFLASH}
+MARKERS = {"mtp": "o", "dspark": "s", "dflash": "^", "suffix": "^"}
 EXTERNAL = {"speed": ("NVIDIA SPEED-Bench", "speed-bench-throughput"),
             "burst": ("BurstGPT v2.0", "burstgpt-throughput")}
 METRICS = ("output_throughput", "p95_ttft_ms", "p95_tpot_ms", "spec_decode_acceptance_rate")
@@ -234,30 +236,6 @@ def collect_external(root, summary):
     return {"manifest": common_manifest, "methods": results, "benchmark_count": len(common_manifest["cells"]) * 2 * len(results)}
 
 
-def chart_setup():
-    import matplotlib
-
-    matplotlib.use("Agg")
-    import matplotlib.pyplot as plt
-
-    plt.rcParams.update({
-        "font.family": "DejaVu Sans", "font.size": 10, "axes.titlesize": 11,
-        "axes.spines.top": False, "axes.spines.right": False, "axes.spines.left": False,
-        "axes.edgecolor": "#CDD7E4", "axes.labelcolor": "#273A52", "text.color": "#132643",
-        "xtick.color": "#3E5570", "ytick.color": "#3E5570", "axes.axisbelow": True,
-        "savefig.facecolor": "#FFFFFF", "svg.hashsalt": "unified-speculative-decoding",
-    })
-    return plt
-
-
-def save_plot(fig, plt, output, name):
-    fig.savefig(output / f"{name}.png", dpi=170, bbox_inches="tight")
-    svg = output / f"{name}.svg"
-    fig.savefig(svg, bbox_inches="tight", metadata={"Date": None})
-    svg.write_text("\n".join(line.rstrip() for line in svg.read_text(encoding="utf-8").splitlines()) + "\n", encoding="utf-8")
-    plt.close(fig)
-
-
 def phase_rows(summary, phase):
     if phase in EXTERNAL:
         return {method: (info[phase], "selected") for method, info in summary["external"]["methods"].items()}
@@ -274,13 +252,13 @@ def speed_plot(summary, output, plt, phase):
     positions = range(len(groups))
     stress = summary["protocol"]["stress"]
     titles = {
-        "holdout": ("Spec-Bench: held-out throughput", "spec-bench-throughput"),
-        "stress": (f"Synthetic stress: {stress['input_tokens']:,} input and {stress['output_tokens']:,} output tokens", "random-stress"),
-        "speed": ("SPEED-Bench: distinct text prompts", EXTERNAL["speed"][1]),
-        "burst": ("BurstGPT v2.0: timed trace replay", EXTERNAL["burst"][1]),
+        "holdout": ("Spec-Bench held-out throughput", "spec-bench-throughput"),
+        "stress": (f"Synthetic stress test ({stress['input_tokens']:,} input, {stress['output_tokens']:,} output tokens)", "random-stress"),
+        "speed": ("SPEED-Bench throughput", EXTERNAL["speed"][1]),
+        "burst": ("BurstGPT v2.0 trace replay", EXTERNAL["burst"][1]),
     }
     title, filename = titles[phase]
-    fig.suptitle(title, x=0.05, ha="left", fontsize=15, fontweight="bold")
+    fig.suptitle(title, x=0.05, ha="left", fontsize=16, fontweight="semibold")
     ratios = {method: {c: paired_ratios(rows[c], "output_throughput", role) for c in cells}
               for method, (rows, role) in groups.items()}
     limits = [value for method in groups for concurrency in cells for value in ratios[method][concurrency]]
@@ -288,26 +266,26 @@ def speed_plot(summary, output, plt, phase):
     span = max(high - low, 0.65)
     axes[0][0].set_xlim(max(0, low - 0.15 * span), high + 0.27 * span)
     for index, (ax, concurrency) in enumerate(zip(axes[0], cells, strict=True)):
-        ax.set_title(f"Concurrency {concurrency}", loc="left", fontweight="bold")
-        ax.axvline(1, color="#64758D", lw=1.2, ls="--")
-        ax.grid(axis="x", color="#E3EAF2")
+        ax.set_title(f"Concurrency {concurrency}", loc="left")
+        ax.axvline(1, color=BASELINE, lw=1.1, ls="--")
+        ax.grid(axis="x")
         for position, method in enumerate(groups):
             values = ratios[method][concurrency]
             center = median(values)
             ax.hlines(position, min(values), max(values), color=COLORS[method], lw=3, alpha=0.55)
-            ax.scatter(center, position, s=62, color=COLORS[method], zorder=3)
+            ax.scatter(center, position, s=54, color=COLORS[method], marker=MARKERS[method], zorder=3)
             ax.annotate(f"{center:.2f}×", (max(values), position), xytext=(7, 0),
                         textcoords="offset points", va="center", fontsize=9)
         ax.set_yticks(list(positions), [LABELS[method] for method in groups])
         ax.set_ylim(len(groups) - 0.55, -0.55)
-        ax.set_xlabel("Output TPS / same-GPU Normal")
+        ax.set_xlabel("Throughput / same-GPU Normal")
         if index:
             ax.tick_params(axis="y", length=0, labelleft=False)
     if phase == "stress":
-        caption = "One recorded run per cell. Dashed line = Normal."
+        caption = "One run per point. The dashed line marks Normal."
     else:
-        caption = "Dot = median of three paired runs. Line = observed min–max."
-    fig.text(0.05, 0.018, caption, fontsize=9, color="#3E5570")
+        caption = "Markers show paired medians. Bars span the three observed runs."
+    fig.text(0.05, 0.018, caption, fontsize=9.5, color=MUTED)
     fig.tight_layout(rect=(0, 0.08, 1, 0.94))
     save_plot(fig, plt, output, filename)
 
@@ -315,15 +293,15 @@ def speed_plot(summary, output, plt, phase):
 def latency_plot(summary, output, plt):
     cells = list(next(iter(summary["methods"].values()))["holdout"])
     fig, axes = plt.subplots(1, 2, figsize=(10.2, 4.25), sharey=True)
-    fig.suptitle("Spec-Bench: tail latency relative to Normal", x=0.06, ha="left", fontsize=15, fontweight="bold")
+    fig.suptitle("Spec-Bench tail latency", x=0.06, ha="left", fontsize=16, fontweight="semibold")
     for ax, metric, title in zip(axes, ("p95_ttft_ms", "p95_tpot_ms"),
                                  ("Time to first token", "Time per output token"), strict=True):
-        ax.axhline(1, color="#64758D", lw=1.2, ls="--")
-        ax.grid(axis="y", color="#E3EAF2")
+        ax.axhline(1, color=BASELINE, lw=1.1, ls="--")
+        ax.grid(axis="y")
         for method, info in summary["methods"].items():
             ratios = [median(paired_ratios(info["holdout"][c], metric, retained_role(info))) for c in cells]
-            ax.plot(range(len(cells)), ratios, color=COLORS[method], marker="o", lw=2, label=LABELS[method])
-        ax.set_title(title, loc="left", fontweight="bold")
+            ax.plot(range(len(cells)), ratios, color=COLORS[method], marker=MARKERS[method], label=LABELS[method])
+        ax.set_title(title, loc="left")
         ax.set_xticks(range(len(cells)), cells)
         ax.set_xlabel("Concurrency")
     axes[0].set_ylabel("P95 latency / same-GPU Normal")
@@ -331,6 +309,36 @@ def latency_plot(summary, output, plt):
     fig.legend(handles, labels, loc="lower center", bbox_to_anchor=(0.53, 0.015), ncol=3, frameon=False)
     fig.tight_layout(rect=(0, 0.10, 1, 0.94))
     save_plot(fig, plt, output, "spec-bench-latency")
+
+
+def workflow_plot(output, plt):
+    from matplotlib.patches import FancyArrowPatch, FancyBboxPatch
+
+    fig, ax = plt.subplots(figsize=(10.2, 2.9))
+    ax.set(xlim=(0, 10), ylim=(0, 3))
+    ax.axis("off")
+    cards = [
+        (0.12, 1.17, "Profiles", "Method settings"),
+        (2.58, 2.12, "Tune", "Spec-Bench tuning split"),
+        (2.58, 0.22, "Serve", "Run vLLM separately"),
+        (5.04, 1.17, "Benchmark", "Three public workloads"),
+        (7.50, 1.17, "Report", "Tables and figures"),
+    ]
+    for x, y, name, line in cards:
+        ax.add_patch(FancyBboxPatch((x, y), 2.30, 0.78, boxstyle="round,pad=0.025,rounding_size=0.09",
+                                   facecolor="#F1F5F9", edgecolor="#CFDCE8"))
+        ax.text(x + 0.17, y + 0.50, name, color=INK, fontsize=14, fontweight="semibold", va="center")
+        ax.text(x + 0.17, y + 0.24, line, color=MUTED, fontsize=9.5, va="center")
+    for start, end in (
+        ((2.42, 1.70), (2.59, 2.30)),
+        ((2.42, 1.44), (2.59, 0.77)),
+        ((2.42, 1.56), (5.05, 1.56)),
+        ((4.88, 2.31), (5.05, 1.70)),
+        ((7.34, 1.56), (7.51, 1.56)),
+    ):
+        ax.add_patch(FancyArrowPatch(start, end, arrowstyle="-|>", mutation_scale=11, color=BASELINE))
+    fig.subplots_adjust(left=0.005, right=0.995, bottom=0.01, top=0.99)
+    save_plot(fig, plt, output, "workflow")
 
 
 def performance_table(summary, phase):
@@ -365,21 +373,21 @@ def render_tables(summary):
         reference, selected = (info["selection"][key]["id"] for key in ("reference", "selected"))
         lines.append(f"| {LABELS[method]} | `{reference}` | `{selected}` | {info['score_vs_reference']:.3f}× | "
                      f"`{info['recommended']['id']}` | {info['retained_score_vs_normal']:.3f}× |")
-    lines.extend(["", "综合倍数来自 Spec-Bench 三档并发配对倍率的几何平均。以下表格和图表使用每种方法最终保留的唯一设置。", "",
-                  "TPS、P95 TTFT、P95 TPOT 和草稿接受率取各轮测值的中位数。配对倍率按同卡、同种子、同并发计算后取中位数。", "",
+    lines.extend(["", "综合倍数取 Spec-Bench 三档并发的配对中位倍率，再作几何平均。各负载的结果使用每种方法的发布配置。", "",
+                  "TPS、P95 TTFT、P95 TPOT 和草稿接受率均为各轮中位数。每个吞吐倍率配对同卡、同种子和同并发的运行，再取各轮中位数。", "",
                   "## Spec-Bench 留出集", "", *performance_table(summary, "holdout"), "",
                   "![Spec-Bench 吞吐](spec-bench-throughput.png)", "",
                   "![Spec-Bench 延迟](spec-bench-latency.png)", ""])
     if "external" in summary:
         for phase, (label, filename) in EXTERNAL.items():
             lines.extend([f"## {label}", "", *performance_table(summary, phase), "", f"![{label} 吞吐]({filename}.png)", ""])
-        lines.extend(["SPEED-Bench 使用经去重的写作、代码和多语言提示。BurstGPT 回放三段请求长度与相对到达间隔。BurstGPT 的总吞吐受设定的到达速率约束，可结合 TTFT 和 TPOT 判断优化收益。", ""])
+        lines.extend(["SPEED-Bench 使用去重后的写作、代码和多语言提示。BurstGPT 回放三段轨迹，保留请求长度和相对到达间隔。回放速率会限制总吞吐，因此也要看首 token 延迟和每 token 延迟。", ""])
     cells = summary["protocol"]["concurrencies"]
     columns = "".join(f" C={concurrency} TPS |" for concurrency in cells)
     counts = summary["benchmark_counts"]
     extra = summary.get("external", {}).get("benchmark_count", 0)
     lines.extend(["## 两轮调参", "",
-                  f"共完成 {counts['tuning']} 个调参单元、{counts['holdout']} 个留出复测单元、{extra} 个独立负载单元和 {counts['stress']} 个随机压测单元。", "",
+                  f"调参跑了 {counts['tuning']} 个执行单元。留出复测、外部负载和随机压测各有 {counts['holdout']}、{extra} 和 {counts['stress']} 个执行单元。", "",
                   f"| 方法 | 轮次 | 配置 |{columns} 调参得分 | CUDA Graph | 入选 |",
                   "|---|---:|---|" + "---:|" * len(cells) + "---:|---|---|"])
     for method, info in summary["methods"].items():
@@ -408,7 +416,8 @@ def generate_report(results, output, external=None, profiles=None):
     output.mkdir(parents=True, exist_ok=True)
     write_json(output / "summary.json", summary)
     (output / "results.md").write_text(render_tables(summary), encoding="utf-8")
-    plt = chart_setup()
+    plt = setup_plots()
+    workflow_plot(output, plt)
     speed_plot(summary, output, plt, "holdout")
     latency_plot(summary, output, plt)
     speed_plot(summary, output, plt, "stress")

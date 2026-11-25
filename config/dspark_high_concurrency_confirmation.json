@@ -1,5 +1,5 @@
 {
-  "description": "Repeated high-concurrency confirmation of shorter fixed DSpark blocks selected by the initial K scan.",
+  "description": "Repeat the high-concurrency tests for the shorter DSpark blocks chosen in the initial K sweep.",
   "configurations": [
     {
       "name": "dspark-k1",

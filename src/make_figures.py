@@ -7,28 +7,38 @@ import argparse
 import json
 from pathlib import Path
 
-import matplotlib
-
-matplotlib.use("Agg")
-import matplotlib.pyplot as plt
 import numpy as np
 
+from plot_style import BASELINE, DFLASH, DSPARK, MTP, PLUM, save_plot, setup_plots
 
+
+plt = setup_plots()
 ROOT = Path(__file__).resolve().parents[1]
 PROCESSED = ROOT / "results" / "processed"
 FIGURES = ROOT / "report" / "figures"
-COLORS = {
-    "normal": "#4C78A8",
-    "mtp-k3": "#F58518",
-    "mtp-k5": "#54A24B",
-    "mtp-k6": "#72B7B2",
-    "mtp-k7": "#B279A2",
-    "mtp-dynamic-oracle": "#E45756",
-    "mtp-dynamic-smooth": "#9D755D",
-    "dspark-k1": "#4C78A8",
-    "dspark-k3": "#54A24B",
-    "dspark-k7": "#E45756",
-    "dspark-adaptive": "#9D755D",
+STYLES = {
+    "normal": (BASELINE, "o", "--"),
+    "mtp-k3": (MTP, "o", "-"),
+    "mtp-k5": (DSPARK, "s", "-"),
+    "mtp-k6": (DFLASH, "^", "-"),
+    "mtp-k7": (PLUM, "D", "-"),
+    "mtp-dynamic-oracle": ("#94365D", "P", "--"),
+    "mtp-dynamic-smooth": ("#17637C", "X", "--"),
+    "dspark-k1": (MTP, "s", "-"),
+    "dspark-k3": (DFLASH, "^", "-"),
+    "dspark-k7": (DSPARK, "o", "-"),
+    "dspark-adaptive": (PLUM, "D", "--"),
+}
+CONCURRENCY_STYLES = dict(zip((1, 4, 16, 32), ((MTP, "o"), (DSPARK, "s"), (DFLASH, "^"), (PLUM, "D"))))
+PHASE_TITLES = {
+    "formal-r1": "Random requests",
+    "semantic-r1": "Spec-Bench",
+    "policy-mtp-fixed-r1": "MTP fixed lengths on random requests",
+    "policy-mtp-r1": "MTP schedules on random requests",
+    "policy-dspark-r1": "DSpark on random requests",
+    "policy-dspark-high-r1": "DSpark on random requests at high concurrency",
+    "semantic-r1-dspark-adaptive": "DSpark on Spec-Bench",
+    "semantic-r1-dspark-high": "DSpark on Spec-Bench at high concurrency",
 }
 LABELS = {
     "normal": "Normal",
@@ -36,7 +46,7 @@ LABELS = {
     "mtp-k5": "MTP K=5",
     "mtp-k6": "MTP K=6",
     "mtp-k7": "MTP K=7",
-    "mtp-dynamic-oracle": "MTP dynamic Oracle",
+    "mtp-dynamic-oracle": "MTP dynamic oracle",
     "mtp-dynamic-smooth": "MTP dynamic smooth",
     "dspark-k1": "DSpark K=1",
     "dspark-k3": "DSpark K=3",
@@ -65,27 +75,9 @@ def concurrency_values(summary: dict) -> list[int]:
     return sorted({item["concurrency"] for item in summary["groups"]})
 
 
-def save(fig: plt.Figure, name: str) -> None:
-    fig.savefig(FIGURES / f"{name}.png", dpi=190, bbox_inches="tight")
-    fig.savefig(FIGURES / f"{name}.svg", bbox_inches="tight")
-    plt.close(fig)
-
-
-def setup() -> None:
-    FIGURES.mkdir(parents=True, exist_ok=True)
-    plt.rcParams.update(
-        {
-            "font.size": 10,
-            "axes.titlesize": 11,
-            "axes.labelsize": 10,
-            "legend.fontsize": 9,
-            "figure.dpi": 120,
-            "axes.spines.top": False,
-            "axes.spines.right": False,
-            "axes.grid": True,
-            "grid.alpha": 0.25,
-        }
-    )
+def series_style(method):
+    color, marker, line = STYLES[method]
+    return {"color": color, "marker": marker, "linestyle": line, "label": LABELS[method]}
 
 
 def metric_values(
@@ -106,14 +98,22 @@ def metric_values(
     return np.asarray(values, dtype=float)
 
 
-def finish_single_panel_figure(fig, ax, methods: list[str]) -> None:
-    """Place large policy legends outside the plotting area."""
-    if len(methods) < 5:
-        ax.legend(frameon=False)
-    else:
-        handles, labels = ax.get_legend_handles_labels()
-        fig.legend(handles, labels, frameon=False, loc="center left", bbox_to_anchor=(1.0, 0.5))
-    fig.tight_layout()
+def finish_figure(fig, axes, title, note=None):
+    from matplotlib.ticker import StrMethodFormatter
+
+    for ax in axes:
+        ax.grid(axis="y")
+        if max(abs(value) for value in ax.get_ylim()) >= 1000:
+            ax.yaxis.set_major_formatter(StrMethodFormatter("{x:,.0f}"))
+    handles, labels = axes[0].get_legend_handles_labels()
+    columns = min(4, len(labels))
+    rows = (len(labels) + columns - 1) // columns
+    if note:
+        fig.text(0.055, 0.025, note, color=BASELINE, fontsize=9.5)
+    legend_y = 0.085 if note else 0.015
+    fig.legend(handles, labels, loc="lower center", bbox_to_anchor=(0.5, legend_y), ncol=columns)
+    fig.suptitle(title, x=0.055, ha="left", fontsize=16, fontweight="semibold")
+    fig.tight_layout(rect=(0, legend_y + 0.065 * rows, 1, 0.89))
 
 
 def plot_throughput(summary: dict, phase: str, methods: list[str]) -> None:
@@ -131,18 +131,14 @@ def plot_throughput(summary: dict, phase: str, methods: list[str]) -> None:
             x,
             means,
             yerr=errors,
-            marker="o",
-            linewidth=2,
-            capsize=4,
-            color=COLORS.get(method),
-            label=LABELS.get(method, method),
+            capsize=3,
+            **series_style(method),
         )
     ax.set_xticks(x, [str(c) for c in concurrencies])
     ax.set_xlabel("Client concurrency")
     ax.set_ylabel("Output throughput (tokens/s)")
-    ax.set_title("Output throughput vs. concurrency (mean ± sample SD, 3 runs)")
-    finish_single_panel_figure(fig, ax, methods)
-    save(fig, f"{phase}-throughput")
+    finish_figure(fig, [ax], PHASE_TITLES[phase], "Output throughput is the mean ± sample SD across three runs.")
+    save_plot(fig, plt, FIGURES, f"{phase}-throughput")
 
 
 def plot_speedup(
@@ -175,33 +171,16 @@ def plot_speedup(
             x,
             means,
             yerr=errors,
-            marker="o",
-            linewidth=2,
-            capsize=4,
-            color=COLORS.get(method),
-            label=LABELS.get(method, method),
+            capsize=3,
+            **series_style(method),
         )
-    ax.axhline(1.0, color="black", linewidth=1, linestyle="--")
+    ax.axhline(1.0, color=BASELINE, linewidth=1, linestyle="--")
     ax.set_xticks(x, [str(c) for c in concurrencies])
     ax.set_xlabel("Client concurrency")
     baseline_text = LABELS.get(baseline_label, baseline_label)
-    ax.set_ylabel(f"Paired speedup over {baseline_text}")
-    ax.set_title(f"Same-seed paired speedup over {baseline_text} (mean ± sample SD)")
-    finish_single_panel_figure(fig, ax, methods)
-    save(fig, f"{phase}-{filename_suffix}")
-
-
-def finish_two_panel_figure(fig, axes, methods: list[str]) -> None:
-    """Keep legends for larger policy comparisons clear of the data panels."""
-    if len(methods) < 4:
-        axes[0].legend(frameon=False)
-        fig.tight_layout()
-        return
-    handles, labels = axes[0].get_legend_handles_labels()
-    columns = min(4, len(methods))
-    rows = (len(methods) + columns - 1) // columns
-    fig.legend(handles, labels, frameon=False, loc="lower center", bbox_to_anchor=(0.5, 0.005), ncol=columns)
-    fig.tight_layout(rect=(0, 0.10 + 0.06 * rows, 1, 1))
+    ax.set_ylabel(f"Throughput / {baseline_text}")
+    finish_figure(fig, [ax], PHASE_TITLES[phase], "Ratios pair matching seeds. Error bars show sample SD.")
+    save_plot(fig, plt, FIGURES, f"{phase}-{filename_suffix}")
 
 
 def plot_acceptance(summary: dict, phase: str, methods: list[str]) -> None:
@@ -209,19 +188,17 @@ def plot_acceptance(summary: dict, phase: str, methods: list[str]) -> None:
     x = np.arange(len(concurrencies))
     fig, axes = plt.subplots(1, 2, figsize=(10.5, 4.1))
     for method in methods:
-        color = COLORS.get(method)
-        label = LABELS.get(method, method)
-        axes[0].plot(x, metric_values(summary, method, "acceptance_length", concurrencies=concurrencies), marker="o", linewidth=2, color=color, label=label)
-        axes[1].plot(x, metric_values(summary, method, "acceptance_rate_percent", concurrencies=concurrencies), marker="o", linewidth=2, color=color, label=label)
+        axes[0].plot(x, metric_values(summary, method, "acceptance_length", concurrencies=concurrencies), **series_style(method))
+        axes[1].plot(x, metric_values(summary, method, "acceptance_rate_percent", concurrencies=concurrencies), **series_style(method))
     for ax in axes:
         ax.set_xticks(x, [str(c) for c in concurrencies])
         ax.set_xlabel("Client concurrency")
-    axes[0].set_ylabel("Accepted tokens per engine step")
+    axes[0].set_ylabel("Tokens advanced per step")
     axes[0].set_title("Acceptance length")
-    axes[1].set_ylabel("Accepted / proposed draft tokens (%)")
+    axes[1].set_ylabel("Accepted draft tokens (%)")
     axes[1].set_title("Draft-token acceptance rate")
-    finish_two_panel_figure(fig, axes, methods)
-    save(fig, f"{phase}-acceptance")
+    finish_figure(fig, axes, PHASE_TITLES[phase])
+    save_plot(fig, plt, FIGURES, f"{phase}-acceptance")
 
 
 def plot_p95(summary: dict, phase: str, methods: list[str]) -> None:
@@ -229,19 +206,17 @@ def plot_p95(summary: dict, phase: str, methods: list[str]) -> None:
     x = np.arange(len(concurrencies))
     fig, axes = plt.subplots(1, 2, figsize=(10.5, 4.1))
     for method in methods:
-        color = COLORS.get(method)
-        label = LABELS.get(method, method)
-        axes[0].plot(x, metric_values(summary, method, "pooled_request_tpot_ms", pooled=True, concurrencies=concurrencies), marker="o", linewidth=2, color=color, label=label)
-        axes[1].plot(x, metric_values(summary, method, "pooled_request_e2el_ms", pooled=True, concurrencies=concurrencies), marker="o", linewidth=2, color=color, label=label)
+        axes[0].plot(x, metric_values(summary, method, "pooled_request_tpot_ms", pooled=True, concurrencies=concurrencies), **series_style(method))
+        axes[1].plot(x, metric_values(summary, method, "pooled_request_e2el_ms", pooled=True, concurrencies=concurrencies), **series_style(method))
     for ax in axes:
         ax.set_xticks(x, [str(c) for c in concurrencies])
         ax.set_xlabel("Client concurrency")
-    axes[0].set_ylabel("P95 request-level TPOT (ms)")
-    axes[0].set_title("Pooled request-level TPOT")
-    axes[1].set_ylabel("P95 end-to-end latency (ms)")
-    axes[1].set_title("Pooled request-level E2EL")
-    finish_two_panel_figure(fig, axes, methods)
-    save(fig, f"{phase}-p95-latency")
+    axes[0].set_ylabel("P95 latency (ms)")
+    axes[0].set_title("Time per output token")
+    axes[1].set_ylabel("P95 latency (ms)")
+    axes[1].set_title("End-to-end latency")
+    finish_figure(fig, axes, PHASE_TITLES[phase], "P95 uses pooled requests from all three runs.")
+    save_plot(fig, plt, FIGURES, f"{phase}-p95-latency")
 
 
 def plot_k_scan(method: str) -> None:
@@ -252,46 +227,47 @@ def plot_k_scan(method: str) -> None:
     if not data["records"]:
         return
     fig, axes = plt.subplots(1, 3, figsize=(14.0, 4.1))
-    for concurrency, color in zip([1, 4, 16, 32], ["#4C78A8", "#F58518", "#54A24B", "#E45756"]):
+    for concurrency, (color, marker) in CONCURRENCY_STYLES.items():
         records = sorted(
             (r for r in data["records"] if r["concurrency"] == concurrency),
             key=lambda r: r["k"],
         )
         ks = [r["k"] for r in records]
-        axes[0].plot(ks, [r["output_tps"] for r in records], marker="o", color=color, label=f"C={concurrency}")
-        axes[1].plot(ks, [r["acceptance_length"] for r in records], marker="o", color=color, label=f"C={concurrency}")
-        axes[2].plot(ks, [r["estimated_cycle_ms"] for r in records], marker="o", color=color, label=f"C={concurrency}")
+        style = {"color": color, "marker": marker, "label": f"Concurrency {concurrency}"}
+        axes[0].plot(ks, [r["output_tps"] for r in records], **style)
+        axes[1].plot(ks, [r["acceptance_length"] for r in records], **style)
+        axes[2].plot(ks, [r["estimated_cycle_ms"] for r in records], **style)
     axes[0].set_ylabel("Output throughput (tokens/s)")
     axes[1].set_ylabel("Acceptance length")
     axes[2].set_ylabel("TPOT × acceptance length (ms)")
-    for ax, title in zip(axes, ["Throughput", "Accepted tokens per step", "Effective cycle cost"]):
-        ax.set_xlabel("Number of draft tokens K")
+    for ax, title in zip(axes, ["Throughput", "Acceptance length", "Estimated cycle time"]):
+        ax.set_xlabel("Draft tokens (K)")
         ax.set_title(title)
         ax.set_xticks(sorted({r["k"] for r in data["records"]}))
-    axes[0].legend(frameon=False)
-    fig.tight_layout()
-    save(fig, f"kscan-r1-{method}-tps-acceptance-cycle")
+    method_name = "MTP" if method == "mtp" else "DSpark"
+    finish_figure(fig, axes, f"{method_name} draft-length sweep")
+    save_plot(fig, plt, FIGURES, f"kscan-r1-{method}-tps-acceptance-cycle")
 
     max_k = max(r["k"] for r in data["records"])
     fig, ax = plt.subplots(figsize=(7.0, 4.2))
-    for concurrency, color in zip([1, 4, 16, 32], ["#4C78A8", "#F58518", "#54A24B", "#E45756"]):
+    for concurrency, (color, marker) in CONCURRENCY_STYLES.items():
         record = next((r for r in data["records"] if r["concurrency"] == concurrency and r["k"] == max_k), None)
         if record is None:
             continue
         rates = record["per_position_unconditional_acceptance"]
-        ax.plot(np.arange(1, len(rates) + 1), 100 * np.asarray(rates), marker="o", color=color, label=f"C={concurrency}")
+        ax.plot(np.arange(1, len(rates) + 1), 100 * np.asarray(rates), marker=marker, color=color, label=f"Concurrency {concurrency}")
     ax.set_xlabel("Draft position")
     ax.set_ylabel("Unconditional acceptance probability (%)")
-    ax.set_title(f"Per-position acceptance from K={max_k} runs")
-    ax.legend(frameon=False)
-    save(fig, f"kscan-r1-{method}-per-position-acceptance")
+    ax.set_xticks(range(1, max_k + 1))
+    finish_figure(fig, [ax], f"{method_name} acceptance by draft position (K={max_k})")
+    save_plot(fig, plt, FIGURES, f"kscan-r1-{method}-per-position-acceptance")
 
 
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--include-policies", action="store_true")
     args = parser.parse_args()
-    setup()
+    FIGURES.mkdir(parents=True, exist_ok=True)
     formal = load_summary("formal-r1")
     if formal:
         methods = ["normal", "mtp-k3", "dspark-k7"]

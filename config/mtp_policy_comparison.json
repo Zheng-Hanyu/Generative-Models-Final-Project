@@ -1,5 +1,5 @@
 {
-  "description": "Same-GPU MTP policy confirmation. The oracle schedule uses per-concurrency argmax from the single-run K=1..7 scan; the smooth schedule removes non-monotonic one-run argmax choices and uses K=6 at batch sizes 1..4 and K=5 thereafter.",
+  "description": "Compare MTP schedules on the same GPU. The oracle uses the fastest K at each concurrency in the single-run sweep of K=1 through 7. The smooth schedule replaces non-monotonic choices with K=6 for batch sizes 1 through 4 and K=5 for larger batches.",
   "configurations": [
     {
       "name": "normal",

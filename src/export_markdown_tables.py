@@ -35,7 +35,7 @@ def export_summary(phase: str) -> None:
         for item in data.get("paired_speedups", data.get("paired_speedups_vs_normal", []))
     }
     lines = [
-        "| 方法 | 并发 | 完整运行数 | 输出吞吐 (tokens/s)，均值±样本标准差 | 配对加速比 | 接受长度 | Draft 接受率 (%) | P95 TPOT (ms) | P95 E2EL (ms) |",
+        "| 方法 | 并发 | 完成轮数 | 输出吞吐 (tokens/s)，均值 ± 样本标准差 | 配对加速比 | 接受长度 | 草稿接受率 (%) | P95 TPOT (ms) | P95 E2EL (ms) |",
         "|---|---:|---:|---:|---:|---:|---:|---:|---:|",
     ]
     for group in sorted(data["groups"], key=lambda item: (item["concurrency"], item["method"])):
@@ -56,9 +56,9 @@ def export_summary(phase: str) -> None:
     if data.get("best_fixed_by_concurrency"):
         lines += [
             "",
-            "### 各并发三轮均值最高的固定配置",
+            "### 各并发下平均吞吐最高的固定配置",
             "",
-            "| 并发 | 固定方法 | K | 输出吞吐 (tokens/s)，均值±样本标准差 |",
+            "| 并发 | 固定方法 | K | 输出吞吐 (tokens/s)，均值 ± 样本标准差 |",
             "|---:|---|---:|---:|",
         ]
         for item in data["best_fixed_by_concurrency"]:
@@ -68,9 +68,9 @@ def export_summary(phase: str) -> None:
             )
         lines += [
             "",
-            "### 相对最佳固定配置的同 seed 配对加速比",
+            "### 与最佳固定配置的配对比较",
             "",
-            "最佳固定配置由同一批三轮运行选出，以下结果用于描述性对照，不是独立泛化估计。",
+            "每个倍数配对相同种子。固定基线和倍率都来自同一批三轮运行，因此这些结果只描述本次实验。",
             "",
             "| 方法 | 并发 | 最佳固定基线 | 配对加速比 | 平均吞吐之比 |",
             "|---|---:|---|---:|---:|",
@@ -89,7 +89,7 @@ def export_k_scan(method: str) -> None:
         return
     data = json.loads(path.read_text(encoding="utf-8"))
     lines = [
-        "| 并发 | K | 输出吞吐 (tokens/s) | 平均 TPOT (ms) | 接受长度 | Draft 接受率 (%) | 有效周期成本 TPOT×A (ms) |",
+        "| 并发 | K | 输出吞吐 (tokens/s) | 平均 TPOT (ms) | 接受长度 | 草稿接受率 (%) | 估算周期耗时 TPOT × A (ms) |",
         "|---:|---:|---:|---:|---:|---:|---:|",
     ]
     for record in sorted(data["records"], key=lambda item: (item["concurrency"], item["k"])):
@@ -100,9 +100,9 @@ def export_k_scan(method: str) -> None:
         )
     lines += [
         "",
-        "### 各并发配置级 Oracle",
+        "### 各并发下单轮扫描的最佳固定 K",
         "",
-        "| 并发 | 已扫描 K | 最佳固定 K | 最佳吞吐 | 相对参考 K 的加速比 |",
+        "| 并发 | 已扫描 K | 最佳固定 K | 最高吞吐 (tokens/s) | 相对参考 K 的加速比 |",
         "|---:|---|---:|---:|---:|",
     ]
     for entry in data["configuration_oracle_by_concurrency"]:

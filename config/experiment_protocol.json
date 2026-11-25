@@ -86,7 +86,7 @@
     "mtp_k_values_initial": [1, 2, 3, 4, 5],
     "mtp_k_values_extended": [6, 7],
     "dspark_k_values": [1, 3, 5, 7],
-    "purpose": "Screening and cost-model construction; selected policies require repeated same-GPU confirmation."
+    "purpose": "Screen candidate settings and estimate cycle costs. Confirm the selected settings in repeated runs on the same GPU."
   },
   "policy_experiments": {
     "mtp_final_same_gpu_suite": {
@@ -123,7 +123,7 @@
       "input_tokens": 1024,
       "output_tokens": 512,
       "benchmark_count": 12,
-      "purpose": "Confirm whether adaptive verification also exceeds the best repeated fixed-K configuration at high concurrency."
+      "purpose": "Measure whether adaptive verification outperforms the fastest fixed K from the repeated high-concurrency runs."
     },
     "dspark_adaptive_semantic_extension": {
       "phase": "semantic-r1",

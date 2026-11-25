@@ -101,7 +101,11 @@ def main() -> None:
         for run in runs:
             if run.get("status") == "completed":
                 result_path = Path(run["result_path"])
-                if not result_path.exists():
+                if result_path.is_absolute() and result_path.parent.parts[-2:] == ("results", "raw"):
+                    result_path = RAW / result_path.name
+                elif not result_path.is_absolute():
+                    result_path = ROOT / result_path
+                if not result_path.is_file():
                     errors.append({"manifest": path.name, "missing_result": str(result_path)})
         manifest_checks.append(
             {

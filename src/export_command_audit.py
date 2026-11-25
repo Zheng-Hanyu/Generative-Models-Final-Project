@@ -20,7 +20,17 @@ def parse_time(value: str | None) -> datetime | None:
     return datetime.fromisoformat(value) if value else None
 
 
-def main() -> None:
+def log_reference(value: str | None) -> str:
+    if not value:
+        return "- 输出日志未记录"
+    log = Path(value)
+    relative = Path(*log.parts[-3:])
+    if relative.parent == Path("logs/commands"):
+        return f"- [输出日志 {log.name}](../{relative.as_posix()})"
+    return f"- 输出日志位于 `{value}`"
+
+
+def read_events() -> list[dict]:
     active: dict[str, list[dict]] = defaultdict(list)
     records: list[dict] = []
     for line in INDEX.read_text(encoding="utf-8").splitlines():
@@ -71,7 +81,10 @@ def main() -> None:
                 }
             )
     records.sort(key=lambda item: item.get("started_at") or "")
+    return records
 
+
+def write_structured(records: list[dict], archive: Path) -> None:
     csv_fields = [
         "label",
         "status",
@@ -87,7 +100,7 @@ def main() -> None:
         writer = csv.DictWriter(handle, fieldnames=csv_fields, extrasaction="ignore")
         writer.writeheader()
         writer.writerows(records)
-    (PROCESSED / "command-audit.json").write_text(
+    archive.write_text(
         json.dumps(
             {
                 "schema_version": 1,
@@ -102,21 +115,30 @@ def main() -> None:
         encoding="utf-8",
     )
 
+
+def main() -> None:
+    archive = PROCESSED / "command-audit.json"
+    if INDEX.is_file():
+        records = read_events()
+        write_structured(records, archive)
+    else:
+        records = json.loads(archive.read_text(encoding="utf-8"))["records"]
+
     lines = [
-        "# 完整命令审计",
+        "# 实验命令记录",
         "",
-        "本文件由 `logs/commands.jsonl` 自动导出。每次命令的完整标准输出与标准错误保留在所链接的日志中；基准请求的原始指标保存在 `results/raw/`。",
+        "日志保留每条命令的标准输出和标准错误。[请求级结果](../results/raw/) · [结构化命令记录](../results/processed/command-audit.json)",
         "",
     ]
     for index, record in enumerate(records, 1):
         lines += [
             f"## {index}. {record['label']}",
             "",
-            f"- 状态：{record['status']}；退出码：{record['exit_code']}",
-            f"- 开始：{record['started_at']}",
-            f"- 结束：{record['finished_at']}",
-            f"- 工作目录：`{record['cwd']}`",
-            f"- 输出日志：[{Path(record['output_log']).name}]({record['output_log']})" if record["output_log"] else "- 输出日志：无",
+            f"- 状态为 `{record['status']}`，退出码为 {record['exit_code'] if record['exit_code'] is not None else '未记录'}",
+            f"- 开始于 {record['started_at']}" if record["started_at"] else "- 开始时间未记录",
+            f"- 结束于 {record['finished_at']}" if record["finished_at"] else "- 结束时间未记录",
+            f"- 工作目录为 `{record['cwd']}`" if record["cwd"] else "- 工作目录未记录",
+            log_reference(record["output_log"]),
             "",
             "```bash",
             record["command"] or "",

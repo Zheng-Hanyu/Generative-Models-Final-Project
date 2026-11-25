@@ -1,5 +1,5 @@
 {
-  "description": "Same-GPU comparison of fixed-width DSpark and confidence-guided adaptive verification.",
+  "description": "Compare fixed-width DSpark with adaptive verification on the same GPU.",
   "configurations": [
     {
       "name": "dspark-k7",

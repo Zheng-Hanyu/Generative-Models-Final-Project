@@ -8,9 +8,9 @@ Qwen3.8-27B-FP8 · NVIDIA B200 · vLLM 0.34.0 · 主模型使用 Triton Attentio
 | DSpark | `dspark-fp8-k8` | `dspark-triton-k8` | 2.858× | `dspark-triton-k8` | 2.282× |
 | DFlash 2 | `dflash2-k7` | `dflash2-k7` | 1.000× | `dflash2-k7` | 2.388× |
 
-综合倍数来自 Spec-Bench 三档并发配对倍率的几何平均。以下表格和图表使用每种方法最终保留的唯一设置。
+综合倍数取 Spec-Bench 三档并发的配对中位倍率，再作几何平均。各负载的结果使用每种方法的发布配置。
 
-TPS、P95 TTFT、P95 TPOT 和草稿接受率取各轮测值的中位数。配对倍率按同卡、同种子、同并发计算后取中位数。
+TPS、P95 TTFT、P95 TPOT 和草稿接受率均为各轮中位数。每个吞吐倍率配对同卡、同种子和同并发的运行，再取各轮中位数。
 
 ## Spec-Bench 留出集
 
@@ -53,11 +53,11 @@ TPS、P95 TTFT、P95 TPOT 和草稿接受率取各轮测值的中位数。配对
 
 ![BurstGPT v2.0 吞吐](burstgpt-throughput.png)
 
-SPEED-Bench 使用经去重的写作、代码和多语言提示。BurstGPT 回放三段请求长度与相对到达间隔。BurstGPT 的总吞吐受设定的到达速率约束，可结合 TTFT 和 TPOT 判断优化收益。
+SPEED-Bench 使用去重后的写作、代码和多语言提示。BurstGPT 回放三段轨迹，保留请求长度和相对到达间隔。回放速率会限制总吞吐，因此也要看首 token 延迟和每 token 延迟。
 
 ## 两轮调参
 
-共完成 60 个调参单元、72 个留出复测单元、54 个独立负载单元和 16 个随机压测单元。
+调参跑了 60 个执行单元。留出复测、外部负载和随机压测各有 72、54 和 16 个执行单元。
 
 | 方法 | 轮次 | 配置 | C=1 TPS | C=4 TPS | C=16 TPS | 调参得分 | CUDA Graph | 入选 |
 |---|---:|---|---:|---:|---:|---:|---|---|
