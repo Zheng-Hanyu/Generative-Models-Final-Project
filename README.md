@@ -1,6 +1,10 @@
 # 生成模型推理加速研究
 
+<img src="report/unified_framework/icon.svg" width="58" alt="推测解码框架图标">
+
 本仓库记录基于 **vLLM 0.34.0、Qwen3.8-27B-FP8 与 NVIDIA B200** 的推理加速实验，当前已进行的实验覆盖 Normal、Native MTP、DSpark、固定草稿长度扫描、按 batch size 动态选 K，以及 DSpark Adaptive Verification。
+
+统一框架通过一个 CLI 启动 Normal、Native MTP、DSpark 和 Suffix，管理调参、配对复测和绘图。运行 `python src/unified_framework.py profiles` 查看方法。[使用说明](report/unified_framework.md) · [B200 实测与图表](report/unified_framework/results.md)
 
 完整分析见 **[中文技术报告](report/speculative_decoding_report.md)**；
 

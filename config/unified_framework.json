@@ -1,0 +1,84 @@
+{
+  "protocol": {
+    "split_seed": 126451,
+    "tuning_fraction": 0.3,
+    "tuning_seed": 317,
+    "holdout_seeds": [
+      423,
+      557,
+      691
+    ],
+    "concurrencies": [
+      1,
+      4,
+      16
+    ],
+    "tuning_prompts": 18,
+    "holdout_prompts": 30,
+    "output_tokens": 128,
+    "stress": {
+      "seed": 817,
+      "concurrencies": [
+        16,
+        32
+      ],
+      "prompts": 64,
+      "input_tokens": 1024,
+      "output_tokens": 128
+    }
+  },
+  "methods": {
+    "normal": {
+      "label": "Normal",
+      "reference": {
+        "id": "normal",
+        "spec": null
+      }
+    },
+    "mtp": {
+      "label": "Native MTP",
+      "reference": {
+        "id": "mtp-dynamic-smooth",
+        "spec": {
+          "method": "mtp",
+          "num_speculative_tokens": 6,
+          "num_speculative_tokens_per_batch_size": [
+            [
+              1,
+              4,
+              6
+            ],
+            [
+              5,
+              32,
+              5
+            ]
+          ]
+        }
+      }
+    },
+    "dspark": {
+      "label": "DSpark",
+      "reference": {
+        "id": "dspark-triton-k8",
+        "spec": {
+          "method": "dspark",
+          "num_speculative_tokens": 8,
+          "quantization": "fp8_per_tensor",
+          "attention_backend": "TRITON_ATTN"
+        }
+      }
+    },
+    "suffix": {
+      "label": "Suffix",
+      "reference": {
+        "id": "suffix-k4-depth12",
+        "spec": {
+          "method": "suffix",
+          "num_speculative_tokens": 4,
+          "suffix_decoding_max_tree_depth": 12
+        }
+      }
+    }
+  }
+}

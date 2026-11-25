@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-labelledby="title desc">
+  <title id="title">Speculative decoding framework</title>
+  <desc id="desc">Three token paths converge at a verification check and continue as one.</desc>
+  <rect x="2" y="2" width="92" height="92" rx="22" fill="#102641"/>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.5">
+    <path d="M26 29h12l13 12M26 48h20M26 67h12l13-12" stroke="#69BCE7"/>
+    <path d="M66 48h10" stroke="#68E4CC"/>
+    <circle cx="57" cy="48" r="12" fill="#143953" stroke="#68E4CC"/>
+    <path d="m52.5 48.1 3 3.1 5.9-6.4" stroke="#D7FFF4"/>
+  </g>
+  <g fill="#A0D9F6">
+    <rect x="18.5" y="25.5" width="7" height="7" rx="2"/>
+    <rect x="18.5" y="44.5" width="7" height="7" rx="2"/>
+    <rect x="18.5" y="63.5" width="7" height="7" rx="2"/>
+  </g>
+  <rect x="74" y="44.5" width="7" height="7" rx="2" fill="#68E4CC"/>
+</svg>

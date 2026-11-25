@@ -58,8 +58,12 @@ def warmup(url):
 
 
 def launch_command(args, speculative=True):
-    config = json.loads(CONFIG.read_text(encoding='utf-8'))
-    graph = {'decode_cudagraph_capture_request_sizes': [1, 2, 4, 8, 16, 24, 32]}
+    config = json.loads(CONFIG.read_text(encoding='utf-8')) if speculative else None
+    return build_launch_command(args, config, [1, 2, 4, 8, 16, 24, 32])
+
+
+def build_launch_command(args, config, capture_sizes):
+    graph = {'decode_cudagraph_capture_request_sizes': capture_sizes}
     command = [
         args.vllm, 'serve', args.model, '--served-model-name', 'qwen-fp8',
         '--host', '127.0.0.1', '--port', str(args.port), '--language-model-only',
@@ -68,7 +72,7 @@ def launch_command(args, speculative=True):
         '--gpu-memory-utilization', '0.55', '--compilation-config', json.dumps(graph),
         '--attention-backend', 'TRITON_ATTN',
     ]
-    if speculative:
+    if config is not None:
         command.extend(('--speculative-config', json.dumps(config, separators=(',', ':'))))
     return command
 
