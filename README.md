@@ -2,7 +2,7 @@
 
 本仓库记录基于 **vLLM 0.34.0、Qwen3.8-27B-FP8 与 NVIDIA B200** 的投机解码实验，当前内容对应 **2026-11-24 已完成的第一阶段研究**。实验覆盖 Normal、Native MTP、DSpark、固定草稿长度扫描、按 batch size 动态选 K，以及 DSpark Adaptive Verification。
 
-完整分析见 **[中文技术报告](report/speculative_decoding_report.md)**；原始 Benchmark JSON、处理结果、图表和运行日志均保留在仓库中。
+完整分析见 **[中文技术报告](report/speculative_decoding_report.md)**；
 
 ## 1. 模型与方法
 
@@ -72,31 +72,4 @@ DSpark Adaptive Verification 已分别完成随机与 Spec-Bench 负载评估。
 - [results/processed/](results/processed/)：80 份汇总、逐次运行 CSV、manifest 和校验文件。
 - [logs/](logs/)：第一阶段服务与 Benchmark 日志；运行记录按 label 对应。
 
-## 5. 复现入口
 
-建议使用 Python 3.12、vLLM 0.34.0 和与实验兼容的 PyTorch/CUDA 环境。脚本保留了原始服务器的模型与 vLLM 可执行文件路径；在其他机器复现时，请先修改 `src/run_server_suite.py`、`src/run_k_scan.py` 中的 `TARGET`、`VLLM` 等路径常量。
-
-在仓库根目录运行以下命令，可顺序启动服务并复测 Normal、MTP K=3 和 Dynamic-Smooth：
-
-```bash
-python src/run_server_suite.py \
-  --config config/mtp_policy_comparison.json \
-  --gpu 0 \
-  --port 8100 \
-  --phase reproduce-mtp-r1 \
-  --label-prefix local \
-  --methods normal mtp-k3 mtp-dynamic-smooth \
-  --num-prompts 32 \
-  --seeds 42 43 44 \
-  --concurrencies 1 4 16 32 \
-  --input-len 1024 \
-  --output-len 512
-```
-
-每个配置会自动完成 warmup、保存逐次 JSON 和 manifest，并在结束后停止对应服务。结果汇总、校验和绘图的完整命令见技术报告第 8 节；不要在已有正式结果上使用相同 phase 覆盖原始记录。
-
-## 6. 数据完整性与协作约定
-
-第一阶段共校验 **274 份原始 JSON、260 次核心 Benchmark、17,816 个完成请求**，校验错误数为 0。逐文件 SHA-256 见 [raw-sha256.csv](results/processed/raw-sha256.csv)，完整检查见 [artifact-validation.json](results/processed/artifact-validation.json)。
-
-后续协作建议为新实验使用新的 `phase` 和结果标签，保持原始 JSON 只追加、不修改；性能结论应保留同 seed 配对、三轮重复和关键配置的同卡顺序复测。
