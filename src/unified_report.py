@@ -6,11 +6,11 @@ from math import isclose
 from pathlib import Path
 from statistics import geometric_mean, median
 
-from unified_framework import cell_name, read_json, stress_cells, write_json
+from unified_framework import CONFIG, cell_name, read_json, stress_cells, write_json
 
 
-LABELS = {"mtp": "Native MTP", "dspark": "DSpark", "suffix": "Suffix"}
-COLORS = {"mtp": "#125A98", "dspark": "#047F72", "suffix": "#B25527"}
+LABELS = {"mtp": "Native MTP", "dspark": "DSpark", "dflash": "DFlash 2", "suffix": "Suffix"}
+COLORS = {"mtp": "#125A98", "dspark": "#047F72", "dflash": "#B25527", "suffix": "#B25527"}
 EXTERNAL = {"speed": ("NVIDIA SPEED-Bench", "speed-bench-throughput"),
             "burst": ("BurstGPT v2.0", "burstgpt-throughput")}
 METRICS = ("output_throughput", "p95_ttft_ms", "p95_tpot_ms", "spec_decode_acceptance_rate")
@@ -111,12 +111,13 @@ def summarize_tuning(lane, selection, protocol):
                 raise ValueError(f"{location}: tuning score differs from the saved measurements")
 
 
-def collect(root):
+def collect(root, profiles=None):
+    profiles = read_json(CONFIG)["methods"] if profiles is None else profiles
     methods = {}
     workload_identity = None
     environment_identity = None
     stress_enabled = None
-    for method in LABELS:
+    for method in (method for method in profiles if method != "normal"):
         lane = root / method
         experiment = read_json(lane / "experiment.json")
         protocol = experiment["protocol"]
@@ -270,7 +271,7 @@ def speed_plot(summary, output, plt, phase):
         return
     fig, axes = plt.subplots(1, len(cells), figsize=(max(4.2, 3.45 * len(cells)), 3.45),
                              sharex=True, sharey=True, squeeze=False)
-    positions = range(len(LABELS))
+    positions = range(len(groups))
     stress = summary["protocol"]["stress"]
     titles = {
         "holdout": ("Spec-Bench: held-out throughput", "spec-bench-throughput"),
@@ -282,7 +283,7 @@ def speed_plot(summary, output, plt, phase):
     fig.suptitle(title, x=0.05, ha="left", fontsize=15, fontweight="bold")
     ratios = {method: {c: paired_ratios(rows[c], "output_throughput", role) for c in cells}
               for method, (rows, role) in groups.items()}
-    limits = [value for method in LABELS for concurrency in cells for value in ratios[method][concurrency]]
+    limits = [value for method in groups for concurrency in cells for value in ratios[method][concurrency]]
     low, high = min(min(limits), 1), max(max(limits), 1)
     span = max(high - low, 0.65)
     axes[0][0].set_xlim(max(0, low - 0.15 * span), high + 0.27 * span)
@@ -290,15 +291,15 @@ def speed_plot(summary, output, plt, phase):
         ax.set_title(f"Concurrency {concurrency}", loc="left", fontweight="bold")
         ax.axvline(1, color="#64758D", lw=1.2, ls="--")
         ax.grid(axis="x", color="#E3EAF2")
-        for position, method in zip(positions, LABELS, strict=True):
+        for position, method in enumerate(groups):
             values = ratios[method][concurrency]
             center = median(values)
             ax.hlines(position, min(values), max(values), color=COLORS[method], lw=3, alpha=0.55)
             ax.scatter(center, position, s=62, color=COLORS[method], zorder=3)
             ax.annotate(f"{center:.2f}×", (max(values), position), xytext=(7, 0),
                         textcoords="offset points", va="center", fontsize=9)
-        ax.set_yticks(list(positions), list(LABELS.values()))
-        ax.set_ylim(len(LABELS) - 0.55, -0.55)
+        ax.set_yticks(list(positions), [LABELS[method] for method in groups])
+        ax.set_ylim(len(groups) - 0.55, -0.55)
         ax.set_xlabel("Output TPS / same-GPU Normal")
         if index:
             ax.tick_params(axis="y", length=0, labelleft=False)
@@ -319,10 +320,9 @@ def latency_plot(summary, output, plt):
                                  ("Time to first token", "Time per output token"), strict=True):
         ax.axhline(1, color="#64758D", lw=1.2, ls="--")
         ax.grid(axis="y", color="#E3EAF2")
-        for method, label in LABELS.items():
-            info = summary["methods"][method]
+        for method, info in summary["methods"].items():
             ratios = [median(paired_ratios(info["holdout"][c], metric, retained_role(info))) for c in cells]
-            ax.plot(range(len(cells)), ratios, color=COLORS[method], marker="o", lw=2, label=label)
+            ax.plot(range(len(cells)), ratios, color=COLORS[method], marker="o", lw=2, label=LABELS[method])
         ax.set_title(title, loc="left", fontweight="bold")
         ax.set_xticks(range(len(cells)), cells)
         ax.set_xlabel("Concurrency")
@@ -399,8 +399,8 @@ def render_tables(summary):
     return "\n".join(lines)
 
 
-def generate_report(results, output, external=None):
-    summary = read_json(results) if results.is_file() else collect(results)
+def generate_report(results, output, external=None, profiles=None):
+    summary = read_json(results) if results.is_file() else collect(results, profiles)
     if summary["schema"] != SCHEMA:
         raise ValueError("Unsupported summary format")
     if external is not None:

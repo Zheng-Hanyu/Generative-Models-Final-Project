@@ -4,11 +4,11 @@
 
 本仓库记录基于 **vLLM 0.34.0、Qwen3.8-27B-FP8 与 NVIDIA B200** 的推理加速实验，当前已进行的实验覆盖 Normal、Native MTP、DSpark、固定草稿长度扫描、按 batch size 动态选 K，以及 DSpark Adaptive Verification。
 
-统一框架通过一个 CLI 启动 Normal、Native MTP、DSpark 和 Suffix，管理调参、配对复测和绘图。运行 `python src/unified_framework.py profiles` 查看方法。[使用说明](report/unified_framework.md) · [B200 实测与图表](report/unified_framework/results.md)
+统一框架通过一个 CLI 启动 Normal、Native MTP、DSpark 和 DFlash 2，管理调参、配对复测和绘图。运行 `python src/unified_framework.py profiles` 查看方法。[使用说明](report/unified_framework.md) · [B200 实测与图表](report/unified_framework/results.md)
 
 完整分析见 **[中文技术报告](report/speculative_decoding_report.md)**；
 
-补充实验在 B200 上完成两轮调参和三轮留出集复测，纳入了表现最佳的 **Suffix Decoding**。[补充报告与复跑方法](report/supplemental_speculative_decoding.md)
+早期补充实验在 B200 上完成了 Suffix Decoding 的两轮调参和三轮留出集复测。[历史补充报告与复跑方法](report/supplemental_speculative_decoding.md)
 
 ## 1. 模型与方法
 

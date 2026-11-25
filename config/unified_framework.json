@@ -69,14 +69,13 @@
         }
       }
     },
-    "suffix": {
-      "label": "Suffix",
+    "dflash": {
+      "label": "DFlash 2",
       "reference": {
-        "id": "suffix-k4-depth12",
+        "id": "dflash2-k7",
         "spec": {
-          "method": "suffix",
-          "num_speculative_tokens": 4,
-          "suffix_decoding_max_tree_depth": 12
+          "method": "dflash",
+          "num_speculative_tokens": 7
         }
       }
     }

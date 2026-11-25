@@ -85,8 +85,8 @@ def environment(args):
     return env
 
 
-def wait_for_server(process, url):
-    deadline = time.monotonic() + 360
+def wait_for_server(process, url, timeout=360):
+    deadline = time.monotonic() + timeout
     while time.monotonic() < deadline and process.poll() is None:
         try:
             with HTTP.open(url + '/v1/models', timeout=1) as response:

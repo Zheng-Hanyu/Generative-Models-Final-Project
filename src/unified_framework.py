@@ -27,6 +27,10 @@ ROOT = Path(__file__).resolve().parents[1]
 CONFIG = ROOT / "config/unified_framework.json"
 DATASET = ROOT / "data/spec_bench/question.jsonl"
 CAPTURE_SIZES = [1, 2, 3, 4, 6, 8, 12, 16, 20, 24, 28, 32]
+DRAFT_MODELS = {
+    "dspark": "/home/genai/dspark-bench/redhat-dspark",
+    "dflash": "/home/genai/selected-drafts/Qwen3.8-27B-DFlash2",
+}
 
 
 def read_json(path):
@@ -48,10 +52,18 @@ def stress_cells(protocol):
     return [(concurrency, stress["seed"] + index) for index, concurrency in enumerate(stress["concurrencies"])]
 
 
+def draft_path(args, profile):
+    spec = profile["spec"]
+    if spec and spec["method"] in DRAFT_MODELS:
+        return str(args.draft_model or spec.get("model") or DRAFT_MODELS[spec["method"]])
+    return None
+
+
 def config_command(args, profile):
     spec = profile["spec"]
-    if spec and spec["method"] == "dspark":
-        spec = {**spec, "model": str(args.draft_model)}
+    model = draft_path(args, profile)
+    if model is not None:
+        spec = {**spec, "model": model}
     return build_launch_command(args, spec, CAPTURE_SIZES)
 
 
@@ -140,7 +152,7 @@ def running_server(command, env, url, log_path):
     with log_path.open("w", encoding="utf-8") as log:
         process = subprocess.Popen(command, env=env, stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
         try:
-            wait_for_server(process, url)
+            wait_for_server(process, url, timeout=900)
             yield
         finally:
             try:
@@ -170,7 +182,7 @@ class Experiment:
         identity = {
             "method": args.method, "method_config": self.method, "protocol": self.protocol,
             "vllm_version": versions[-1].strip(), "gpu": {"index": args.gpu, **gpu}, "target": args.model,
-            "draft": str(args.draft_model) if args.method == "dspark" else None,
+            "draft": draft_path(args, self.method["reference"]),
             "dataset_sha256": hashlib.sha256(args.dataset.read_bytes()).hexdigest(),
         }
         if self.external:
@@ -360,11 +372,11 @@ def main():
     actions.add_parser("profiles")
     for action in ("serve", "tune", "benchmark"):
         sub = actions.add_parser(action)
-        sub.add_argument("--method", choices=("normal", "mtp", "dspark", "suffix"), required=True)
+        sub.add_argument("--method", required=True)
         sub.add_argument("--gpu", type=int, default=0)
         sub.add_argument("--port", type=int, default=24820)
         sub.add_argument("--model", default="/home/model/Qwen3.8-27B-FP8")
-        sub.add_argument("--draft-model", type=Path, default=Path("/home/genai/dspark-bench/redhat-dspark"))
+        sub.add_argument("--draft-model", type=Path)
         sub.add_argument("--vllm", default="/home/genai/.pixi/envs/default/bin/vllm")
         sub.add_argument("--bench-deps", default="")
         if action == "serve":
@@ -384,7 +396,8 @@ def main():
     if args.action == "report":
         from unified_report import generate_report
 
-        generate_report(args.results, args.output, args.external_results)
+        methods = read_json(args.config)["methods"] if args.results.is_dir() else None
+        generate_report(args.results, args.output, args.external_results, methods)
         print(f"Report written to {args.output}")
         return
 
@@ -393,6 +406,8 @@ def main():
         for method, row in config["methods"].items():
             print(f"{method:8} {row['label']:12} {row['reference']['id']}")
         return
+    if args.method not in config["methods"]:
+        parser.error(f"Unknown method {args.method}; choose from {', '.join(config['methods'])}")
     if args.action == "serve":
         if args.method == "normal" and args.selection:
             parser.error("Normal does not use a speculative selection")
