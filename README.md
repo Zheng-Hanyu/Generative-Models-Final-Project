@@ -1,6 +1,6 @@
-# 生成模型推理加速：Speculative Decoding 性能研究
+# 生成模型推理加速研究
 
-本仓库记录基于 **vLLM 0.34.0、Qwen3.8-27B-FP8 与 NVIDIA B200** 的投机解码实验，当前内容对应 **2026-11-24 已完成的第一阶段研究**。实验覆盖 Normal、Native MTP、DSpark、固定草稿长度扫描、按 batch size 动态选 K，以及 DSpark Adaptive Verification。
+本仓库记录基于 **vLLM 0.34.0、Qwen3.8-27B-FP8 与 NVIDIA B200** 的推理加速实验，当前已进行的实验覆盖 Normal、Native MTP、DSpark、固定草稿长度扫描、按 batch size 动态选 K，以及 DSpark Adaptive Verification。
 
 完整分析见 **[中文技术报告](report/speculative_decoding_report.md)**；
 
