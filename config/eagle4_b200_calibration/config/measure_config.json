@@ -1,0 +1,1 @@
+{"context_step": 256, "context_stop": 4608, "batch_size": 1, "verify_num": 64, "node_top_k": 8, "loop_top_m": 64, "repeat_cnt": 1, "enable_fast_measurement": false, "cache_len": 1, "query_llm": 1, "query_slm": 1}

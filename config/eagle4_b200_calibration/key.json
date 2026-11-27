@@ -1,0 +1,8 @@
+{
+  "gpu": "NVIDIA B200",
+  "gpu_count": 1,
+  "model": "Qwen3.8-27B-FP8:0cda107915b0",
+  "draft": "draft-eagle:c902af5e55fa",
+  "engine": "vllm 0.32.0rc1.dev283+eagle.5",
+  "dtype": "torch.bfloat16"
+}

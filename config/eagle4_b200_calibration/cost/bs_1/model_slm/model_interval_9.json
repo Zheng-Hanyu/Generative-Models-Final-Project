@@ -1,0 +1,50 @@
+{
+    "notes": "Estimated model_cost = query_cost + cache_cost",
+    "value": [
+        242.6199,
+        236.4181,
+        236.7402,
+        239.2033
+    ],
+    "index": [
+        0,
+        1,
+        3,
+        7
+    ],
+    "ratio": [
+        1.0,
+        0.9744,
+        0.9758,
+        0.9859
+    ],
+    "array_model": [
+        242.6199,
+        236.4181,
+        236.7402,
+        239.2033
+    ],
+    "array_query": [
+        226.5599,
+        222.3431,
+        222.9212,
+        226.1478
+    ],
+    "array_cache": [
+        16.06,
+        14.075,
+        0.0,
+        13.819,
+        0.0,
+        0.0,
+        0.0,
+        13.0555
+    ],
+    "batch_size": 1,
+    "max_query_length_query": 8,
+    "max_query_length_cache": 8,
+    "cache_length_start": 256,
+    "cache_length_step": 256,
+    "cache_layers_num": 1,
+    "instability_rate": 0.1
+}

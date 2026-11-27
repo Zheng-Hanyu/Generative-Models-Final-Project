@@ -1,0 +1,34 @@
+{
+  "methods": {
+    "suffix": {
+      "id": "suffix-k8",
+      "vllm": "0.34.0",
+      "spec": {
+        "method": "suffix",
+        "enable_adaptive_verification": true,
+        "num_speculative_tokens": 8,
+        "suffix_decoding_max_tree_depth": 12
+      }
+    },
+    "eagle4": {
+      "id": "eagle4-w8",
+      "eagle_harness": "0.1.4",
+      "vllm": "0.32.0rc1.dev283+eagle.5",
+      "engine_wheel_sha256": "d8e5b38472c3121db5124708abd3e2e1cd348f1f5c5b3718675149670ab89070",
+      "draft_revision": "f58a5985223040552ad404fba98f0dd27f5f676a",
+      "draft_sha256": "c90c82867b5d6878daca0ada2fdb0dadfc56171770f93c8ee3bd9f796f1d5df3",
+      "spec": {
+        "method": "eagle_harness",
+        "model": "EAGLE-Corp/Qwen3.8-27B-EAGLE4",
+        "method_config": {
+          "mode": "static",
+          "node_top_k": 4,
+          "max_verify_width": 8,
+          "tree_depth": 8,
+          "data_path": "config/eagle4_b200_calibration"
+        }
+      },
+      "runtime_depth_stop": "cost_tables"
+    }
+  }
+}

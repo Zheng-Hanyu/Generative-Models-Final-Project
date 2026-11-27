@@ -28,7 +28,7 @@ Spec-Bench 和 SPEED-Bench 使用公开文本提示，BurstGPT v2.0 回放请求
 
 ![Spec-Bench 留出集上四种方法的吞吐倍率](report/unified_framework/figures/spec-bench-throughput.png)
 
-[各负载结果、延迟和量化对照](report/unified_framework/results.md) · [发布配置](config/unified_framework.json)
+[各负载结果、延迟和量化对照](report/unified_framework/results.md) · [发布配置](config/unified_framework.json) · [EAGLE-4 与自适应 Suffix 单卡实测](report/unified_framework/eagle4_suffix.md)
 
 ## 目录
 
