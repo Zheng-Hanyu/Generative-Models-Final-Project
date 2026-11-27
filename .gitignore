@@ -4,3 +4,5 @@ __pycache__/
 *.pid
 .DS_Store
 .ipynb_checkpoints/
+
+/replay/

@@ -1,70 +1,78 @@
-# 统一推测解码框架
+# 复跑推测解码实验
 
-<p><img src="figures/icon.svg" width="66" alt="草稿 token 经并行验证后汇合的框架图标"></p>
+`src/unified_framework.py` 使用 [统一配置](../../config/unified_framework.json) 和仓库内的 Spec-Bench 题目。三项实验的输入划分各自固定，复跑时按 `--study` 选择。
 
-同一 CLI 可启动 Normal、Native MTP、DSpark 和 DFlash 2，并执行调参、配对压测和出图。默认配置对应报告中的发布设置。 [统一框架实测](results.md) · [EAGLE-4 与自适应 Suffix 复跑](eagle4_suffix_replay.md) · [早期标准 Suffix](early_suffix.md)
+| `--study` | 配置名 | 负载 |
+|---|---|---|
+| `framework` | `normal`、`mtp`、`dspark`、`dflash` | Spec-Bench 留出集和随机压力，或 SPEED-Bench 与 BurstGPT |
+| `paired` | `eagle4`、`suffix`、`dflash` | Spec-Bench 留出集和合成的重复代码编辑／JSON 输出 |
+| `standard-suffix` | `suffix-standard` | 独立的 Spec-Bench 留出划分 |
 
-![统一框架的配置、启动、调参、压测和出图流程](figures/workflow.svg)
+`eagle4`、`suffix` 和 `suffix-standard` 会自动选中对应实验。DFlash 2 默认跑 `framework`，复跑 EAGLE-4 对照时指定 `--study paired`。每个方法使用同卡、同一服务构建的 Normal。[EAGLE-4 与自适应 Suffix 复跑](eagle4_suffix_replay.md) · [标准 Suffix 复跑](early_suffix.md#复跑)
 
-## 运行服务和压测
+![统一命令行的配置、输入、压测与报告流程](figures/workflow.svg)
 
-从仓库根目录运行命令。启动和压测需要一台装有 vLLM 0.34.0 和相应权重的 B200 主机。用 `--model`、`--draft-model` 和 `--vllm` 指定本机路径。压测需安装 vLLM 的 benchmark 依赖。如果 pandas 安装在单独的目录，用 `--bench-deps` 告诉 `tune` 和 `benchmark` 去哪里加载。
+## 复跑公开负载
+
+从仓库根目录运行。B200 主机需装好 vLLM 0.34.0 及其压测依赖，并下载 Qwen3.8-27B-FP8。用 `--vllm` 指定环境中的可执行文件。如果 pandas 单独安装，用 `--bench-deps` 传依赖目录。[vLLM 0.34.0](https://github.com/vllm-project/vllm/releases/tag/v0.34.0) · [主模型](https://huggingface.co/Qwen/Qwen3.8-27B-FP8)
 
 ```bash
-python src/unified_framework.py profiles
+target=/home/model/Qwen3.8-27B-FP8
 draft_dir="$HOME/selected-drafts/Qwen3.8-27B-DFlash2"
+dspark_dir="$HOME/selected-drafts/redhat-dspark"
+
 hf download incoai/Qwen3.8-27B-DFlash2 config.json model.safetensors \
   --revision 015e795645c74b1a0eeef3b570031fb62e769bc5 --local-dir "$draft_dir"
-python src/unified_framework.py serve --method dflash --gpu 7 --port 24827 \
-  --draft-model "$draft_dir"
+hf download RedHatAI/Qwen3.8-27B-speculator.dspark config.json model.safetensors \
+  --revision 87ca2fdc67f316f6c1f9ebc7ef7bbb0ad299a4ce --local-dir "$dspark_dir"
 ```
 
-`serve` 默认使用发布配置。用 `--selection replay-tuned/dflash/selection.json` 加载自己的调参结果，用 `--print-command` 查看完整启动参数。复跑会自行启动服务，先结束上面的手动服务。替换 `--model` 和 `--vllm` 即可指定本机路径。
+Native MTP 直接使用主模型的 MTP 头。DSpark 原实测使用服务器上的 Red Hat 兼容草稿，公开归档缺少该副本的权重哈希。上面的下载命令固定了 vLLM 模型配方列出的 Red Hat 草稿版本。手头有实测时的权重时，将 `dspark_dir` 指向该副本即可。[vLLM 的 Qwen3.8-27B 配方](https://github.com/vllm-project/recipes/blob/main/models/Qwen/Qwen3.8-27B.yaml) · [固定的 Red Hat 草稿](https://huggingface.co/RedHatAI/Qwen3.8-27B-speculator.dspark/tree/87ca2fdc67f316f6c1f9ebc7ef7bbb0ad299a4ce)
 
 ```bash
-python src/unified_framework.py benchmark --method dflash --gpu 7 --port 24827 \
+python src/unified_framework.py benchmark --method mtp --gpu 7 --model "$target" --output replay/mtp
+python src/unified_framework.py benchmark --method dspark --gpu 7 --model "$target" \
+  --draft-model "$dspark_dir" --output replay/dspark
+python src/unified_framework.py benchmark --method dflash --gpu 7 --model "$target" \
   --draft-model "$draft_dir" --output replay/dflash
+python src/unified_framework.py report --results replay --output replay/spec-report
 ```
 
-完整的留出集报告需要三个目录。用相同的目标模型和 GPU 依次完成 DFlash 2、MTP 和 DSpark。DSpark 的默认路径指向服务器上的 Red Hat 草稿，也可通过 `--draft-model` 指定本机副本。
+每次 `benchmark` 都会自动启停服务并保存逐轮 JSON、GPU 信息、输入哈希和日志。中断后可用同一命令继续，已完成的配置会直接复用。想手动启动单个配置时用 `serve --method`，加 `--print-command` 可打印 vLLM 参数。用 `benchmark --print-plan` 可在没有 GPU 的机器上准备输入并查看实际运行矩阵。
 
-```bash
-python src/unified_framework.py benchmark --method mtp --gpu 7 --port 24827 --output replay/mtp
-python src/unified_framework.py benchmark --method dspark --gpu 7 --port 24827 --output replay/dspark
-```
+### SPEED-Bench 和 BurstGPT
 
-调参时，先将当前配置复制为 tuning-plan.json，并按下一段说明补齐候选配置。使用独立的结果目录保存调参复测。
-
-```bash
-python src/unified_framework.py --config tuning-plan.json tune --method dflash --gpu 7 --port 24827 \
-  --draft-model "$draft_dir" --output replay-tuned/dflash
-python src/unified_framework.py --config tuning-plan.json benchmark --method dflash --gpu 7 --port 24827 \
-  --draft-model "$draft_dir" --output replay-tuned/dflash
-```
-
-复制发布配置，为目标方法添加 `round1` 和 `round2`，再用同一调参计划运行两条命令。每个候选项都要有唯一的 `id`。第一轮填写完整的 vLLM `spec`，第二轮通过 `override` 修改首轮最快的配置。用 `null` 删除某个草稿选项。调参时为每个方法指定独立的结果目录和对应草稿路径。直接运行默认配置的 `benchmark` 会比较发布设置和同卡 Normal。
-
-实验目录保存数据划分、启动命令、服务日志、原始压测 JSON 和配置选择结果。中断后重跑同一条命令，框架会复用已完整结束的配置，并为未完成的配置启动新进程。DFlash 2 首次启动会编译 FlashInfer 内核。服务就绪并预热后才开始计时。
-
-将两个固定版本的数据文件分别保存为 `speed.parquet` 和 `BurstGPT_without_fails_3.csv`。可以先在本机生成输入，再把生成目录复制到 B200 主机。[SPEED-Bench Qualitative Parquet](https://huggingface.co/datasets/nvidia/SPEED-Bench/resolve/fa4e669bee2a4393c56aa8ed05a7c667897f9590/qualitative/test-00000-of-00001.parquet) · [BurstGPT v2.0 无失败轨迹 3](https://github.com/HPMLL/BurstGPT/releases/download/v2.0/BurstGPT_without_fails_3.csv)
+下载固定版本的 Parquet 和 CSV，再生成输入清单。SPEED-Bench 去掉了与 Spec-Bench 重复的提示。BurstGPT 保留请求长度和相对到达间隔。[SPEED-Bench Qualitative Parquet](https://huggingface.co/datasets/nvidia/SPEED-Bench/resolve/fa4e669bee2a4393c56aa8ed05a7c667897f9590/qualitative/test-00000-of-00001.parquet) · [BurstGPT v2.0 无失败轨迹 3](https://github.com/HPMLL/BurstGPT/releases/download/v2.0/BurstGPT_without_fails_3.csv)
 
 ```bash
 python -m pip install pyarrow
-python src/prepare_serving_workloads.py --speed-parquet speed.parquet \
+python src/unified_framework.py prepare --study external --speed-parquet speed.parquet \
   --burst-csv BurstGPT_without_fails_3.csv --output replay/serving-inputs
-python src/unified_framework.py benchmark --method dflash --gpu 7 --port 24827 \
+python src/unified_framework.py benchmark --method dflash --gpu 7 --model "$target" \
   --draft-model "$draft_dir" --workloads replay/serving-inputs --output replay/external/dflash
 ```
 
-对 `mtp` 和 `dspark` 各跑一次同样的外部负载压测，输出分别写到 `replay/external/mtp` 和 `replay/external/dspark`。MTP 使用主模型内置的草稿头。DSpark 使用其对应的外接草稿权重。框架先校验输入清单和文件哈希，再为每种方法跑同卡 Normal 对照。
+对 `mtp` 和 `dspark` 分别运行外部负载压测，输出到 `replay/external/mtp` 和 `replay/external/dspark`。加入 `--external-results` 的报告会检查两组复跑的模型、服务版本、设备信息和配置。
 
 ```bash
 python -m pip install matplotlib==3.11.2
-python src/unified_framework.py report --results replay --external-results replay/external --output replay/report
-python src/unified_framework.py report --results results/processed/unified-framework/summary.json --output replay/published-figures
+python src/unified_framework.py report --results replay --external-results replay/external --output replay/full-report
 ```
 
-`report` 接受完整复跑目录或已发布的 JSON。输出目录包含 `results.md`、`summary.json` 和 `figures/`。PNG 和 SVG 使用仓库自带的 Source Sans 3，SVG 把字转成轮廓。仓库中的图用 Matplotlib 3.11.2 渲染。[字体发行版](https://github.com/adobe-fonts/source-sans/releases/tag/3.052R) · [字体许可](../../assets/fonts/OFL.txt)
+### 调参
+
+复制发布配置为 `tuning-plan.json`。在目标方法下给 `round1` 填候选的 `id` 和完整 vLLM `spec`，给 `round2` 填 `id` 和 `override`。第二轮在第一轮最快的配置上应用覆盖项，值为 `null` 时删除该选项。随后用同一份配置和同一个结果目录运行 `tune` 与 `benchmark`，后者会读取 `selection.json`。
+
+```bash
+python src/unified_framework.py --config tuning-plan.json tune --method dflash --gpu 7 \
+  --model "$target" --draft-model "$draft_dir" --output replay/tuned/dflash
+python src/unified_framework.py --config tuning-plan.json benchmark --method dflash --gpu 7 \
+  --model "$target" --draft-model "$draft_dir" --output replay/tuned/dflash
+```
+
+### 图表格式
+
+`report --output replay/report` 读取仓库中的三组结果，导出 Markdown、带嵌入字体的 PDF、SVG 和 300 dpi PNG。吞吐图中的点是配对倍率的中位数，线段两端是三个种子测得的最小值和最大值。随机压力每档只跑一轮，图中只画点。[NeurIPS 实验统计说明](https://neurips.cc/public/guides/PaperChecklist) · [ICML 无障碍说明](https://icml.cc/Conferences/2026/AuthorInstructions) · [字体许可](../../assets/fonts/OFL.txt)
 
 ## DFlash 2 草稿量化
 

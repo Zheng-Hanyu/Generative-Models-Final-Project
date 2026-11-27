@@ -5,12 +5,17 @@ from pathlib import Path
 
 INK = "#182738"
 MUTED = "#45586D"
-GRID = "#E0E8F0"
+GRID = "#E2E7EF"
 BASELINE = "#63748B"
-MTP = "#215BC0"
-DSPARK = "#087F72"
-DFLASH = "#AF471D"
-PLUM = "#764DA2"
+DFLASH = "#C94F00"
+SUFFIX = "#A64477"
+METHOD_STYLES = {
+    "mtp": ("#0072B2", "o", "-"),
+    "dspark": ("#087B60", "s", "--"),
+    "dflash": (DFLASH, "D", "-."),
+    "eagle4": ("#454184", "^", "-"),
+    "suffix": (SUFFIX, "P", "--"),
+}
 
 
 def setup_plots():
@@ -46,13 +51,16 @@ def setup_plots():
         "xtick.major.size": 3,
         "ytick.major.size": 0,
         "axes.formatter.use_locale": False,
-        "legend.fontsize": 9.75,
+        "xtick.labelsize": 10.25,
+        "ytick.labelsize": 10.25,
+        "legend.fontsize": 10,
         "legend.frameon": False,
         "legend.handlelength": 2.1,
-        "lines.linewidth": 2,
-        "lines.markersize": 5.5,
+        "lines.linewidth": 1.85,
+        "lines.markersize": 6.4,
         "text.color": INK,
         "savefig.facecolor": "white",
+        "pdf.fonttype": 42,
         "svg.fonttype": "path",
         "svg.hashsalt": "speculative-decoding-report",
     })
@@ -60,7 +68,9 @@ def setup_plots():
 
 
 def save_plot(fig, plt, output, name):
-    fig.savefig(output / f"{name}.png", dpi=180, bbox_inches="tight", pad_inches=0.13)
+    fig.savefig(output / f"{name}.png", dpi=300, bbox_inches="tight", pad_inches=0.13)
+    fig.savefig(output / f"{name}.pdf", bbox_inches="tight", pad_inches=0.13,
+                metadata={"CreationDate": None, "ModDate": None})
     svg = output / f"{name}.svg"
     fig.savefig(svg, bbox_inches="tight", pad_inches=0.13, metadata={"Date": None})
     contents = svg.read_text(encoding="utf-8").splitlines()

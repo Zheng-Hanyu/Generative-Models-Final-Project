@@ -26,7 +26,7 @@ Spec-Bench 使用项目既有留出划分，生成上限为 128 tokens。重复�
 
 ![按负载和并发分面的配对 P95 首 token 与每 token 延迟倍率](figures/eagle4-suffix-latency.png)
 
-图中虚线对应同构建 Normal。吞吐图的细竖线是三轮观测范围，延迟图先对每个种子计算 P95 倍率，再取中位数。 [吞吐 SVG](figures/eagle4-suffix-throughput.svg) · [延迟 SVG](figures/eagle4-suffix-latency.svg)
+图中虚线对应同构建 Normal。吞吐图的线段两端是三个种子的最小和最大配对倍率。延迟图先对每个种子计算 P95 倍率，再取中位数。 [吞吐 PDF](figures/eagle4-suffix-throughput.pdf) · [延迟 PDF](figures/eagle4-suffix-latency.pdf)
 
 ## 按负载和并发的结果
 
@@ -76,4 +76,4 @@ EAGLE 构建的 Normal 在 Spec-Bench 并发 16、种子 557 这一轮出现额�
 | 重复代码／JSON | 16 | Normal（EAGLE 构建） | 1158.04 | — | 326.31 | 11.45 | — | 90/90 |
 | 重复代码／JSON | 16 | EAGLE-4 | 1938.36 | 1.672× | 330.15 | 7.62 | 44.7% | 90/90 |
 
-[入选配置](../../config/eagle4_suffix_b200.json) · [逐轮结构化结果](../../results/processed/unified-framework/eagle4-suffix-b200.json) · [复跑说明](eagle4_suffix_replay.md)
+[入选配置](../../config/unified_framework.json) · [逐轮结构化结果](../../results/processed/unified-framework/eagle4-suffix-b200.json) · [复跑说明](eagle4_suffix_replay.md)

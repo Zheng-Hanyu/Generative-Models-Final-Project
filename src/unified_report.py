@@ -7,17 +7,21 @@ from math import isclose
 from pathlib import Path
 from statistics import geometric_mean, median
 
-from plot_style import BASELINE, DFLASH, DSPARK, INK, MTP, MUTED, save_plot, setup_plots
-from unified_framework import CONFIG, cell_name, read_json, stress_cells, write_json
+from comparison_report import collect_paired, report_comparison
+from plot_style import BASELINE, DFLASH, INK, METHOD_STYLES, MUTED, save_plot, setup_plots
+from workloads import ROOT, cell_name, read_json, stress_cells, write_json
 
 
 LABELS = {"normal": "Normal", "mtp": "Native MTP", "dspark": "DSpark", "dflash": "DFlash 2", "suffix": "Suffix"}
-COLORS = {"normal": BASELINE, "mtp": MTP, "dspark": DSPARK, "dflash": DFLASH, "suffix": DFLASH}
-MARKERS = {"normal": "D", "mtp": "o", "dspark": "s", "dflash": "^", "suffix": "^"}
 EXTERNAL = {"speed": ("NVIDIA SPEED-Bench", "speed-bench-throughput"),
             "burst": ("BurstGPT v2.0", "burstgpt-throughput")}
 METRICS = ("output_throughput", "p95_ttft_ms", "p95_tpot_ms", "spec_decode_acceptance_rate")
 SCHEMA = 2
+PUBLISHED = {
+    "framework": ROOT / "results/processed/unified-framework/summary.json",
+    "paired": ROOT / "results/processed/unified-framework/eagle4-suffix-b200.json",
+    "standard-suffix": ROOT / "results/processed/supplemental_speculative_summary.json",
+}
 
 
 def retained_role(info):
@@ -114,14 +118,21 @@ def summarize_tuning(lane, selection, protocol):
                 raise ValueError(f"{location}: tuning score differs from the saved measurements")
 
 
-def collect(root, profiles=None):
-    profiles = read_json(CONFIG)["methods"] if profiles is None else profiles
+def collect(root, profiles):
+    direct = (root / "experiment.json").is_file()
+    if direct:
+        profiles = [read_json(root / "experiment.json")["method"]]
+    else:
+        profiles = [method for method in profiles if (root / method / "experiment.json").is_file()]
+    profiles = [method for method in profiles if method != "normal"]
+    if not profiles:
+        raise ValueError(f"{root}: no method replay with a Normal control")
     methods = {}
     workload_identity = None
     environment_identity = None
     stress_enabled = None
-    for method in (method for method in profiles if method != "normal"):
-        lane = root / method
+    for method in profiles:
+        lane = root if direct else root / method
         experiment = read_json(lane / "experiment.json")
         protocol = experiment["protocol"]
         manifest = read_json(lane / "workloads.json")
@@ -232,14 +243,15 @@ def collect_external(root, summary):
     results = {}
     common_manifest = None
     for method, details in summary["methods"].items():
-        lane = root / method
+        lane = root if (root / "experiment.json").is_file() else root / method
         identity = read_json(lane / "experiment.json")
         confirmation = read_json(lane / "confirmation.json")
         manifest = identity["external_workloads"]
         if common_manifest is not None and common_manifest != manifest:
             raise ValueError("External benchmark workloads differ across methods")
         common_manifest = manifest
-        if (identity["method"] != method or identity["method_config"]["reference"] != details["recommended"]
+        if (identity["method"] != method or identity["method_config"]["reference"]["id"] != details["recommended"]["id"]
+                or ("spec" in details["recommended"] and identity["method_config"]["reference"] != details["recommended"])
                 or confirmation["selected"] != details["recommended"]["id"] or confirmation["normal"] != "normal"
                 or Path(identity["target"]).name != summary["model"] or identity["vllm_version"] != summary["vllm"]
                 or identity["gpu"]["name"] != summary["gpu"] or identity["gpu"]["driver_version"] != summary["driver"]):
@@ -376,9 +388,9 @@ def speed_plot(summary, output, plt, phase):
     cells = list(next(iter(groups.values()))[0])
     if not cells:
         return
-    fig, axes = plt.subplots(1, len(cells), figsize=(max(4.2, 3.45 * len(cells)), 3.85),
+    fig, axes = plt.subplots(1, len(cells), figsize=(min(7.75, 4.0 + 1.3 * len(cells)), 3.1),
                              sharex=True, sharey=True, squeeze=False)
-    methods = ["normal", *groups]
+    methods = list(groups)
     positions = range(len(methods))
     stress = summary["protocol"]["stress"]
     titles = {
@@ -388,59 +400,63 @@ def speed_plot(summary, output, plt, phase):
         "burst": ("BurstGPT v2.0 trace replay", EXTERNAL["burst"][1]),
     }
     title, filename = titles[phase]
-    fig.suptitle(title, x=0.05, ha="left", fontsize=16, fontweight="semibold")
-    ratios = {"normal": {c: [1.0] for c in cells}}
-    ratios.update({method: {c: paired_ratios(rows[c], "output_throughput", role) for c in cells}
-                   for method, (rows, role) in groups.items()})
+    fig.suptitle(title, x=0.07, y=0.963, ha="left", fontsize=14, fontweight="semibold")
+    ratios = {method: {c: paired_ratios(rows[c], "output_throughput", role) for c in cells}
+              for method, (rows, role) in groups.items()}
     limits = [value for method in methods for concurrency in cells for value in ratios[method][concurrency]]
     low, high = min(min(limits), 1), max(max(limits), 1)
     span = max(high - low, 0.65)
     axes[0][0].set_xlim(max(0, low - 0.15 * span), high + 0.27 * span)
     for index, (ax, concurrency) in enumerate(zip(axes[0], cells, strict=True)):
-        ax.set_title(f"Concurrency {concurrency}", loc="left")
+        title = f"({chr(97 + index)})  Concurrency {concurrency}" if len(cells) > 1 else f"Concurrency {concurrency}"
+        ax.set_title(title, loc="left")
         ax.axvline(1, color=BASELINE, lw=1.1, ls="--")
         ax.grid(axis="x")
         for position, method in enumerate(methods):
             values = ratios[method][concurrency]
             center = median(values)
-            ax.hlines(position, min(values), max(values), color=COLORS[method], lw=3, alpha=0.55)
-            ax.scatter(center, position, s=54, color=COLORS[method], marker=MARKERS[method], zorder=3)
+            color, marker, _ = METHOD_STYLES[method]
+            ax.hlines(position, min(values), max(values), color=color, lw=2.5, alpha=0.56)
+            ax.scatter(center, position, s=58, color=color, marker=marker,
+                       edgecolor="white", linewidth=0.7, zorder=3)
             ax.annotate(f"{center:.2f}×", (max(values), position), xytext=(7, 0),
-                        textcoords="offset points", va="center", fontsize=9)
+                        textcoords="offset points", va="center", fontsize=10)
         ax.set_yticks(list(positions), [LABELS[method] for method in methods])
         ax.set_ylim(len(methods) - 0.55, -0.55)
-        ax.set_xlabel("Throughput / same-GPU Normal")
         if index:
             ax.tick_params(axis="y", length=0, labelleft=False)
     if phase == "stress":
         caption = "One run per point. Normal is the paired reference."
     else:
-        caption = "Paired medians and three-run ranges. Normal = 1."
-    fig.text(0.05, 0.018, caption, fontsize=9.5, color=MUTED)
-    fig.tight_layout(rect=(0, 0.08, 1, 0.94))
+        caption = "Dots: paired medians. Bars: min–max across 3 seeds. Dashed line: Normal."
+    fig.supxlabel("Output throughput / matched Normal", y=0.125, fontsize=10.5, color=MUTED)
+    fig.text(0.07, 0.045, caption, fontsize=10, color=MUTED)
+    fig.subplots_adjust(left=0.19 if len(cells) < 3 else 0.12, right=0.97, bottom=0.27, top=0.76, wspace=0.25)
     save_plot(fig, plt, output, filename)
 
 
 def latency_plot(summary, output, plt):
     cells = list(next(iter(summary["methods"].values()))["holdout"])
     x = range(len(cells))
-    fig, axes = plt.subplots(1, 2, figsize=(10.2, 4.25), sharey=True)
-    fig.suptitle("Spec-Bench tail latency", x=0.06, ha="left", fontsize=16, fontweight="semibold")
+    fig, axes = plt.subplots(1, 2, figsize=(7.75, 3.6), sharey=True)
+    fig.suptitle("Spec-Bench tail latency", x=0.084, y=0.965, ha="left", fontsize=14, fontweight="semibold")
     for ax, metric, title in zip(axes, ("p95_ttft_ms", "p95_tpot_ms"),
-                                 ("Time to first token", "Time per output token"), strict=True):
-        ax.plot(x, [1.0] * len(cells), color=COLORS["normal"], marker=MARKERS["normal"],
-                markerfacecolor="white", linestyle="--", label=LABELS["normal"])
+                                 ("(a)  Time to first token", "(b)  Time per output token"), strict=True):
+        ax.axhline(1, color=BASELINE, linestyle="--", linewidth=1.05)
         ax.grid(axis="y")
         for method, info in summary["methods"].items():
             ratios = [median(paired_ratios(info["holdout"][c], metric, retained_role(info))) for c in cells]
-            ax.plot(x, ratios, color=COLORS[method], marker=MARKERS[method], label=LABELS[method])
+            color, marker, style = METHOD_STYLES[method]
+            ax.plot(x, ratios, color=color, marker=marker, linestyle=style, markeredgecolor="white",
+                    markeredgewidth=0.7, label=LABELS[method])
         ax.set_title(title, loc="left")
         ax.set_xticks(x, cells)
-        ax.set_xlabel("Concurrency")
-    axes[0].set_ylabel("P95 latency / same-GPU Normal")
+    axes[0].set_ylabel("P95 latency / matched Normal")
+    fig.supxlabel("Concurrent requests", y=0.137, fontsize=10.5, color=MUTED)
     handles, labels = axes[0].get_legend_handles_labels()
-    fig.legend(handles, labels, loc="lower center", bbox_to_anchor=(0.53, 0.015), ncol=len(labels), frameon=False)
-    fig.tight_layout(rect=(0, 0.10, 1, 0.94))
+    fig.legend(handles, labels, loc="lower center", bbox_to_anchor=(0.5, 0.048), ncol=len(labels))
+    fig.text(0.084, 0.019, "Medians of paired P95 ratios. Values below 1 indicate lower latency.", fontsize=10, color=MUTED)
+    fig.subplots_adjust(left=0.089, right=0.97, bottom=0.275, top=0.82, wspace=0.16)
     save_plot(fig, plt, output, "spec-bench-latency")
 
 
@@ -451,25 +467,23 @@ def workflow_plot(output, plt):
     ax.set(xlim=(0, 10), ylim=(0, 3))
     ax.axis("off")
     cards = [
-        (0.12, 1.17, "Profiles", "Method settings"),
-        (2.58, 2.12, "Tune", "Spec-Bench tuning split"),
-        (2.58, 0.22, "Serve", "Run vLLM separately"),
-        (5.04, 1.17, "Benchmark", "Three public workloads"),
-        (7.50, 1.17, "Report", "Tables and figures"),
+        ("Profiles", "Choose a method"),
+        ("Prepare", "Create paired inputs"),
+        ("Benchmark", "Run on one B200"),
+        ("Report", "Read TPS and latency"),
     ]
-    for x, y, name, line in cards:
-        ax.add_patch(FancyBboxPatch((x, y), 2.30, 0.78, boxstyle="round,pad=0.025,rounding_size=0.09",
-                                   facecolor="#F1F5F9", edgecolor="#CFDCE8"))
-        ax.text(x + 0.17, y + 0.50, name, color=INK, fontsize=14, fontweight="semibold", va="center")
-        ax.text(x + 0.17, y + 0.24, line, color=MUTED, fontsize=9.5, va="center")
-    for start, end in (
-        ((2.42, 1.70), (2.59, 2.30)),
-        ((2.42, 1.44), (2.59, 0.77)),
-        ((2.42, 1.56), (5.05, 1.56)),
-        ((4.88, 2.31), (5.05, 1.70)),
-        ((7.34, 1.56), (7.51, 1.56)),
-    ):
-        ax.add_patch(FancyArrowPatch(start, end, arrowstyle="-|>", mutation_scale=11, color=BASELINE))
+    for index, (name, line) in enumerate(cards):
+        x = 0.12 + index * 2.5
+        ax.add_patch(FancyBboxPatch((x, 0.92), 2.25, 1.05, boxstyle="round,pad=0.025,rounding_size=0.08",
+                                   facecolor="#F4F7FB", edgecolor="#CFDCE8"))
+        ax.text(x + 0.17, 1.57, name, color=INK, fontsize=14, fontweight="semibold", va="center")
+        ax.text(x + 0.17, 1.18, line, color=MUTED, fontsize=9.6, va="center")
+        if index:
+            ax.add_patch(FancyArrowPatch((x - 0.24, 1.45), (x - 0.02, 1.45),
+                                        arrowstyle="-|>", mutation_scale=10, color=BASELINE))
+    ax.text(0.12, 2.37, "One vLLM benchmark CLI", fontsize=15, color=INK, fontweight="semibold")
+    ax.text(0.12, 0.43, "Use serve to launch a single profile or tune with a candidate plan.",
+            fontsize=10, color=MUTED)
     fig.subplots_adjust(left=0.005, right=0.995, bottom=0.01, top=0.99)
     save_plot(fig, plt, output, "workflow")
 
@@ -507,7 +521,7 @@ def render_tables(summary):
         lines.append(f"| {LABELS[method]} | `{reference}` | `{selected}` | {info['score_vs_reference']:.3f}× | "
                      f"`{info['recommended']['id']}` | {info['retained_score_vs_normal']:.3f}× |")
     lines.extend(["", "综合倍数取 Spec-Bench 三档并发的配对中位倍率，再作几何平均。各负载的结果使用每种方法的发布配置。", "",
-                  "TPS、P95 TTFT、P95 TPOT 和草稿接受率均为各轮中位数。每个吞吐倍率配对同卡、同种子和同并发的运行，再取各轮中位数。", "",
+                  "TPS、P95 TTFT、P95 TPOT 和草稿接受率均为各轮中位数。每个吞吐倍率配对同卡、同种子和同并发的运行，再取各轮中位数。图中线段的两端是三个种子测得的最小值和最大值。", "",
                   "## Spec-Bench 留出集", "", *performance_table(summary, "holdout"), "",
                   "![Spec-Bench 吞吐](figures/spec-bench-throughput.png)", "",
                   "![Spec-Bench 延迟](figures/spec-bench-latency.png)", ""])
@@ -542,11 +556,12 @@ def render_tables(summary):
                       "![随机压力测试](figures/random-stress.png)"])
     if "dflash_quantization" in summary:
         lines.extend(render_draft_study(summary))
+        lines.extend(["", "![DFlash 2 草稿量化的模型显存与配对吞吐](figures/dflash-quantization.png)"])
     lines.append("")
     return "\n".join(lines)
 
 
-def generate_report(results, output, external=None, profiles=None, draft_study=None):
+def generate_report(results, output, plt, external=None, profiles=None, draft_study=None):
     summary = read_json(results) if results.is_file() else collect(results, profiles)
     if summary["schema"] != SCHEMA:
         raise ValueError("Unsupported summary format")
@@ -559,7 +574,6 @@ def generate_report(results, output, external=None, profiles=None, draft_study=N
     (output / "results.md").write_text(render_tables(summary), encoding="utf-8")
     figures = output / "figures"
     figures.mkdir(exist_ok=True)
-    plt = setup_plots()
     workflow_plot(figures, plt)
     speed_plot(summary, figures, plt, "holdout")
     latency_plot(summary, figures, plt)
@@ -567,3 +581,64 @@ def generate_report(results, output, external=None, profiles=None, draft_study=N
     if "external" in summary:
         for phase in EXTERNAL:
             speed_plot(summary, figures, plt, phase)
+    if "dflash_quantization" in summary:
+        quantization_plot(summary["dflash_quantization"], figures, plt)
+
+
+def quantization_plot(data, output, plt):
+    fig, (memory, speed) = plt.subplots(1, 2, figsize=(7.75, 3.45), gridspec_kw={"width_ratios": (0.9, 1.1)})
+    fig.suptitle("DFlash 2 draft quantization", x=0.075, y=0.96, ha="left", fontsize=14, fontweight="semibold")
+    quantization = data["quantized_format"].upper()
+    memory.set_title("(a)  Model loading memory", loc="left")
+    values = [data["model_memory_gib"][role] for role in ("reference", "selected")]
+    memory.barh([0, 1], values, height=0.37, color=(BASELINE, DFLASH), alpha=0.87)
+    for index, value in enumerate(values):
+        memory.annotate(f"{value:.2f}", (value, index), xytext=(5, 0), textcoords="offset points", va="center")
+    memory.set_yticks([0, 1], ("BF16", quantization))
+    memory.set(xlim=(0, max(values) * 1.24), ylim=(1.65, -0.65), xlabel="GPU memory (GiB)")
+    memory.grid(axis="x")
+
+    speed.set_title(f"(b)  {quantization} throughput vs BF16", loc="left")
+    scores = data["workload_scores_vs_bf16"]
+    positions = range(3)
+    speed.axvline(1, color=BASELINE, linestyle="--", linewidth=1.05)
+    values = [scores[key] for key in ("holdout", "speed", "burst")]
+    span = max(0.025, *(abs(value - 1) for value in values))
+    for index, value in enumerate(values):
+        speed.hlines(index, min(1, value), max(1, value), linewidth=2.4, color=DFLASH, alpha=0.5)
+        speed.scatter(value, index, color=DFLASH, s=44, marker="D", edgecolor="white", linewidth=0.7, zorder=3)
+        speed.annotate(f"{value:.3f}×", (value, index), xytext=(6, 0), textcoords="offset points", va="center")
+    speed.set_yticks(list(positions), ("Spec-Bench", "SPEED-Bench", "BurstGPT"))
+    speed.set(xlim=(1 - 1.25 * span, 1 + 1.85 * span), ylim=(2.55, -0.55), xlabel="Geometric mean of paired medians")
+    speed.grid(axis="x")
+    fig.text(0.075, 0.035, "Memory is reported at model load. The dashed line marks BF16 throughput.",
+             fontsize=10, color=MUTED)
+    fig.tight_layout(rect=(0, 0.13, 1, 0.88), w_pad=2.0)
+    save_plot(fig, plt, output, "dflash-quantization")
+
+
+def report_studies(args, config):
+    study = args.study
+    if args.results and study is None:
+        if args.results.is_file():
+            data = read_json(args.results)
+            if "profiles" in data:
+                study = "standard-suffix" if "suffix-standard" in data["winners"] else "paired"
+            else:
+                study = "standard-suffix" if "cell_sha256" in data else "framework"
+        elif (args.results / "experiment.json").is_file():
+            study = read_json(args.results / "experiment.json").get("study", "framework")
+        else:
+            study = "framework"
+    studies = [study] if study else list(PUBLISHED)
+    if "framework" not in studies and (args.external_results or args.draft_study):
+        raise ValueError("--external-results and --draft-study apply to the framework report")
+    plt = setup_plots()
+    for name in studies:
+        results = args.results or PUBLISHED[name]
+        if name == "framework":
+            framework = config["studies"]["framework"]
+            generate_report(results, args.output, plt, args.external_results, framework["methods"], args.draft_study)
+        else:
+            data = read_json(results) if results.is_file() else collect_paired(results, config, name)
+            report_comparison(data, name, args.output, plt)

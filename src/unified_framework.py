@@ -9,47 +9,32 @@ import hashlib
 import json
 import math
 import os
-import random
 import re
 import shlex
 import signal
-import socket
 import subprocess
-from collections import defaultdict
+from tempfile import mkdtemp
 from contextlib import contextmanager
+from dataclasses import asdict, replace
 from itertools import product
 from pathlib import Path
 
-from run_supplemental_benchmark import build_launch_command, environment, terminate, wait_for_server, warmup
+from serving import (
+    CAPTURE_SIZES, BenchmarkCell, benchmark_command, build_launch_command, environment,
+    measure_cell, reserve_gpu, running_server, spec_bench_flags, terminate, vllm_version,
+)
+from workloads import (
+    DATASET, cell_name, load_serving_workloads, prepare_external, prepare_inputs,
+    read_json, serving_cell, stress_cells, write_json,
+)
 
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG = ROOT / "config/unified_framework.json"
-DATASET = ROOT / "data/spec_bench/question.jsonl"
-CAPTURE_SIZES = [1, 2, 3, 4, 6, 8, 12, 16, 20, 24, 28, 32]
 DRAFT_MODELS = {
     "dspark": "/home/genai/dspark-bench/redhat-dspark",
     "dflash": "/home/genai/selected-drafts/Qwen3.8-27B-DFlash2",
 }
-
-
-def read_json(path):
-    return json.loads(path.read_text(encoding="utf-8"))
-
-
-def write_json(path, value):
-    temporary = path.with_suffix(path.suffix + ".tmp")
-    temporary.write_text(json.dumps(value, ensure_ascii=False, indent=2, allow_nan=False) + "\n", encoding="utf-8")
-    temporary.replace(path)
-
-
-def cell_name(phase, concurrency, seed):
-    return f"{phase}-c{concurrency}-s{seed}"
-
-
-def stress_cells(protocol):
-    stress = protocol["stress"]
-    return [(concurrency, stress["seed"] + index) for index, concurrency in enumerate(stress["concurrencies"])]
 
 
 def draft_path(args, profile):
@@ -59,116 +44,66 @@ def draft_path(args, profile):
     return None
 
 
-def config_command(args, profile):
+def config_command(args, profile, capture_sizes=CAPTURE_SIZES):
     spec = profile["spec"]
     model = draft_path(args, profile)
     if model is not None:
         spec = {**spec, "model": model}
-    return build_launch_command(args, spec, CAPTURE_SIZES)
+    eagle = args.method == "eagle4"
+    if eagle and spec:
+        if args.draft_model is None:
+            raise ValueError("EAGLE-4 requires --draft-model")
+        calibration = args.calibration or ROOT / spec["method_config"]["data_path"]
+        spec = {**spec, "model": str(args.draft_model.resolve()), "method_config": {
+            **spec["method_config"], "data_path": str(calibration.resolve()),
+        }}
+    return build_launch_command(args, spec, capture_sizes, eagle=eagle)
 
 
-def write_workloads(directory, source, protocol):
-    categories = defaultdict(list)
-    seen = set()
-    for line in source.read_text(encoding="utf-8").splitlines():
-        row = json.loads(line)
-        prompt = row["turns"][0].strip()
-        if prompt in seen:
-            raise ValueError("Spec-Bench contains duplicate first turns")
-        seen.add(prompt)
-        categories[row["category"]].append(row)
-
-    rng = random.Random(protocol["split_seed"])
-    tuning, holdout = [], []
-    for rows in categories.values():
-        rng.shuffle(rows)
-        cutoff = round(protocol["tuning_fraction"] * len(rows))
-        tuning.extend(rows[:cutoff])
-        holdout.extend(rows[cutoff:])
-
-    groups = [
-        ("tuning", [protocol["tuning_seed"]], tuning, protocol["tuning_prompts"]),
-        ("holdout", protocol["holdout_seeds"], holdout, protocol["holdout_prompts"]),
-    ]
-    directory.mkdir(exist_ok=True)
-    manifest = {}
-    for phase, seeds, rows, count in groups:
-        cells = list(product(seeds, protocol["concurrencies"]))
-        for index, (seed, concurrency) in enumerate(cells):
-            name = cell_name(phase, concurrency, seed)
-            subset = rows[index::len(cells)]
-            if len(subset) < count:
-                raise ValueError(f"{name}: only {len(subset)} distinct questions for {count} requests")
-            contents = "".join(json.dumps(row, ensure_ascii=False) + "\n" for row in subset)
-            path = directory / f"{name}.jsonl"
-            if path.exists():
-                if path.read_text(encoding="utf-8") != contents:
-                    raise ValueError(f"{path}: workload changed between runs")
-            else:
-                temporary = path.with_suffix(".tmp")
-                temporary.write_text(contents, encoding="utf-8")
-                temporary.replace(path)
-            manifest[name] = {"candidates": len(subset), "sha256": hashlib.sha256(contents.encode()).hexdigest()}
-    return manifest
+def confirmation_profiles(args, config, selected=None):
+    reference = config["methods"][args.method]["reference"]
+    normal = config["methods"]["normal"]["reference"]
+    if args.workloads:
+        profiles = (normal, reference)
+    else:
+        if selected is None:
+            selection = args.output / "selection.json"
+            selected = selected_profile(args.method, selection if selection.exists() else None, reference)
+        profiles = (normal, reference, selected)
+    ordered = list({profile["id"]: profile for profile in profiles}.values())
+    return ordered[::-1] if args.gpu % 2 == 0 else ordered
 
 
-def load_serving_workloads(directory):
-    root = directory.resolve()
-    manifest = read_json(root / "manifest.json")
-    if manifest["schema"] != 1:
-        raise ValueError("Unsupported serving workload manifest")
-    seen = set()
-    for cell in manifest["cells"]:
-        name = cell_name(cell["workload"], cell["concurrency"], cell["seed"])
-        if cell["workload"] not in ("speed", "burst") or name in seen:
-            raise ValueError(f"Unexpected serving workload cell {name}")
-        path = (root / cell["input"]).resolve()
-        if not path.is_relative_to(root) or hashlib.sha256(path.read_bytes()).hexdigest() != cell["sha256"]:
-            raise ValueError(f"Serving workload checksum differs for {name}")
-        seen.add(name)
-    return manifest
+def new_attempt(destination):
+    attempts = destination.parent / ".attempts"
+    attempts.mkdir(parents=True, exist_ok=True)
+    return Path(mkdtemp(prefix=f"{destination.name}-", dir=attempts))
 
 
-@contextmanager
-def reserve_gpu(args):
-    lock_path = Path.home() / f".speculative-decoding-lab-gpu-{args.gpu}.lock"
-    with lock_path.open("a") as lock:
-        fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
-        fields = ("name", "uuid", "driver_version", "memory.used", "utilization.gpu")
-        gpu = subprocess.check_output(
-            ["nvidia-smi", "-i", str(args.gpu), "--query-gpu=" + ",".join(fields),
-             "--format=csv,noheader,nounits"], text=True
-        ).strip().split(", ")
-        if int(gpu[-2]) > 512 or int(gpu[-1]) > 0:
-            raise RuntimeError(f"GPU {args.gpu} is in use")
-        with socket.socket() as connection:
-            connection.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-            connection.bind(("127.0.0.1", args.port))
-        yield dict(zip(fields[:3], gpu[:3]))
-
-
-@contextmanager
-def running_server(command, env, url, log_path):
-    with log_path.open("w", encoding="utf-8") as log:
-        process = subprocess.Popen(command, env=env, stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
-        try:
-            wait_for_server(process, url, timeout=900)
-            yield
-        finally:
-            try:
-                os.killpg(process.pid, signal.SIGTERM)
-            except ProcessLookupError:
-                pass
-            try:
-                process.wait(timeout=25)
-            except subprocess.TimeoutExpired:
-                os.killpg(process.pid, signal.SIGKILL)
-                process.wait()
+def framework_cells(args, protocol, phase, stress=False, external=None):
+    if phase == "external":
+        return [serving_cell(args.workloads.resolve(), row) for row in external["cells"]]
+    seeds = [protocol["tuning_seed"]] if phase == "tuning" else protocol["holdout_seeds"]
+    cells = []
+    for seed, concurrency in product(seeds, protocol["concurrencies"]):
+        name = cell_name(phase, concurrency, seed)
+        source = args.output.resolve() / "workloads" / f"{name}.jsonl"
+        cells.append(BenchmarkCell(name, seed, concurrency, protocol[f"{phase}_prompts"],
+                                   spec_bench_flags(source, protocol["output_tokens"])))
+    if stress:
+        setup = protocol["stress"]
+        for concurrency, seed in stress_cells(protocol):
+            dataset = ("--dataset-name", "random", "--random-input-len", str(setup["input_tokens"]),
+                       "--random-output-len", str(setup["output_tokens"]), "--random-range-ratio", "0", "--ignore-eos")
+            cells.append(BenchmarkCell(cell_name("stress", concurrency, seed), seed, concurrency, setup["prompts"],
+                                       dataset, setup["input_tokens"], setup["output_tokens"]))
+    return cells
 
 
 class Experiment:
     def __init__(self, args, config, gpu):
         self.args = args
+        self.config = config
         self.protocol = config["protocol"]
         self.method = config["methods"][args.method]
         self.normal = config["methods"]["normal"]["reference"]
@@ -177,11 +112,9 @@ class Experiment:
         self.url = f"http://127.0.0.1:{args.port}"
         self.env = environment(args)
         self.external = load_serving_workloads(args.workloads) if getattr(args, "workloads", None) else None
-        versions = subprocess.check_output([args.vllm, "--version"], env=self.env, text=True,
-                                           stderr=subprocess.DEVNULL, timeout=60).splitlines()
         identity = {
             "method": args.method, "method_config": self.method, "protocol": self.protocol,
-            "vllm_version": versions[-1].strip(), "gpu": {"index": args.gpu, **gpu}, "target": args.model,
+            "vllm_version": vllm_version(args.vllm, self.env), "gpu": {"index": args.gpu, **gpu}, "target": args.model,
             "draft": draft_path(args, self.method["reference"]),
             "dataset_sha256": hashlib.sha256(args.dataset.read_bytes()).hexdigest(),
         }
@@ -191,62 +124,7 @@ class Experiment:
         if identity_path.exists() and read_json(identity_path) != identity:
             raise ValueError("Existing output directory belongs to a different experiment")
         write_json(identity_path, identity)
-        workloads = write_workloads(self.out / "workloads", args.dataset, self.protocol)
-        write_json(self.out / "workloads.json", workloads)
-
-    def benchmark_cell(self, directory, phase, concurrency, seed, cell=None):
-        stress = self.protocol["stress"]
-        name = cell_name(phase, concurrency, seed)
-        path = directory / f"{name}.json"
-        if cell is not None:
-            count = cell["count"]
-            request_path = self.args.workloads.resolve() / cell["input"]
-            if phase == "speed":
-                dataset = ["--dataset-name", "speed_bench", "--dataset-path", str(request_path.parent),
-                           "--speed-bench-output-len", str(cell["fixed_output_tokens"]), "--no-oversample", "--ignore-eos"]
-            else:
-                dataset = ["--dataset-name", "timed_trace", "--dataset-path", str(request_path)]
-        elif phase == "stress":
-            count = stress["prompts"]
-            dataset = [
-                "--dataset-name", "random", "--random-input-len", str(stress["input_tokens"]),
-                "--random-output-len", str(stress["output_tokens"]), "--random-range-ratio", "0", "--ignore-eos",
-            ]
-        else:
-            count = self.protocol[f"{phase}_prompts"]
-            dataset = [
-                "--dataset-name", "spec_bench", "--dataset-path", str(self.out / "workloads" / f"{name}.jsonl"),
-                "--spec-bench-output-len", str(self.protocol["output_tokens"]), "--no-oversample",
-            ]
-        warmup(self.url)
-        command = [
-            self.args.vllm, "bench", "serve", "--backend", "openai", "--endpoint", "/v1/completions",
-            "--base-url", self.url, "--model", "qwen-fp8", "--tokenizer", self.args.model, *dataset,
-            "--seed", str(seed), "--temperature", "0", "--num-warmups", "0", "--ready-check-timeout-sec", "0",
-            "--request-rate", "inf", "--max-concurrency", str(concurrency), "--num-prompts", str(count),
-            "--metric-percentiles", "50,95,99", "--save-detailed", "--save-result", "--result-dir", str(directory),
-            "--result-filename", path.name,
-        ]
-        with path.with_suffix(".log").open("w", encoding="utf-8") as log:
-            subprocess.run(command, env={**self.env, "PYTHONHASHSEED": "0"} if cell else self.env,
-                           stdout=log, stderr=subprocess.STDOUT, check=True, timeout=300)
-        result = read_json(path)
-        speed = result["output_throughput"]
-        if (result["completed"] != count or result["failed"] != 0
-                or not math.isfinite(speed) or speed <= 0):
-            raise RuntimeError(f"{name}: invalid result in {path}")
-        if phase == "stress" and (result["input_lens"] != [stress["input_tokens"]] * count
-                                  or result["output_lens"] != [stress["output_tokens"]] * count):
-            raise RuntimeError(f"{name}: random stress token lengths differ from the protocol")
-        if phase == "speed" and result["output_lens"] != [cell["fixed_output_tokens"]] * count:
-            raise RuntimeError(f"{name}: SPEED-Bench output lengths differ from the protocol")
-        if phase == "burst":
-            trace = [json.loads(line) for line in request_path.read_text(encoding="utf-8").splitlines()]
-            expected = ([row["input_length"] for row in trace], [row["output_length"] for row in trace])
-            if (result["input_lens"], result["output_lens"]) != expected:
-                raise RuntimeError(f"{name}: BurstGPT token lengths differ from the trace")
-        print(f"  {directory.name} {name}: {speed:.2f} tok/s", flush=True)
-        return speed
+        prepare_inputs(self.out, args.dataset, config, "framework")
 
     def measure(self, profile, phase, stress=False):
         if not re.fullmatch(r"[a-zA-Z0-9_-]+", profile["id"]):
@@ -259,29 +137,14 @@ class Experiment:
             if record["profile"] != profile or record["stress"] != stress:
                 raise ValueError(f"{destination}: existing result uses different settings")
             return record
-        destination.parent.mkdir(parents=True, exist_ok=True)
-        attempts = destination.parent / ".attempts"
-        attempts.mkdir(exist_ok=True)
-        counter = 1
-        while (attempts / f"{profile['id']}-{counter}").exists():
-            counter += 1
-        trial = attempts / f"{profile['id']}-{counter}"
-        trial.mkdir()
+        trial = new_attempt(destination)
         write_json(trial / "command.json", command)
         print(f"Starting {phase} {profile['id']}", flush=True)
-        seeds = [self.protocol["tuning_seed"]] if phase == "tuning" else self.protocol["holdout_seeds"]
-        speeds = {}
+        cells = framework_cells(self.args, self.protocol, phase, stress, self.external)
+        env = {**self.env, "PYTHONHASHSEED": "0"} if phase == "external" else self.env
         with running_server(command, self.env, self.url, trial / "server.log"):
-            if phase == "external":
-                for cell in self.external["cells"]:
-                    kind, concurrency, seed = cell["workload"], cell["concurrency"], cell["seed"]
-                    speeds[cell_name(kind, concurrency, seed)] = self.benchmark_cell(trial, kind, concurrency, seed, cell)
-            else:
-                for seed, concurrency in product(seeds, self.protocol["concurrencies"]):
-                    speeds[cell_name(phase, concurrency, seed)] = self.benchmark_cell(trial, phase, concurrency, seed)
-            if stress:
-                for concurrency, seed in stress_cells(self.protocol):
-                    speeds[cell_name("stress", concurrency, seed)] = self.benchmark_cell(trial, "stress", concurrency, seed)
+            speeds = {cell.name: measure_cell(self.args.vllm, self.args.model, self.url, cell,
+                                               trial / f"{cell.name}.json", env) for cell in cells}
         record = {"profile": profile, "stress": stress, "speeds": speeds}
         write_json(trial / "completed.json", record)
         trial.rename(destination)
@@ -326,21 +189,13 @@ class Experiment:
     def confirm(self):
         reference = self.method["reference"]
         if self.external:
-            profiles = [self.normal] if reference == self.normal else [self.normal, reference]
-            if self.args.gpu % 2 == 0:
-                profiles.reverse()
-            for profile in profiles:
+            for profile in confirmation_profiles(self.args, self.config):
                 self.measure(profile, "external")
             write_json(self.out / "confirmation.json", {"normal": self.normal["id"], "selected": reference["id"]})
             return
         selection = self.out / "selection.json"
         selected = selected_profile(self.args.method, selection, reference) if selection.exists() else reference
-        profiles = {profile["id"]: profile for profile in (self.normal, reference, selected)}
-        ordered = list(profiles.values())
-        # Alternate launch order by GPU. Every comparison stays on one GPU.
-        if self.args.gpu % 2 == 0:
-            ordered.reverse()
-        for profile in ordered:
+        for profile in confirmation_profiles(self.args, self.config, selected):
             self.measure(profile, "holdout", stress=not self.args.skip_stress)
         write_json(self.out / "confirmation.json", {
             "normal": self.normal["id"], "reference": reference["id"], "selected": selected["id"],
@@ -360,25 +215,29 @@ def selected_profile(method, path, reference):
         profile = selected["selected"]
     if selected["method"] != method:
         raise ValueError(f"{path}: selection belongs to {selected['method']}")
-    if profile["spec"]["method"] != method:
+    if profile["spec"]["method"] != reference["spec"]["method"]:
         raise ValueError(f"{path}: selected profile does not match method {method}")
     return profile
 
 
-def run_quantization_study(args, config, gpu):
-    reference = config["methods"]["dflash"]["reference"]
-    spec = {key: value for key, value in reference["spec"].items() if key != "quantization"}
+def quantization_profiles(args, config):
+    published = config["methods"]["dflash"]["reference"]
+    spec = {key: value for key, value in published["spec"].items() if key != "quantization"}
     reference = {"id": f"dflash2-k{spec['num_speculative_tokens']}", "spec": spec}
-    methods = {**config["methods"]}
-    methods["dflash"] = {**methods["dflash"], "reference": reference}
-    study_config = {**config, "methods": methods}
     candidates = [
         {"id": "dflash2-" + name.replace("_", "-"), "spec": {**spec, "quantization": name}}
         for name in args.quantizations
     ]
     if len({profile["id"] for profile in candidates}) != len(candidates):
         raise ValueError("Draft quantization names must produce distinct profile IDs")
+    return reference, candidates
 
+
+def run_quantization_study(args, config, gpu):
+    reference, candidates = quantization_profiles(args, config)
+    methods = {**config["methods"]}
+    methods["dflash"] = {**methods["dflash"], "reference": reference}
+    study_config = {**config, "methods": methods}
     raw = args.output / "raw/dflash"
     screen_args = argparse.Namespace(**{**vars(args), "output": raw, "workloads": None, "skip_stress": False})
     experiment = Experiment(screen_args, study_config, gpu)
@@ -404,11 +263,143 @@ def run_quantization_study(args, config, gpu):
     })
 
 
+def quantization_plan(args, config):
+    reference, candidates = quantization_profiles(args, config)
+    protocol = config["protocol"]
+    raw = argparse.Namespace(**{**vars(args), "output": args.output / "raw/dflash"})
+    external = load_serving_workloads(args.workloads)
+    prepare_inputs(raw.output.resolve(), args.dataset, config, "framework")
+    normal = config["methods"]["normal"]["reference"]
+    launches = {profile["id"]: (profile, config_command(args, profile)) for profile in [normal, reference, *candidates]}
+    print_plan(args, "framework", args.vllm, f"http://127.0.0.1:{args.port}", launches,
+               framework_cells(raw, protocol, "tuning"), args.output.resolve(), extra={
+                   "holdout_and_stress": [asdict(cell) for cell in framework_cells(raw, protocol, "holdout", True)],
+                   "external": [asdict(cell) for cell in framework_cells(args, protocol, "external", external=external)],
+                   "confirmation": "Best tuning candidate, BF16 reference and Normal",
+               })
+
+
+@contextmanager
+def lock_output(output):
+    output.mkdir(parents=True, exist_ok=True)
+    with (output / ".lock").open("a") as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        yield
+
+
+def study_name(config, method, requested):
+    studies = config["studies"]
+    if requested is None:
+        return next(name for name, study in studies.items() if method in study["methods"])
+    if requested not in studies or method not in studies[requested]["methods"]:
+        raise ValueError(f"{method} is not available in the {requested} study")
+    return requested
+
+
+def paired_profiles(args, config, study):
+    reference = config["methods"][args.method]["reference"]
+    normal = config["methods"]["normal"]["reference"]
+    if args.smoke:
+        return [("selected", reference)]
+    if study == "standard-suffix":
+        profiles = [("selected", reference), ("baseline", normal)]
+        return profiles[::-1] if args.gpu % 2 else profiles
+    return [("normal", normal), (args.method, reference)]
+
+
+def run_paired(args, config, study, dry_run=False):
+    setup = config["studies"][study]
+    if study == "paired" and args.method == "dflash" and args.draft_model is None:
+        raise ValueError("DFlash 2 requires --draft-model for the paired study")
+    capture = setup.get("capture_sizes", CAPTURE_SIZES)
+    eagle = args.method == "eagle4"
+    expected_client = setup["client_version"]
+    expected_server = config["methods"][args.method].get("vllm", expected_client)
+    client = args.client_vllm or args.vllm
+    if eagle and client == args.vllm:
+        raise ValueError("EAGLE-4 requires a separate vLLM 0.34.0 --client-vllm")
+    env = environment(args, eagle=eagle)
+    output = args.output.resolve()
+    url = f"http://127.0.0.1:{args.port}"
+    launches = {
+        role: (profile, config_command(args, profile, capture))
+        for role, profile in paired_profiles(args, config, study)
+    }
+    cells = prepare_inputs(output, args.dataset, config, study)
+    if args.smoke:
+        workload, digest, first = cells[0]
+        cells = [(workload, digest, replace(first, count=4))]
+    if dry_run:
+        print_plan(args, study, client, url, launches, [cell for _, _, cell in cells], output,
+                   extra={"server_version": expected_server, "client_version": expected_client,
+                          "server_environment": {"VLLM_USE_V2_MODEL_RUNNER": "1"} if eagle else {}})
+        return
+
+    server_version = vllm_version(args.vllm, env)
+    if server_version.split()[-1] != expected_server:
+        raise ValueError(f"{args.vllm}: expected vLLM {expected_server}, found {server_version}")
+    if client != args.vllm:
+        client_version = vllm_version(client, env)
+        if client_version.split()[-1] != expected_client:
+            raise ValueError(f"{client}: expected vLLM {expected_client}, found {client_version}")
+    with reserve_gpu(args) as gpu:
+        experiment = {
+            "study": study, "method": args.method, "gpu": {**gpu, "index": args.gpu},
+            "target": args.model, "server_version": expected_server, "client_version": expected_client,
+            "profile": config["methods"][args.method]["reference"], "serving_commands": {
+                role: command for role, (_, command) in launches.items()
+            },
+            "dataset_sha256": hashlib.sha256(args.dataset.read_bytes()).hexdigest(), "smoke": args.smoke,
+            "cells": [{"workload": workload, "sha256": digest, **asdict(cell), "dataset": list(cell.dataset)} for workload, digest, cell in cells],
+        }
+        identity = output / "experiment.json"
+        if identity.exists() and read_json(identity) != experiment:
+            raise ValueError(f"{output}: existing results belong to a different experiment")
+        write_json(identity, experiment)
+        for role, (profile, command) in launches.items():
+            directory = output / role
+            if (directory / "completed.json").exists():
+                continue
+            trial = new_attempt(directory)
+            write_json(trial / "command.json", command)
+            with running_server(command, env, url, trial / "server.log", timeout=360 if study == "standard-suffix" else 900):
+                speeds = {cell.name: measure_cell(client, args.model, url, cell, trial / f"{cell.name}.json", env)
+                          for _, _, cell in cells}
+            write_json(trial / "completed.json", {"profile": profile, "speeds": speeds})
+            trial.rename(directory)
+
+
+def print_plan(args, study, client, url, launches, cells, output, extra=None):
+    plan = {
+        "study": study, "method": args.method, "gpu": args.gpu,
+        "profiles": {role: command for role, (_, command) in launches.items()},
+        "cells": [asdict(cell) for cell in cells],
+        "example_benchmark": benchmark_command(client, args.model, url, cells[0], output / f"{cells[0].name}.json"),
+        **(extra or {}),
+    }
+    print(json.dumps(plan, ensure_ascii=False, indent=2))
+
+
+def framework_plan(args, config):
+    prepare_inputs(args.output.resolve(), args.dataset, config, "framework")
+    phase = "external" if args.workloads else "holdout"
+    external = load_serving_workloads(args.workloads) if args.workloads else None
+    cells = framework_cells(args, config["protocol"], phase, not args.skip_stress and not args.workloads, external)
+    launches = {profile["id"]: (profile, config_command(args, profile)) for profile in confirmation_profiles(args, config)}
+    print_plan(args, "framework", args.vllm, f"http://127.0.0.1:{args.port}", launches, cells, args.output.resolve())
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--config", type=Path, default=CONFIG)
     actions = parser.add_subparsers(dest="action", required=True)
-    actions.add_parser("profiles")
+    actions.add_parser("profiles", help="list published profiles and study names")
+    prepare = actions.add_parser("prepare", help="prepare benchmark input files")
+    prepare.add_argument("--study", choices=("framework", "paired", "standard-suffix", "external"), default="framework")
+    prepare.add_argument("--dataset", type=Path, default=DATASET)
+    prepare.add_argument("--speed-parquet", type=Path)
+    prepare.add_argument("--burst-csv", type=Path)
+    prepare.add_argument("--output", type=Path, required=True)
     for action in ("serve", "tune", "benchmark", "quantization-study"):
         sub = actions.add_parser(action)
         if action == "quantization-study":
@@ -421,57 +412,106 @@ def main():
         sub.add_argument("--port", type=int, default=24820)
         sub.add_argument("--model", default="/home/model/Qwen3.8-27B-FP8")
         sub.add_argument("--draft-model", type=Path)
-        sub.add_argument("--vllm", default="/home/genai/.pixi/envs/default/bin/vllm")
+        sub.add_argument("--vllm", default="vllm")
         sub.add_argument("--bench-deps", default="")
+        if action in ("serve", "benchmark"):
+            sub.add_argument("--study", choices=("framework", "paired", "standard-suffix"))
+            sub.add_argument("--calibration", type=Path, help="EAGLE-4 cost-table directory (defaults to the published tables)")
         if action == "serve":
             sub.add_argument("--selection", type=Path)
             sub.add_argument("--print-command", action="store_true")
         else:
             sub.add_argument("--output", type=Path, required=True)
             sub.add_argument("--dataset", type=Path, default=DATASET)
+        if action in ("benchmark", "quantization-study"):
+            sub.add_argument("--print-plan", action="store_true", help="prepare inputs and print the run plan without a GPU")
         if action == "benchmark":
             sub.add_argument("--skip-stress", action="store_true")
             sub.add_argument("--workloads", type=Path, help="replay a prepared SPEED-Bench and BurstGPT manifest")
-    report = actions.add_parser("report")
-    report.add_argument("--results", type=Path, required=True)
+            sub.add_argument("--client-vllm", help="separate vLLM 0.34.0 benchmark client for the paired study")
+            sub.add_argument("--smoke", action="store_true", help="for standard Suffix, run four requests with Suffix only")
+    report = actions.add_parser("report", help="render tables and figures")
+    report.add_argument("--study", choices=("framework", "paired", "standard-suffix"))
+    report.add_argument("--results", type=Path, help="a summary JSON or a replay directory; defaults to all published studies")
     report.add_argument("--external-results", type=Path)
     report.add_argument("--draft-study", type=Path, help="include a completed DFlash 2 quantization study")
     report.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
-    if args.action == "report":
-        from unified_report import generate_report
+    config = read_json(args.config)
+    if "studies" not in config:
+        config["studies"] = {"framework": {"methods": list(config["methods"])}}
+    try:
+        dispatch(args, config)
+    except ValueError as error:
+        parser.error(str(error))
 
-        methods = read_json(args.config)["methods"] if args.results.is_dir() else None
-        generate_report(args.results, args.output, args.external_results, methods, args.draft_study)
+
+def dispatch(args, config):
+    if args.action == "report":
+        from unified_report import report_studies
+
+        report_studies(args, config)
         print(f"Report written to {args.output}")
         return
-
-    config = read_json(args.config)
     if args.action == "profiles":
         for method, row in config["methods"].items():
-            print(f"{method:8} {row['label']:12} {row['reference']['id']}")
+            studies = ", ".join(name for name, group in config["studies"].items() if method in group["methods"])
+            print(f"{method:16} {row['label']:17} {row['reference']['id']:21} {studies}")
+        return
+    if args.action == "prepare":
+        if args.study == "external":
+            if args.speed_parquet is None or args.burst_csv is None:
+                raise ValueError("External preparation requires --speed-parquet and --burst-csv")
+            prepare_external(args.output, args.dataset, args.speed_parquet, args.burst_csv)
+        else:
+            if args.speed_parquet or args.burst_csv:
+                raise ValueError("Use --study external with --speed-parquet or --burst-csv")
+            if args.study not in config["studies"]:
+                raise ValueError(f"Configuration has no {args.study} study")
+            with lock_output(args.output):
+                prepare_inputs(args.output.resolve(), args.dataset, config, args.study)
+        print(f"Inputs written to {args.output}")
         return
     if args.method not in config["methods"]:
-        parser.error(f"Unknown method {args.method}; choose from {', '.join(config['methods'])}")
+        raise ValueError(f"Unknown method {args.method}. Choose from {', '.join(config['methods'])}")
+    study = study_name(config, args.method, getattr(args, "study", None))
     if args.action == "serve":
         if args.method == "normal" and args.selection:
-            parser.error("Normal does not use a speculative selection")
+            raise ValueError("Normal does not use a speculative selection")
         reference = config["methods"][args.method]["reference"]
         profile = selected_profile(args.method, args.selection, reference)
-        command = config_command(args, profile)
+        command = config_command(args, profile, config["studies"][study].get("capture_sizes", CAPTURE_SIZES))
         if args.print_command:
             print(shlex.join(command))
         else:
-            os.execvpe(command[0], command, environment(args))
+            os.execvpe(command[0], command, environment(args, eagle=args.method == "eagle4"))
         return
 
-    if args.action == "tune" and not all(config["methods"][args.method].get(round_name)
-                                         for round_name in ("round1", "round2")):
-        parser.error("Supply a tuning plan with round1 and round2 via --config")
+    if args.action == "tune" and (study != "framework" or not all(
+        config["methods"][args.method].get(round_name) for round_name in ("round1", "round2")
+    )):
+        raise ValueError("Supply a framework tuning plan with round1 and round2 via --config")
+    if args.action == "benchmark":
+        if args.smoke and study != "standard-suffix":
+            raise ValueError("--smoke is for the standard-suffix study")
+        if study == "framework" and args.client_vllm:
+            raise ValueError("--client-vllm is for paired studies")
+        if study != "framework" and (args.workloads or args.skip_stress):
+            raise ValueError("--workloads and --skip-stress are for the framework study")
+
     signal.signal(signal.SIGTERM, terminate)
-    args.output.mkdir(parents=True, exist_ok=True)
-    with (args.output / ".lock").open("a") as lock:
-        fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    with lock_output(args.output):
+        if getattr(args, "print_plan", False):
+            if args.action == "quantization-study":
+                quantization_plan(args, config)
+            elif study == "framework":
+                framework_plan(args, config)
+            else:
+                run_paired(args, config, study, dry_run=True)
+            return
+        if study != "framework":
+            run_paired(args, config, study)
+            return
         with reserve_gpu(args) as gpu:
             if args.action == "quantization-study":
                 run_quantization_study(args, config, gpu)

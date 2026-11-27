@@ -1,4 +1,4 @@
-# 早期 Suffix Decoding 实验
+# 标准 Suffix 单卡实测
 
 这次实验在单张 NVIDIA B200 上运行 Qwen3.8-27B-FP8，使用 vLLM 0.34.0、Triton Attention 和标准验证。入选的标准 Suffix 在留出集的综合吞吐为同卡 Normal 的 1.249×。这个分数取并发 1 和 16 的相对吞吐倍率中位数，再作几何平均。每轮与同卡 Normal 配对。[原课程项目](https://github.com/Zheng-Hanyu/Generative-Models-Final-Project) · [vLLM 方法说明](https://docs.vllm.ai/en/v0.34.0/features/speculative_decoding/)
 
@@ -18,6 +18,10 @@
 |---:|---:|---:|---:|---:|---:|---:|---:|
 | 1 | 116.90 | 174.89 | 1.494× | 1.446–1.547× | 8.42 / 6.93 | 17.4% | 23/144 |
 | 16 | 1349.96 | 1415.71 | 1.045× | 1.037–1.083× | 11.36 / 11.84 | 19.1% | 36/144 |
+
+![标准 Suffix 在两个并发档上的配对吞吐倍率](figures/standard-suffix-throughput.png)
+
+[吞吐图 PDF](figures/standard-suffix-throughput.pdf)
 
 Suffix 和 Normal 各成功处理了 288 条请求。按相同种子和并发配对后，59 条 greedy 输出全文一致。比较包含推理文本，部分输出在 128 tokens 处截断。留出集记录的是全文是否一致，答案得分只用于另做的短答检查。
 
@@ -43,17 +47,14 @@ Spec-Bench 的 480 条原题按类别分为 144 条调参题和 336 条留出题
 
 ## 复跑
 
-在装有 vLLM 0.34.0 和目标权重的 B200 主机上，从仓库根目录运行。用 `serve` 单独启动 Suffix 服务。
+在装有 vLLM 0.34.0 和目标权重的 B200 上，从仓库根目录运行。框架按原始种子生成留出子集，在同卡测标准 Suffix 和 Normal。用 `serve --method suffix-standard` 可单独启动服务，或在 `benchmark` 后加 `--smoke`，只用标准 Suffix 跑并发 1 的四条请求。
 
 ```bash
-python_bin=/home/genai/.pixi/envs/default/bin/python
-"$python_bin" src/run_supplemental_benchmark.py serve --gpu 7 --port 24807
+python src/unified_framework.py benchmark --method suffix-standard --gpu 7 --port 24807 \
+  --output replay/standard-suffix
+python src/unified_framework.py report --results replay/standard-suffix --output replay/standard-report
 ```
 
-GPU 空闲时可用 `benchmark` 复跑。脚本从 `data/spec_bench/question.jsonl` 生成留出子集，在同卡依次测 Suffix 和 Normal，并把 JSON 和日志写到新的结果目录。pandas 如安装在单独目录，可通过 `--bench-deps` 指定。用 `--model` 和 `--vllm` 设置本机路径。
+报告从完整压测的逐轮 JSON 计算吞吐、P95 TPOT 和全文一致性。单独的 20 道短答检查保留在归档中。
 
-```bash
-"$python_bin" src/run_supplemental_benchmark.py benchmark --gpu 7 --port 24807 --output replay-supplemental
-```
-
-[最终复测汇总](../../results/processed/supplemental_speculative_summary.json) · [原始复测 JSON](../../results/raw/supplemental_speculative/) · [最终配置](../../config/supplemental_speculative_config.json) · [复跑入口](../../src/run_supplemental_benchmark.py)
+[原始汇总](../../results/processed/supplemental_speculative_summary.json) · [逐轮 JSON](../../results/raw/supplemental_speculative/) · [统一配置](../../config/unified_framework.json)

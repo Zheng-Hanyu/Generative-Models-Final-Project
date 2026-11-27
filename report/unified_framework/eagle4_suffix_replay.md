@@ -10,16 +10,16 @@ gpu=7
 replay_root="$(pwd)/replay/eagle4-suffix-b200"
 mkdir -p "$replay_root"
 
-python src/replay_selected_speculation.py --method suffix --gpu "$gpu" \
+python src/unified_framework.py benchmark --study paired --method suffix --gpu "$gpu" \
   --vllm "$standard_vllm" --client-vllm "$standard_vllm" \
   --bench-deps "$bench_deps" --model "$target" --output "$replay_root/suffix"
 ```
 
-如果 pandas 已安装在客户端环境中，可以省略 --bench-deps。每套压测生成 18 组输入，各组均记录 SHA-256。方法和配对 Normal 各完成 540 条请求，逐组的 JSON 和服务日志保存在输出目录。
+如果 pandas 已安装在客户端环境中，可以省略 `--bench-deps`。每套压测生成 18 组输入，各组均记录 SHA-256。方法和配对 Normal 各完成 540 条请求，逐组的 JSON 和服务日志保存在输出目录。
 
 ## EAGLE-4
 
-在独立 Python 3.12 环境安装作者构建。实测环境复用了服务器上已有的 Torch 2.14.0，并在独立环境中安装匹配的 vLLM、EAGLE Harness、FlashInfer 和 Transformers。 [固定的 wheel 和草稿版本](../../config/eagle4_suffix_b200.json)
+在独立 Python 3.12 环境安装作者构建。实测环境复用了服务器上已有的 Torch 2.14.0，并在独立环境中安装匹配的 vLLM、EAGLE Harness、FlashInfer 和 Transformers。 [固定的 wheel 和草稿版本](../../config/unified_framework.json)
 
 ```bash
 eagle_env="$replay_root/.venv-eagle"
@@ -35,7 +35,7 @@ python3.12 -m venv "$eagle_env"
 
 hf download EAGLE-Corp/Qwen3.8-27B-EAGLE4 config.json model.safetensors \
   --revision f58a5985223040552ad404fba98f0dd27f5f676a --local-dir "$eagle_draft"
-python src/replay_selected_speculation.py --method eagle4 --gpu "$gpu" \
+python src/unified_framework.py benchmark --study paired --method eagle4 --gpu "$gpu" \
   --vllm "$eagle_env/bin/vllm" --client-vllm "$standard_vllm" \
   --bench-deps "$bench_deps" --model "$target" --draft-model "$eagle_draft" --calibration "$calibration" \
   --output "$replay_root/eagle4"
@@ -59,9 +59,15 @@ CUDA_VISIBLE_DEVICES="$gpu" VLLM_USE_V2_MODEL_RUNNER=1 HF_HUB_OFFLINE=1 \
 dflash_draft="$replay_root/Qwen3.8-27B-DFlash2"
 hf download incoai/Qwen3.8-27B-DFlash2 config.json model.safetensors \
   --revision 015e795645c74b1a0eeef3b570031fb62e769bc5 --local-dir "$dflash_draft"
-python src/replay_selected_speculation.py --method dflash --gpu "$gpu" \
+python src/unified_framework.py benchmark --study paired --method dflash --gpu "$gpu" \
   --vllm "$standard_vllm" --client-vllm "$standard_vllm" \
   --bench-deps "$bench_deps" --model "$target" --draft-model "$dflash_draft" --output "$replay_root/dflash"
+```
+
+复跑完成后，从三组输出目录汇总结果。也可以把 `--results` 指向某一个方法的目录。
+
+```bash
+python src/unified_framework.py report --study paired --results "$replay_root" --output "$replay_root/report"
 ```
 
 [实测结果](eagle4_suffix.md)
