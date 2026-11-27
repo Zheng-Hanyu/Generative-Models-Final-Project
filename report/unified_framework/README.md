@@ -7,6 +7,7 @@
 | `framework` | `normal`、`mtp`、`dspark`、`dflash` | Spec-Bench 留出集和随机压力，或 SPEED-Bench 与 BurstGPT |
 | `paired` | `eagle4`、`dflash` | Spec-Bench 留出集和合成的重复代码编辑／JSON 输出 |
 | `concurrency` | `mtp`、`dspark`、`dflash`、`eagle4` | 固定 Spec-Bench 输入，七档并发 |
+| `high-load` | `mtp`、`dspark`、`dflash`、`eagle4` | 独立 Spec-Bench 留出集，并发 16、24、32 |
 
 `eagle4` 默认使用 `paired`。DFlash 2 默认跑 `framework`，复跑 EAGLE-4 对照时指定 `--study paired`。每个方法使用同卡、同一服务构建的 Normal。[EAGLE-4 与 DFlash 2 复跑](eagle4_dflash_replay.md)
 
@@ -97,6 +98,19 @@ python src/unified_framework.py report --study concurrency --results replay/conc
 
 每档吞吐倍率先按种子配对，再取中位数。绝对值取各组独立中位数。并发档指压测客户端同时允许的在途请求数。
 
+## 高并发发布配置
+
+配置文件每种方法提供一套高并发调参后发布的设置。用 `--study high-load` 复跑并发 16、24、32。每轮 48 条 Spec-Bench 请求，同种子在三档使用相同输入。这 144 条留出输入来自七档并发重测未用的部分。四种方法的引擎、权重及线程设置沿用上述并发复跑说明。
+
+```bash
+python src/unified_framework.py benchmark --study high-load --method dflash \
+  --gpu 2 --model "$target" --draft-model "$draft_dir" --output replay/high-load/dflash
+python src/unified_framework.py report --study high-load --results replay/high-load \
+  --output replay/high-load-report
+```
+
+把另外三个方法的结果放到同一父目录下的 `mtp`、`dspark` 和 `eagle4`。EAGLE-4 使用专用构建、权重和成本表，Normal 由框架按同一构建启动。公开负载和七档并发报告记录了各自实测时的配置。[高并发结果与 DFlash 2 延迟分析](high-load.md)
+
 ## DFlash 2 草稿量化
 
 在同一张 B200 上从原始 BF16 权重加载各量化格式，目标模型、草稿长度和注意力后端一致。先用 Spec-Bench 调参子集筛选，再让最快的可用量化、BF16 和 Normal 一起跑 Spec-Bench 留出集、SPEED-Bench 和 BurstGPT。量化只在三套负载的等权综合吞吐超过 BF16、各套负载的降幅都在 3% 以内时成为发布设置。[量化和显存实测](results.md#dflash-2-草稿量化复测) · [vLLM 在线量化](https://docs.vllm.ai/en/v0.34.0/features/quantization/online/)
@@ -112,13 +126,13 @@ python src/unified_framework.py report \
 
 本机 vLLM 0.34.0 拒绝将 `nvfp4_w4a16` 用作草稿在线量化参数，服务未启动。三种 8 位候选完成了筛选。
 
-发布设置采用 MXFP8，K 仍为 7。三套负载的综合吞吐是 BF16 的 1.001×，主要收益是模型加载显存从 31.31 GiB 降到 29.64 GiB。SPEED-Bench 并发 16 的 P95 首 token 延迟中位数从 188.47 ms 升到 204.37 ms，其中一轮 MXFP8 达到 1,008.14 ms。该轮计入中位数和范围。[逐轮统计](../../results/processed/unified-framework/summary.json)
+量化试验选中 MXFP8，草稿长度为 K=7。三套负载的综合吞吐是 BF16 的 1.001×，模型加载显存从 31.31 GiB 降到 29.64 GiB。SPEED-Bench 并发 16 的 P95 首 token 延迟中位数从 188.47 ms 升到 204.37 ms，其中一轮 MXFP8 达到 1,008.14 ms。该轮计入中位数和范围。[逐轮统计](../../results/processed/unified-framework/summary.json)
 
 DFlash 2 草稿端的服务日志记录了 `Using FlashAttention version 4`。安装的 vLLM 0.34.0 构建为 `62d4bc3c7`，包内 FA4 的接口和两份前向内核源码经哈希核对，与 vLLM 固定的 FlashAttention fork 提交 `d8dca8f0` 一致。2026-11-25 时，上游独立发行已到 `flash-attn-4 4.0.0b41`。本组实测使用 vLLM 自带的构建。[vLLM 构建配置](https://github.com/vllm-project/vllm/blob/v0.34.0/cmake/external_projects/vllm_flash_attn.cmake) · [固定提交](https://github.com/vllm-project/flash-attention/commit/d8dca8f06c7458a0c0e79dd9400c0446a4e77b9c) · [上游发行](https://pypi.org/project/flash-attn-4/4.0.0b41/)
 
-## 优化结果
+## 早期调参结果
 
-- DSpark 在保持草稿上限 K=8 和 FP8-per-tensor 量化的情况下，将草稿端从自动选择改为 Triton，恢复了完整 CUDA Graph 捕获。留出集在并发 1、4、16 下分别达到原配置的 **3.60×、2.87×、2.26×**，综合 **2.86×**。框架将该配置作为 DSpark 默认值。
+- DSpark 在草稿长度 K=8 和 FP8-per-tensor 量化下，将草稿端从自动选择改为 Triton，恢复了完整 CUDA Graph 捕获。留出集在并发 1、4、16 下分别达到原配置的 **3.60×、2.87×、2.26×**，综合 **2.86×**。
 - MTP 固定 K=5 的综合留出集吞吐为动态 K=6/5 的 **0.986×**，因此保留动态配置。
 - DFlash 2 保留 K=7。在最初的 BF16 试验中，FlashAttention 4 可以完整捕获 CUDA Graph。草稿端切到 FlashInfer 后 CUDA Graph 关闭，调参池并发 16 的吞吐从 1,794 降到 740 token/s。[早期 DFlash 2 结果](https://github.com/Zheng-Hanyu/Generative-Models-Final-Project/blob/63685a5e11358a45c9647b24e24a84ea43081fba/report/unified_framework/results.md)
 

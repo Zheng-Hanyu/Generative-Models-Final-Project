@@ -9,6 +9,7 @@ from pathlib import Path
 from statistics import geometric_mean, median
 
 from plot_style import BASELINE, METHOD_STYLES, MUTED, save_plot, speed_bars
+from serving import DEFAULT_MAX_BATCHED_TOKENS
 from workloads import cell_name, read_json, write_json
 
 WORKLOADS = (("spec-bench", "Spec-Bench 留出集"), ("repetition", "重复代码与 JSON"))
@@ -42,6 +43,10 @@ def retain_methods(data, methods):
                                                          if method in retained}}
     if data["winners"].keys() - retained.keys():
         result.pop("failed_candidate_counts", None)
+        if "selection" in data:
+            result["selection"] = {method: data["selection"][method] for method in retained}
+        if "dflash" not in retained:
+            result.pop("diagnosis", None)
     return result
 
 
@@ -50,6 +55,7 @@ def collect_paired(root, config, study):
     protocol = spec.get("protocol", config["protocol"])
     workloads = ("spec-bench", "repetition") if study == "paired" else ("spec-bench",)
     expected = set(product(workloads, protocol["concurrencies"], protocol["holdout_seeds"]))
+    reused_prompts = protocol.get("reuse_prompts_by_seed", False)
     lanes = [root] if (root / "experiment.json").is_file() else [
         root / method for method in spec["methods"] if (root / method / "experiment.json").is_file()
     ]
@@ -75,7 +81,7 @@ def collect_paired(root, config, study):
         if signature is not None and current != signature:
             raise ValueError(f"{lane}: inputs, client or hardware differ from the other methods")
         signature = current
-        if study == "concurrency":
+        if reused_prompts:
             for seed in protocol["holdout_seeds"]:
                 hashes = {cell["sha256"] for (_, _, run_seed), cell in cells.items() if run_seed == seed}
                 if len(hashes) != 1:
@@ -99,7 +105,8 @@ def collect_paired(root, config, study):
         for role, key, control in zip(roles, (baseline, label), (None, baseline), strict=True):
             directory = lane / role
             record = read_json(directory / "completed.json")
-            if record["profile"]["spec"] != (None if control is None else profile["spec"]):
+            expected_profile = config["methods"]["normal"]["reference"] if control is None else profile
+            if record["profile"] != expected_profile:
                 raise ValueError(f"{directory}: profile does not match the experiment")
             rows = defaultdict(list)
             for (workload, concurrency, seed), cell in sorted(cells.items()):
@@ -118,7 +125,7 @@ def collect_paired(root, config, study):
                     **{metric: result[metric] for metric in METRICS},
                     "spec_decode_acceptance_rate": result.get("spec_decode_acceptance_rate"),
                 }
-                if study == "concurrency":
+                if reused_prompts:
                     input_lens = result["input_lens"]
                     if len(input_lens) != cell["count"] or lengths.setdefault(seed, input_lens) != input_lens:
                         raise ValueError(f"{result_path}: input sequence differs by role or concurrency")
@@ -128,6 +135,10 @@ def collect_paired(root, config, study):
                 {"workload": workload, "concurrency": concurrency, "runs": matches}
                 for (workload, concurrency), matches in rows.items()
             ]}
+            if study == "high-load":
+                data["profiles"][key]["max_num_batched_tokens"] = expected_profile.get(
+                    "max_num_batched_tokens", DEFAULT_MAX_BATCHED_TOKENS
+                )
     return data
 
 

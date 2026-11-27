@@ -2,13 +2,28 @@
 
 周熙言（`xiyanzhou`）在单张 NVIDIA B200 上测量 Qwen3.8-27B-FP8 的输出吞吐、P95 首 token 延迟（TTFT）、P95 每 token 延迟（TPOT）和草稿接受率。每个吞吐倍率先按同卡、同引擎构建、同输入和同种子配对 Normal，再取每档并发的中位数。综合倍率取各档的几何平均。
 
-## Spec-Bench 七档并发重测
+## 并发 16、24、32 的发布配置
+
+每种方法筛选五套配置，再让最佳挑战者、原配置和同卡 Normal 跑 144 条独立留出输入。三档吞吐等权，达到最快配置的 97% 时，优先保留并发 32 的 P95 首 token 延迟较低的设置。
+
+| 方法 | 发布配置 | 三档综合吞吐 / 原配置 | C32 P95 TTFT（原配置 → 发布） |
+|---|---|---:|---:|
+| Native MTP | 固定 K=4 | 1.016× | 557 → 547 ms |
+| DSpark | Triton，FP8 per-tensor，K=4 | 1.043× | 565 → 550 ms |
+| DFlash 2 | MXFP8，K=7，调度预算 4,096 tokens | 1.000× | 553 → 553 ms |
+| EAGLE-4 | 验证宽度 6，树深 8 | 1.018× | 606 → 569 ms |
+
+DFlash 2 在早期压测中从 C24 的 307 ms 升至 C32 的 530 ms。其中一轮遇到运行中 CuTeDSL JIT。控制实验把调度前排队压到 0.03 ms 后，重输入仍有明显尾延迟，主要耗时落在首次调度到首 token 之间。
+
+[验证结果与 DFlash 2 延迟分析](report/unified_framework/high-load.md) · [逐轮数据](results/processed/unified-framework/high-load-summary.json)
+
+## 早期 Spec-Bench 七档并发重测
 
 重新测试了四种推测解码方法和各自的同卡 Normal。并发覆盖 1、2、4、8、16、24、32，每档三轮，每轮 64 条请求。同一种子在七档并发使用同一批输入。
 
 DFlash 2 在并发 32 时达到 Normal 的 **1.310×**，P95 首 token 延迟增加约 51%，P95 每 token 延迟降低约 14%。DSpark 在并发 8 时的吞吐倍率最高，为 **1.953×**。[完整结果与图表](report/unified_framework/concurrency.md) · [逐轮数据](results/processed/unified-framework/concurrency-summary.json)
 
-## 各方法在什么负载上有效
+## 其他负载的实测
 
 | 方法 | 实测表现 |
 |---|---|
@@ -28,7 +43,7 @@ DFlash 2 在并发 32 时达到 Normal 的 **1.310×**，P95 首 token 延迟增
 
 ```bash
 python src/unified_framework.py profiles
-python src/unified_framework.py benchmark --method dspark --print-plan --output replay/dspark-plan
+python src/unified_framework.py benchmark --study high-load --method dspark --print-plan --output replay/dspark-plan
 python -m pip install matplotlib==3.11.2
 python src/unified_framework.py report --output replay/report-hd
 ```

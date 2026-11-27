@@ -74,7 +74,8 @@ def write_workloads(directory, source, protocol):
         for index, (seed, concurrency) in enumerate(cells):
             name = cell_name(phase, concurrency, seed)
             if phase == "holdout" and protocol.get("reuse_prompts_by_seed"):
-                subset = rows[seeds.index(seed)::len(seeds)][:count]
+                offset = protocol.get("holdout_offset", 0)
+                subset = rows[seeds.index(seed)::len(seeds)][offset:offset + count]
             else:
                 subset = rows[index::len(cells)]
             if len(subset) < count:
@@ -306,7 +307,7 @@ def prepare_inputs(output, dataset, config, study):
     cells = []
     for seed in protocol["holdout_seeds"]:
         concurrencies = protocol["concurrencies"].copy()
-        if study == "concurrency":
+        if protocol.get("reuse_prompts_by_seed"):
             random.Random(seed).shuffle(concurrencies)
         for concurrency in concurrencies:
             name = cell_name("holdout", concurrency, seed)

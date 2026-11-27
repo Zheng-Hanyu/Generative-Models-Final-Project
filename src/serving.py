@@ -16,6 +16,7 @@ from pathlib import Path
 from urllib.request import ProxyHandler, Request, build_opener
 
 CAPTURE_SIZES = (1, 2, 3, 4, 6, 8, 12, 16, 20, 24, 28, 32)
+DEFAULT_MAX_BATCHED_TOKENS = 4096
 HTTP = build_opener(ProxyHandler({}))
 
 
@@ -31,13 +32,14 @@ def warmup(url):
                 raise RuntimeError('Warmup produced no choices')
 
 
-def build_launch_command(args, config, capture_sizes=CAPTURE_SIZES, eagle=False):
+def build_launch_command(args, config, capture_sizes=CAPTURE_SIZES, eagle=False,
+                         max_num_batched_tokens=DEFAULT_MAX_BATCHED_TOKENS):
     graph = {"decode_cudagraph_capture_request_sizes": capture_sizes}
     command = [
         args.vllm, 'serve', args.model, '--served-model-name', 'qwen-fp8',
         '--host', '127.0.0.1', '--port', str(args.port), '--language-model-only',
         '--no-enable-prefix-caching', '--generation-config', 'vllm', '--max-model-len', '4096',
-        '--max-num-seqs', '32', '--max-num-batched-tokens', '4096',
+        '--max-num-seqs', '32', '--max-num-batched-tokens', str(max_num_batched_tokens),
         '--gpu-memory-utilization', '0.55', '--attention-backend', 'CUSTOM' if eagle else 'TRITON_ATTN',
     ]
     if eagle:

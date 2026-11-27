@@ -20,7 +20,7 @@ from itertools import product
 from pathlib import Path
 
 from serving import (
-    CAPTURE_SIZES, BenchmarkCell, benchmark_command, build_launch_command, environment,
+    CAPTURE_SIZES, DEFAULT_MAX_BATCHED_TOKENS, BenchmarkCell, benchmark_command, build_launch_command, environment,
     measure_cell, reserve_gpu, running_server, spec_bench_flags, terminate, vllm_version,
 )
 from workloads import (
@@ -57,7 +57,10 @@ def config_command(args, profile, capture_sizes=CAPTURE_SIZES):
         spec = {**spec, "model": str(args.draft_model.resolve()), "method_config": {
             **spec["method_config"], "data_path": str(calibration.resolve()),
         }}
-    return build_launch_command(args, spec, capture_sizes, eagle=eagle)
+    max_num_batched_tokens = profile.get("max_num_batched_tokens", DEFAULT_MAX_BATCHED_TOKENS)
+    if type(max_num_batched_tokens) is not int or max_num_batched_tokens < 32:
+        raise ValueError("max_num_batched_tokens must be an integer of at least 32")
+    return build_launch_command(args, spec, capture_sizes, eagle=eagle, max_num_batched_tokens=max_num_batched_tokens)
 
 
 def confirmation_profiles(args, config, selected=None):
@@ -174,7 +177,7 @@ class Experiment:
         updates = []
         for row in self.method["round2"]:
             merged = best["spec"] | row["override"]
-            updates.append({"id": row["id"], "spec": {key: value for key, value in merged.items() if value is not None}})
+            updates.append({**best, "id": row["id"], "spec": {key: value for key, value in merged.items() if value is not None}})
         phase2 = self.screen(updates)
         valid2 = [row for row in phase2 if "score" in row]
         if not valid2:
@@ -223,9 +226,9 @@ def selected_profile(method, path, reference):
 def quantization_profiles(args, config):
     published = config["methods"]["dflash"]["reference"]
     spec = {key: value for key, value in published["spec"].items() if key != "quantization"}
-    reference = {"id": f"dflash2-k{spec['num_speculative_tokens']}", "spec": spec}
+    reference = {**published, "id": f"dflash2-k{spec['num_speculative_tokens']}", "spec": spec}
     candidates = [
-        {"id": "dflash2-" + name.replace("_", "-"), "spec": {**spec, "quantization": name}}
+        {**published, "id": "dflash2-" + name.replace("_", "-"), "spec": {**spec, "quantization": name}}
         for name in args.quantizations
     ]
     if len({profile["id"] for profile in candidates}) != len(candidates):
@@ -300,7 +303,7 @@ def paired_profiles(args, config, study):
     reference = config["methods"][args.method]["reference"]
     normal = config["methods"]["normal"]["reference"]
     profiles = [("normal", normal), (args.method, reference)]
-    if study == "concurrency" and args.gpu % 2:
+    if study in ("concurrency", "high-load") and args.gpu % 2:
         profiles.reverse()
     return profiles
 
@@ -393,7 +396,7 @@ def main():
     actions = parser.add_subparsers(dest="action", required=True)
     actions.add_parser("profiles", help="list published profiles and study names")
     prepare = actions.add_parser("prepare", help="prepare benchmark input files")
-    prepare.add_argument("--study", choices=("framework", "paired", "concurrency", "external"), default="framework")
+    prepare.add_argument("--study", choices=("framework", "paired", "concurrency", "high-load", "external"), default="framework")
     prepare.add_argument("--dataset", type=Path, default=DATASET)
     prepare.add_argument("--speed-parquet", type=Path)
     prepare.add_argument("--burst-csv", type=Path)
@@ -413,7 +416,7 @@ def main():
         sub.add_argument("--vllm", default="vllm")
         sub.add_argument("--bench-deps", default="")
         if action in ("serve", "benchmark"):
-            sub.add_argument("--study", choices=("framework", "paired", "concurrency"))
+            sub.add_argument("--study", choices=("framework", "paired", "concurrency", "high-load"))
             sub.add_argument("--calibration", type=Path, help="EAGLE-4 cost-table directory (defaults to the published tables)")
         if action == "serve":
             sub.add_argument("--selection", type=Path)
@@ -428,7 +431,7 @@ def main():
             sub.add_argument("--workloads", type=Path, help="replay a prepared SPEED-Bench and BurstGPT manifest")
             sub.add_argument("--client-vllm", help="separate vLLM 0.34.0 benchmark client for paired studies")
     report = actions.add_parser("report", help="render tables and figures")
-    report.add_argument("--study", choices=("framework", "paired", "concurrency"))
+    report.add_argument("--study", choices=("framework", "paired", "concurrency", "high-load"))
     report.add_argument("--results", type=Path, help="a summary JSON or a replay directory; defaults to all published studies")
     report.add_argument("--external-results", type=Path)
     report.add_argument("--draft-study", type=Path, help="include a completed DFlash 2 quantization study")

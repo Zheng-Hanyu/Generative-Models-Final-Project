@@ -38,32 +38,20 @@
     "mtp": {
       "label": "Native MTP",
       "reference": {
-        "id": "mtp-dynamic-smooth",
+        "id": "mtp-k4",
         "spec": {
           "method": "mtp",
-          "num_speculative_tokens": 6,
-          "num_speculative_tokens_per_batch_size": [
-            [
-              1,
-              4,
-              6
-            ],
-            [
-              5,
-              32,
-              5
-            ]
-          ]
+          "num_speculative_tokens": 4
         }
       }
     },
     "dspark": {
       "label": "DSpark",
       "reference": {
-        "id": "dspark-triton-k8",
+        "id": "dspark-k4",
         "spec": {
           "method": "dspark",
-          "num_speculative_tokens": 8,
+          "num_speculative_tokens": 4,
           "quantization": "fp8_per_tensor",
           "attention_backend": "TRITON_ATTN"
         }
@@ -83,14 +71,14 @@
     "eagle4": {
       "label": "EAGLE-4",
       "reference": {
-        "id": "eagle4-w8",
+        "id": "eagle4-w6-d8",
         "spec": {
           "method": "eagle_harness",
           "model": "EAGLE-Corp/Qwen3.8-27B-EAGLE4",
           "method_config": {
             "mode": "static",
             "node_top_k": 4,
-            "max_verify_width": 8,
+            "max_verify_width": 6,
             "tree_depth": 8,
             "data_path": "config/eagle4_b200_calibration"
           }
@@ -148,6 +136,33 @@
         "holdout_prompts": 64,
         "output_tokens": 128,
         "reuse_prompts_by_seed": true
+      }
+    },
+    "high-load": {
+      "methods": [
+        "mtp",
+        "dspark",
+        "dflash",
+        "eagle4"
+      ],
+      "client_version": "0.34.0",
+      "protocol": {
+        "split_seed": 126451,
+        "tuning_fraction": 0.3,
+        "holdout_seeds": [
+          1201,
+          1289,
+          1361
+        ],
+        "concurrencies": [
+          16,
+          24,
+          32
+        ],
+        "holdout_prompts": 48,
+        "output_tokens": 128,
+        "reuse_prompts_by_seed": true,
+        "holdout_offset": 64
       }
     }
   }

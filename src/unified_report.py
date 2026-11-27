@@ -9,6 +9,7 @@ from statistics import geometric_mean, median
 
 from comparison_report import collect_paired, report_comparison, retain_methods
 from concurrency_report import report_concurrency
+from high_load_report import report_high_load
 from plot_style import BASELINE, DFLASH, METHOD_STYLES, save_plot, setup_plots, speed_bars
 from workloads import ROOT, cell_name, read_json, stress_cells, write_json
 
@@ -21,6 +22,7 @@ PUBLISHED = {
     "framework": ROOT / "results/processed/unified-framework/summary.json",
     "paired": ROOT / "results/processed/unified-framework/eagle4-dflash-b200.json",
     "concurrency": ROOT / "results/processed/unified-framework/concurrency-summary.json",
+    "high-load": ROOT / "results/processed/unified-framework/high-load-summary.json",
 }
 
 
@@ -601,7 +603,9 @@ def report_studies(args, config):
             study = read_json(args.results / "experiment.json").get("study", "framework")
         else:
             study = "framework"
-    studies = [study] if study else list(PUBLISHED)
+    if study is not None and study not in config["studies"]:
+        raise ValueError(f"Configuration has no {study} study")
+    studies = [study] if study else [name for name in PUBLISHED if name in config["studies"]]
     if "framework" not in studies and (args.external_results or args.draft_study):
         raise ValueError("--external-results and --draft-study apply to the framework report")
     plt = setup_plots()
@@ -618,5 +622,7 @@ def report_studies(args, config):
                 data = collect_paired(results, config, name)
             if name == "concurrency":
                 report_concurrency(data, args.output, plt)
+            elif name == "high-load":
+                report_high_load(data, args.output, plt)
             else:
                 report_comparison(data, args.output, plt)
