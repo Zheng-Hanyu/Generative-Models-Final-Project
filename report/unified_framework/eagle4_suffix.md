@@ -18,15 +18,16 @@
 
 Spec-Bench 使用项目既有留出划分，生成上限为 128 tokens。重复代码／JSON 负载为独立构造的合成提示，代码编辑和 JSON 输出各占一半，每条生成固定 128 tokens。设置排名基于本页所列负载与并发。
 
-## 吞吐和延迟
+## 吞吐、延迟与接受率
 
-在重复代码／JSON 负载上，Adaptive Suffix 的草稿接受率为 62.4%–71.2%，综合吞吐为同构建 Normal 的 3.127×。在 Spec-Bench 上，它的接受率为 8.7%–9.5%，且在并发 16 时，P95 每 token 延迟由 10.74 ms 升至 12.43 ms。两套负载的重复结构不同，配对结果分别报告。
+- **Normal。** Spec-Bench 并发 16 时，标准 vLLM 构建的中位吞吐为 1,306.24 tok/s，EAGLE 构建为 1,158.88 tok/s。每个方法的倍率用各自同构建的 Normal 计算，绝对吞吐和延迟见下表。
+- **EAGLE-4。** 两套负载的综合倍率接近（2.322× 和 2.288×）。合成重复负载并发 1 时，P95 TTFT 从 56.58 ms 降至 43.21 ms，P95 TPOT 从 8.67 ms 降至 2.89 ms。Spec-Bench 并发 16 的吞吐倍率在 1.016× 至 2.879× 之间。
+- **自适应 Suffix。** 合成重复负载各档的草稿接受率为 62.4% 至 71.2%，Spec-Bench 为 8.7% 至 9.5%。合成负载并发 16 时，P95 TPOT 从 10.85 ms 降至 4.86 ms，P95 TTFT 从 284.70 ms 升至 307.10 ms。Spec-Bench 同一并发下的吞吐只有 1.038×，P95 TPOT 从 10.74 ms 升至 12.43 ms。
+- **DFlash 2。** Spec-Bench 三档并发的综合倍率为 2.402×，重复负载为 2.425×。Spec-Bench 并发 16 时，P95 TPOT 从 10.74 ms 降至 6.81 ms，P95 TTFT 从 204.10 ms 升至 237.92 ms。
 
-![按负载和并发分面的配对输出吞吐倍率](figures/eagle4-suffix-throughput.png)
+![按负载分列的配对吞吐、P95 每 token 延迟和草稿接受率](figures/eagle4-suffix.png)
 
-![按负载和并发分面的配对 P95 首 token 与每 token 延迟倍率](figures/eagle4-suffix-latency.png)
-
-图中虚线对应同构建 Normal。吞吐图的线段两端是三个种子的最小和最大配对倍率。延迟图先对每个种子计算 P95 倍率，再取中位数。 [吞吐 PDF](figures/eagle4-suffix-throughput.pdf) · [延迟 PDF](figures/eagle4-suffix-latency.pdf)
+吞吐须线覆盖三个种子的最小和最大配对倍率。P95 TPOT 先求每轮的配对倍率，再取三轮中位数。草稿接受率按 vLLM 记录的已接受草稿 token 占比计算。
 
 ## 按负载和并发的结果
 
@@ -34,7 +35,7 @@ Spec-Bench 使用项目既有留出划分，生成上限为 128 tokens。重复�
 
 EAGLE-4 成本表由批大小 1 的校准测量拟合。拟合工具标记了 28.24% 的缓存成本测量组为不稳定。下表的吞吐及延迟来自实际压测。
 
-EAGLE 构建的 Normal 在 Spec-Bench 并发 16、种子 557 这一轮出现额外的 CuTeDSL JIT 编译。该轮 30 条请求均成功，吞吐为 642.70 tok/s，另外两轮为 1,172.54 和 1,158.88 tok/s。逐轮结果和配对中位数均保留了这一轮。
+EAGLE 构建的 Normal 在 Spec-Bench 并发 16、种子 557 这一轮出现额外的 CuTeDSL JIT 编译。该轮 30 条请求均成功，吞吐为 642.70 tok/s，另外两轮为 1,172.54 和 1,158.88 tok/s。与该轮配对的吞吐倍率为 2.879×，三轮统计保留了这次观测。Spec-Bench 并发 4 的三轮 P95 TTFT 倍率介于 0.683× 与 9.938×，中位数为 1.028×。
 
 ### Spec-Bench 留出集
 

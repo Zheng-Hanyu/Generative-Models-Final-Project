@@ -1,28 +1,32 @@
 # Qwen3.8-27B-FP8 推测解码实测
 
-周熙言（`xiyanzhou`）在单张 NVIDIA B200 上测量 Qwen3.8-27B-FP8 的输出吞吐、P95 首 token 延迟（TTFT）、P95 每 token 延迟（TPOT）和草稿接受率。每种方法都用同一张卡、同一引擎构建下的 Normal 做对照。
+周熙言（`xiyanzhou`）在单张 NVIDIA B200 上测量 Qwen3.8-27B-FP8 的输出吞吐、P95 首 token 延迟（TTFT）、P95 每 token 延迟（TPOT）和草稿接受率。每个吞吐倍率先按同卡、同引擎构建、同输入和同种子配对 Normal，再取每档并发的中位数。综合倍率取各档的几何平均。
 
-| 实验 | 方法和负载 |
+## 各方法在什么负载上有效
+
+| 方法 | 实测表现 |
 |---|---|
-| [公开负载](report/unified_framework/results.md) | Native MTP、DSpark、DFlash 2。测 Spec-Bench、SPEED-Bench、BurstGPT v2.0 和随机压力，另测 DFlash 2 草稿量化。 |
-| [重复输出对照](report/unified_framework/eagle4_suffix.md) | EAGLE-4、自适应 Suffix、DFlash 2。测 Spec-Bench 留出集，以及合成的重复代码编辑和 JSON 输出。 |
-| [标准 Suffix](report/unified_framework/early_suffix.md) | 固定 K=4。在另一套 Spec-Bench 划分上测吞吐、延迟和输出一致性，另做了短答检查。 |
+| Normal | 关闭推测解码。EAGLE-4 对照组使用作者的 vLLM 构建，其余方法使用 vLLM 0.34.0。公开负载、EAGLE-4 对照和标准 Suffix 各自使用该轮的 Normal。 |
+| Native MTP | 主模型自带的动态 MTP 在公开 Spec-Bench 达到 1.998×。BurstGPT 回放的吞吐为 1.057×，P95 TPOT 从 10.61 ms 降到 6.60 ms，P95 TTFT 从 63.07 ms 升到 75.91 ms。 |
+| DSpark | Triton 草稿端和 K=8 在公开 Spec-Bench 达到 2.282×。随机压力并发 32 的单轮吞吐为 1.035×，P95 TPOT 从 19.45 ms 升到 28.10 ms。 |
+| DFlash 2 | MXFP8 草稿在公开 Spec-Bench 达到 2.385×，在后续配对实验中为 2.402×。量化将模型加载显存从 31.31 GiB 降到 29.64 GiB，三套负载综合吞吐为 BF16 的 1.001×。 |
+| EAGLE-4 | 相对作者构建的 Normal，Spec-Bench 为 2.322×，合成重复代码与 JSON 为 2.288×。Spec-Bench 并发 16 三轮吞吐倍率为 1.016× 至 2.879×，含一次对照组额外编译。 |
+| 自适应 Suffix | 合成重复代码与 JSON 为 3.127×，Spec-Bench 为 1.256×。Spec-Bench 并发 16 的收益缩至 1.038×，P95 TPOT 从 10.74 ms 升到 12.43 ms。 |
+| 标准 Suffix | 在独立的 Spec-Bench 划分上，并发 1 达到 1.494×，P95 TPOT 从 8.42 ms 降到 6.93 ms。并发 16 的吞吐为 1.045×，P95 TPOT 从 11.36 ms 升到 11.84 ms。 |
 
-公开负载实验中，Native MTP 和 DSpark 在 Spec-Bench 上分别达到 Normal 的 1.998× 和 2.282×。DFlash 2 的 MXFP8 草稿把模型加载显存从 31.31 GiB 降到 29.64 GiB，综合吞吐为 BF16 的 1.001×。[公开负载结果](report/unified_framework/results.md)
+[公开负载与量化](report/unified_framework/results.md) · [EAGLE-4 和自适应 Suffix 对照](report/unified_framework/eagle4_suffix.md) · [标准 Suffix 与输出一致性](report/unified_framework/early_suffix.md)
 
-在 EAGLE-4 与自适应 Suffix 的对照中，Spec-Bench 上 DFlash 2 的综合吞吐倍率最高（2.402×），合成重复负载上则是自适应 Suffix（3.127×）。EAGLE-4 在这两类负载上分别达到 2.322× 和 2.288×。综合倍率先取每档并发三轮的配对中位数，再作几何平均。[绝对吞吐和尾延迟](report/unified_framework/eagle4_suffix.md)
+![Spec-Bench、SPEED-Bench、BurstGPT 和随机压力的输出吞吐](report/unified_framework/figures/serving-throughput.png)
 
-![Spec-Bench 与合成重复负载的配对吞吐曲线](report/unified_framework/figures/eagle4-suffix-throughput.png)
+## 复现
 
-## 使用
-
-从仓库根目录运行。下面的命令会列出发布配置、生成 DSpark 的压测计划，并从现有 JSON 重生成三组实验的 Markdown 和三种图表格式（PDF、SVG、300 dpi PNG）。查看计划和出图只需要 Python 3.11 或更新版本，出图还需 Matplotlib。
+从仓库根目录运行。预览计划和重生成报告只需 Python 3.11 或更新版本，出图需 Matplotlib 和系统安装的 TeX Gyre Pagella 常规及粗体。每张图输出一份 400 dpi PNG。[字体下载](https://ctan.org/pkg/tex-gyre-pagella)
 
 ```bash
 python src/unified_framework.py profiles
 python src/unified_framework.py benchmark --method dspark --print-plan --output replay/dspark-plan
 python -m pip install matplotlib==3.11.2
-python src/unified_framework.py report --output replay/report
+python src/unified_framework.py report --output replay/report-hd
 ```
 
-在 B200 上复跑时，用 `prepare` 生成输入，用 `serve` 单独启动某个配置，或用 `benchmark` 自动跑方法和 Normal。公开负载支持 `tune`，DFlash 2 草稿量化使用 `quantization-study`。Native MTP 使用主模型内置的头，DSpark 和 DFlash 2 需要各自的草稿权重，EAGLE-4 还需要独立的 vLLM 构建。[实验协议和复跑](report/unified_framework/README.md) · [EAGLE-4 环境](report/unified_framework/eagle4_suffix_replay.md) · [统一配置](config/unified_framework.json)
+B200 上可用同一入口准备输入、启动服务、配对压测、调参和复跑草稿量化。Native MTP 使用主模型内置的头，DSpark 和 DFlash 2 需要各自的草稿权重，EAGLE-4 需要作者的 vLLM 构建。[实验协议与命令](report/unified_framework/README.md) · [EAGLE-4 环境](report/unified_framework/eagle4_suffix_replay.md) · [统一配置](config/unified_framework.json)

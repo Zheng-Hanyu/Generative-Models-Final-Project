@@ -8,7 +8,7 @@ from math import ceil, isfinite
 from pathlib import Path
 from statistics import geometric_mean, median
 
-from plot_style import BASELINE, METHOD_STYLES, MUTED, SUFFIX, save_plot
+from plot_style import BAR_HATCHES, BASELINE, METHOD_STYLES, MUTED, SUFFIX, save_plot, speed_bars
 from workloads import cell_name, read_json, write_json
 
 WORKLOADS = (("spec-bench", "Spec-Bench 留出集"), ("repetition", "重复代码与 JSON"))
@@ -119,74 +119,59 @@ def paired_runs(profiles, method, workload, metric):
     return dict(sorted(cells.items()))
 
 
-def panel(ax, profiles, methods, workload, metric, ranges=False):
-    ax.axhline(1, color=BASELINE, linestyle="--", linewidth=1.05)
-    ax.grid(axis="y")
-    peak = 1.0
-    for index, (method, label, (color, marker, style)) in enumerate(methods):
-        cells = paired_runs(profiles, method, workload, metric)
-        values = list(cells.values())
-        centers = [median(cell) for cell in values]
-        x = [position + (index - (len(methods) - 1) / 2) * 0.075 for position in range(len(cells))]
-        ax.plot(x, centers, color=color, marker=marker, linestyle=style, markeredgecolor="white",
-                markeredgewidth=0.7, label=label, zorder=3)
-        upper = [max(cell) for cell in values] if ranges else centers
-        peak = max(peak, max(upper))
-        if ranges:
-            ax.vlines(x, [min(cell) for cell in values], upper, color=color, alpha=0.56, linewidth=1.65)
-    ax.set_xticks(range(len(cells)), tuple(cells))
-    ax.set_xlim(-0.25, len(cells) - 0.75)
-    return peak
-
-
-def decorate(fig, axes, title, caption):
-    handles, labels = axes.get_legend_handles_labels()
-    fig.suptitle(title, x=0.084, y=0.965, ha="left", fontsize=14, fontweight="semibold")
-    fig.legend(handles, labels, loc="lower center", bbox_to_anchor=(0.5, 0.048), ncol=len(labels))
-    fig.text(0.084, 0.019, caption, fontsize=10, color=MUTED)
-
-
 def plot_paired(data, output, plt):
+    from matplotlib.legend_handler import HandlerTuple
+    from matplotlib.lines import Line2D
+
     profiles = data["profiles"]
-    methods = [
-        (profile, label, METHOD_STYLES[method])
-        for method, label in PAIRED_STYLES
-        if (profile := profile_for(data, method)) is not None
-    ]
-
-    fig, axes = plt.subplots(1, 2, figsize=(7.75, 3.7), sharey=True)
-    peaks = []
-    for index, (ax, (workload, label)) in enumerate(zip(axes, WORKLOAD_TITLES, strict=True)):
-        peaks.append(panel(ax, profiles, methods, workload, "output_throughput", ranges=True))
-        ax.set_title(f"({chr(97 + index)})  {label}", loc="left")
-        ax.tick_params(axis="x", pad=4)
-    axes[0].set_ylim(0, ceil(1.05 * max(peaks)))
-    axes[0].set_ylabel("Output throughput / matched Normal")
-    fig.supxlabel("Concurrent requests", y=0.145, fontsize=10.5, color=MUTED)
-    decorate(
-        fig, axes[0], "Speculative decoding speedup by workload",
-        "Dots: paired medians. Bars: min–max across 3 seeds. Dashed line: matched Normal.",
-    )
-    fig.subplots_adjust(left=0.105, right=0.97, bottom=0.265, top=0.815, wspace=0.16)
-    save_plot(fig, plt, output, "eagle4-suffix-throughput")
-
-    fig, axes = plt.subplots(2, 2, figsize=(7.75, 5.1), sharex=True, sharey=True)
-    metrics = (("p95_ttft_ms", "P95 TTFT"), ("p95_tpot_ms", "P95 TPOT"))
-    peaks = []
-    for row_index, (row, (workload, label)) in enumerate(zip(axes, WORKLOAD_TITLES, strict=True)):
-        for column, (ax, (metric, title)) in enumerate(zip(row, metrics, strict=True)):
-            peaks.append(panel(ax, profiles, methods, workload, metric))
-            letter = chr(97 + 2 * row_index + column)
-            ax.set_title(f"({letter})  {label} · {title}", loc="left", fontsize=11.2)
-    axes[0, 0].set_ylim(0, ceil(4.3 * max(peaks)) / 4)
-    fig.supylabel("P95 latency / matched Normal", x=0.028, fontsize=10.5, color=MUTED)
-    fig.supxlabel("Concurrent requests", y=0.113, fontsize=10.5, color=MUTED)
-    decorate(
-        fig, axes[0][0], "Speculative decoding tail latency",
-        "Median of 3 paired P95 ratios. Values below 1 indicate lower latency.",
-    )
-    fig.subplots_adjust(left=0.105, right=0.97, bottom=0.205, top=0.835, wspace=0.15, hspace=0.31)
-    save_plot(fig, plt, output, "eagle4-suffix-latency")
+    methods = [(method, profile, label) for method, label in PAIRED_STYLES
+               if (profile := profile_for(data, method)) is not None]
+    fig, axes = plt.subplots(3, 2, figsize=(7.7, 6.55), sharex="col", sharey="row")
+    peak = 1.0
+    ratios_peak = 1.0
+    for column, (workload, label) in enumerate(WORKLOAD_TITLES):
+        speed, latency, acceptance = axes[:, column]
+        groups = {method: paired_runs(profiles, profile, workload, "output_throughput")
+                  for method, profile, _ in methods}
+        peak = max(peak, speed_bars(speed, groups))
+        speed.set_title(label, loc="center", pad=10)
+        latency.axhline(1, color=BASELINE, linestyle="--", linewidth=1.0)
+        latency.grid(axis="y")
+        acceptance.grid(axis="y")
+        for method, profile, _ in methods:
+            color, marker, style = METHOD_STYLES[method]
+            values = paired_runs(profiles, profile, workload, "p95_tpot_ms")
+            medians = [median(runs) for runs in values.values()]
+            ratios_peak = max(ratios_peak, max(medians))
+            latency.plot(range(len(values)), medians, color=color, marker=marker, linestyle=style)
+            rows = {row["concurrency"]: row["runs"] for row in profiles[profile]["rows"] if row["workload"] == workload}
+            rates = []
+            for concurrency in values:
+                rates_in_run = [run["spec_decode_acceptance_rate"] for run in rows[concurrency]
+                                if run["spec_decode_acceptance_rate"] is not None]
+                rates.append(median(rates_in_run) if rates_in_run else float("nan"))
+            acceptance.plot(range(len(values)), rates, color=color, marker=marker, linestyle=style)
+            acceptance.set_xticks(range(len(values)), list(values))
+    axes[0, 0].set_ylim(0, ceil(2.15 * peak) / 2)
+    axes[1, 0].set_ylim(0, max(1.25, ceil(4.1 * ratios_peak) / 4))
+    axes[2, 0].set_ylim(0, 100)
+    axes[2, 0].set_yticks([0, 25, 50, 75, 100])
+    for row, name in zip(axes, ("Output throughput / Normal", "P95 TPOT / Normal", "Draft acceptance (%)"), strict=True):
+        row[0].set_ylabel(name)
+    for index, ax in enumerate(axes.flat):
+        ax.text(0.025, 0.95, f"({chr(97 + index)})", transform=ax.transAxes, va="top",
+                fontsize=8.8, fontweight="bold", color=MUTED)
+    fig.supxlabel("Concurrent requests", y=0.025)
+    patches, _ = axes[0, 0].get_legend_handles_labels()
+    handles = []
+    for patch, (method, _, _) in zip(patches, methods, strict=True):
+        color, marker, style = METHOD_STYLES[method]
+        handles.append((patch, Line2D([], [], color=color, marker=marker, linestyle=style)))
+    fig.legend(handles, [label for _, _, label in methods], loc="upper center",
+               bbox_to_anchor=(0.5, 0.992), ncol=len(methods), handlelength=3.25,
+               handler_map={tuple: HandlerTuple(ndivide=None, pad=0.3)})
+    fig.subplots_adjust(left=0.105, right=0.98, bottom=0.095, top=0.886, wspace=0.16, hspace=0.19)
+    save_plot(fig, plt, output, "eagle4-suffix")
 
 
 def render_paired(data):
@@ -200,11 +185,11 @@ def render_paired(data):
         values = [geometric_mean(median(cell) for cell in paired_runs(
             profiles, profile, workload, "output_throughput").values()) for workload, _ in WORKLOADS]
         lines.append(f"| {label} | {values[0]:.3f}× | {values[1]:.3f}× |")
-    lines.extend(["", "![配对吞吐倍率](figures/eagle4-suffix-throughput.png)", "",
-                  "![配对尾延迟倍率](figures/eagle4-suffix-latency.png)"])
+    lines.extend(["", "![配对吞吐、P95 每 token 延迟和草稿接受率](figures/eagle4-suffix.png)", "",
+                  "吞吐须线覆盖各轮最小值和最大值。虚线对应同构建 Normal。"])
     for workload, title in WORKLOADS:
         lines.extend(["", f"## {title}", "",
-                      "| 方法 | 并发 | Normal (tok/s) | 方法 (tok/s) | 配对吞吐倍率 | P95 TTFT 倍率 | P95 TPOT 倍率 | 草稿接受率 |",
+                      "| 方法 | 并发 | Normal (tok/s) | 方法 (tok/s) | 配对吞吐倍率 | P95 TTFT 倍率（中位数及范围） | P95 TPOT 倍率 | 草稿接受率 |",
                       "|---|---:|---:|---:|---:|---:|---:|---:|"])
         for profile, label in methods:
             item = profiles[profile]
@@ -218,11 +203,12 @@ def render_paired(data):
                 control = median(run["output_throughput"] for run in controls[c])
                 tps = median(run["output_throughput"] for run in row["runs"])
                 speed, ttft, tpot = (median(values[c]) for values in ratios)
+                ttft_samples = ratios[1][c]
                 acceptance = [run["spec_decode_acceptance_rate"] for run in row["runs"]
                               if run["spec_decode_acceptance_rate"] is not None]
                 rates = f"{median(acceptance):.1f}%" if acceptance else "—"
                 lines.append(f"| {label} | {c} | {control:.2f} | {tps:.2f} | {speed:.3f}× "
-                             f"| {ttft:.3f}× | {tpot:.3f}× | {rates} |")
+                             f"| {ttft:.3f}× ({min(ttft_samples):.3f}–{max(ttft_samples):.3f}) | {tpot:.3f}× | {rates} |")
     return "\n".join(lines) + "\n"
 
 
@@ -238,6 +224,8 @@ def standard_rows(data):
         str(row["concurrency"]): {
             "normal_output_tps_median": median(run["output_throughput"] for run in baseline[row["concurrency"]]),
             "selected_output_tps_median": median(run["output_throughput"] for run in row["runs"]),
+            "normal_p95_ttft_ms_median": median(run["p95_ttft_ms"] for run in baseline[row["concurrency"]]),
+            "selected_p95_ttft_ms_median": median(run["p95_ttft_ms"] for run in row["runs"]),
             "normal_p95_tpot_ms_median": median(run["p95_tpot_ms"] for run in baseline[row["concurrency"]]),
             "selected_p95_tpot_ms_median": median(run["p95_tpot_ms"] for run in row["runs"]),
             "paired_speedups": ratios[row["concurrency"]],
@@ -253,34 +241,44 @@ def report_standard(data, output, plt):
     lines = ["# 标准 Suffix", "",
              f"Spec-Bench 留出集的综合吞吐是同卡 Normal 的 **{score:.3f}×**。"
              "每档并发取三轮配对倍率的中位数，再作几何平均。", "",
-             "| 并发 | Normal (tok/s) | Suffix (tok/s) | 吞吐倍率 | P95 TPOT（ms，Normal / Suffix） | 全文一致 |",
-             "|---:|---:|---:|---:|---:|---:|"]
+             "| 并发 | Normal (tok/s) | Suffix (tok/s) | 吞吐倍率 | P95 TTFT（ms） | P95 TPOT（ms） | 全文一致 |",
+             "|---:|---:|---:|---:|---:|---:|---:|"]
     for concurrency, row in rows:
         center = median(row["paired_speedups"])
         lines.append(f"| {concurrency} | {row['normal_output_tps_median']:.2f} | {row['selected_output_tps_median']:.2f} "
-                     f"| {center:.3f}× | {row['normal_p95_tpot_ms_median']:.2f} / {row['selected_p95_tpot_ms_median']:.2f} "
+                     f"| {center:.3f}× | {row['normal_p95_ttft_ms_median']:.2f} → {row['selected_p95_ttft_ms_median']:.2f} "
+                     f"| {row['normal_p95_tpot_ms_median']:.2f} → {row['selected_p95_tpot_ms_median']:.2f} "
                      f"| {row['exact_text_matches']}/{row['requests_per_configuration']} |")
-    lines.extend(["", "![标准 Suffix 的配对吞吐倍率](figures/standard-suffix-throughput.png)", ""])
+    lines.extend(["", "![标准 Suffix 的吞吐与 P95 每 token 延迟](figures/standard-suffix.png)", "",
+                  "吞吐须线覆盖各轮最小值和最大值，延迟柱分别取两组 P95 的中位数。", ""])
     (output / "standard-suffix-results.md").write_text("\n".join(lines), encoding="utf-8")
 
-    fig, ax = plt.subplots(figsize=(5.55, 2.85))
-    fig.suptitle("Standard Suffix on Spec-Bench", x=0.137, y=0.95, ha="left", fontsize=14, fontweight="semibold")
-    ax.axvline(1, color=BASELINE, linestyle="--", linewidth=1.05)
-    ax.grid(axis="x")
+    fig, (speed, delay) = plt.subplots(1, 2, figsize=(7.7, 3.15))
+    groups = {"suffix": {concurrency: row["paired_speedups"] for concurrency, row in rows}}
+    peak = speed_bars(speed, groups)
+    speed.set_title("(a)  Output throughput", loc="left")
+    speed.set(ylabel="Throughput / Normal", ylim=(0, ceil(2.35 * peak) / 2))
     for index, (_, row) in enumerate(rows):
-        values = row["paired_speedups"]
-        ax.hlines(index, min(values), max(values), color=SUFFIX, linewidth=2.4, alpha=0.5)
-        ax.scatter(median(values), index, color=SUFFIX, marker="P", zorder=3)
-        ax.annotate(f"{median(values):.3f}×", (max(values), index), xytext=(8, 0),
-                    textcoords="offset points", va="center")
-    values = [value for _, row in rows for value in row["paired_speedups"]]
-    span = max(0.4, max(1, max(values)) - min(1, min(values)))
-    ax.set_yticks(range(len(rows)), [f"C = {label}" for label, _ in rows])
-    ax.set(xlim=(max(0, min(1, min(values)) - 0.15 * span), max(1, max(values)) + 0.37 * span),
-           ylim=(len(rows) - 0.55, -0.55), xlabel="Output throughput / matched Normal")
-    fig.text(0.137, 0.035, "Dots: paired medians. Bars: min–max across 3 seeds.", fontsize=10, color=MUTED)
-    fig.subplots_adjust(left=0.14, right=0.95, top=0.73, bottom=0.27)
-    save_plot(fig, plt, output / "figures", "standard-suffix-throughput")
+        runs = row["paired_speedups"]
+        speed.annotate(f"{median(runs):.3f}×", (index, max(runs)), xytext=(0, 5),
+                       textcoords="offset points", ha="center", va="bottom", fontsize=8.7)
+    delay.set_title("(b)  Time per output token", loc="left")
+    delay.grid(axis="y")
+    for role, label, color, hatch, offset in (("normal", "Normal", BASELINE, "", -0.16),
+                                              ("selected", "Standard Suffix", SUFFIX, BAR_HATCHES["suffix"], 0.16)):
+        bars = delay.bar([index + offset for index in range(len(rows))],
+                         [row[f"{role}_p95_tpot_ms_median"] for _, row in rows], width=0.29,
+                         color=color, edgecolor="white", linewidth=0.5, hatch=hatch, label=label)
+        delay.bar_label(bars, fmt="%.2f", padding=3, fontsize=8.7)
+    delay.set_ylabel("P95 TPOT (ms)")
+    delay.set_xticks(range(len(rows)), [concurrency for concurrency, _ in rows])
+    ymax = max(row[key] for _, row in rows for key in ("normal_p95_tpot_ms_median", "selected_p95_tpot_ms_median"))
+    delay.set_ylim(0, ymax * 1.23)
+    handles, labels = delay.get_legend_handles_labels()
+    fig.legend(handles, labels, loc="upper center", bbox_to_anchor=(0.5, 0.992), ncol=2)
+    fig.supxlabel("Concurrent requests", y=0.025)
+    fig.subplots_adjust(left=0.104, right=0.98, bottom=0.16, top=0.79, wspace=0.28)
+    save_plot(fig, plt, output / "figures", "standard-suffix")
 
 
 def report_comparison(data, study, output, plt):

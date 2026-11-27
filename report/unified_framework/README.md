@@ -10,8 +10,6 @@
 
 `eagle4`、`suffix` 和 `suffix-standard` 会自动选中对应实验。DFlash 2 默认跑 `framework`，复跑 EAGLE-4 对照时指定 `--study paired`。每个方法使用同卡、同一服务构建的 Normal。[EAGLE-4 与自适应 Suffix 复跑](eagle4_suffix_replay.md) · [标准 Suffix 复跑](early_suffix.md#复跑)
 
-![统一命令行的配置、输入、压测与报告流程](figures/workflow.svg)
-
 ## 复跑公开负载
 
 从仓库根目录运行。B200 主机需装好 vLLM 0.34.0 及其压测依赖，并下载 Qwen3.8-27B-FP8。用 `--vllm` 指定环境中的可执行文件。如果 pandas 单独安装，用 `--bench-deps` 传依赖目录。[vLLM 0.34.0](https://github.com/vllm-project/vllm/releases/tag/v0.34.0) · [主模型](https://huggingface.co/Qwen/Qwen3.8-27B-FP8)
@@ -72,7 +70,9 @@ python src/unified_framework.py --config tuning-plan.json benchmark --method dfl
 
 ### 图表格式
 
-`report --output replay/report` 读取仓库中的三组结果，导出 Markdown、带嵌入字体的 PDF、SVG 和 300 dpi PNG。吞吐图中的点是配对倍率的中位数，线段两端是三个种子测得的最小值和最大值。随机压力每档只跑一轮，图中只画点。[NeurIPS 实验统计说明](https://neurips.cc/public/guides/PaperChecklist) · [ICML 无障碍说明](https://icml.cc/Conferences/2026/AuthorInstructions) · [字体许可](../../assets/fonts/OFL.txt)
+从仓库根目录执行 `python src/unified_framework.py report --output replay/report-hd`，可从三组已发布 JSON 重生成报告和 400 dpi PNG。吞吐柱为配对倍率的中位数，须线是不同种子观测到的最小值和最大值。随机压力每档测一轮。
+
+分组柱形参考 ICML 2024 的 EAGLE 图 1。将负载并排、按指标分行的布局参考 NeurIPS 2025 的 SuffixDecoding 图 4。渲染前在系统安装 TeX Gyre Pagella 的常规及粗体 OpenType 字体。[EAGLE 图 1](https://proceedings.mlr.press/v235/li24bt.html) · [SuffixDecoding 图 4](https://proceedings.neurips.cc/paper_files/paper/2025/file/b7aea253ab34a773967f1e4cdea9e4fb-Paper-Conference.pdf#page=7) · [TeX Gyre Pagella](https://ctan.org/pkg/tex-gyre-pagella) · [NeurIPS 实验统计说明](https://neurips.cc/public/guides/PaperChecklist)
 
 ## DFlash 2 草稿量化
 
