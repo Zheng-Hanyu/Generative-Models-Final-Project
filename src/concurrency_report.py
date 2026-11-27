@@ -9,9 +9,8 @@ from workloads import write_json
 
 LABELS = {
     "mtp": "Native MTP", "dspark": "DSpark", "dflash": "DFlash 2",
-    "eagle4": "EAGLE-4", "suffix": "Adaptive Suffix", "suffix-standard": "Standard Suffix",
+    "eagle4": "EAGLE-4",
 }
-DISPLAY_LABELS = {**LABELS, "suffix": "自适应 Suffix", "suffix-standard": "标准 Suffix"}
 
 
 def method_cells(data, method):
@@ -51,9 +50,9 @@ def plot_concurrency(data, figures, plt):
     for ax in axes[-1]:
         ax.set_xticks(concurrencies, [str(c) for c in concurrencies])
     handles, labels = axes[0, 0].get_legend_handles_labels()
-    fig.legend(handles, labels, loc="upper center", bbox_to_anchor=(0.5, 0.995), ncol=min(3, len(labels)))
+    fig.legend(handles, labels, loc="upper center", bbox_to_anchor=(0.5, 0.995), ncol=len(labels))
     fig.supxlabel("Concurrent requests (log base 2)", y=0.023)
-    fig.subplots_adjust(left=0.112, right=0.98, bottom=0.11, top=0.825, wspace=0.28, hspace=0.34)
+    fig.subplots_adjust(left=0.112, right=0.98, bottom=0.11, top=0.87, wspace=0.28, hspace=0.34)
     save_plot(fig, plt, figures, "concurrency")
 
 
@@ -80,8 +79,7 @@ def render_concurrency(data):
         f"每条最多生成 {protocol['output_tokens']} tokens。每个种子在所有并发档和方法中使用同一组输入，"
         "三个种子的输入互不重叠。种子内打乱档位运行顺序，两组使用同一顺序。", "",
         f"合计 {counts} 组压测、{counts * protocol['holdout_prompts']:,} 条计时请求。"
-        "每个方法独立配对同卡、同 vLLM 构建的 Normal。本轮用同一台服务器上的不同 B200 并行压测各方法，客户端版本一致。"
-        "标准和自适应 Suffix 均关闭跨请求后缀缓存，避免相同题目跨档重复时影响命中。", "",
+        "每个方法独立配对同卡、同 vLLM 构建的 Normal。本轮用同一台服务器上的不同 B200 并行压测各方法，客户端版本一致。", "",
         "## 吞吐倍率", "",
         "每个倍率先对同种子、同并发的运行配对，再取各轮中位数。绝对吞吐用于查看各方法随并发的变化，相对 Normal 的倍率用于比较方法。延迟倍率低于 1 表示延迟下降。", "",
         f"从并发 {low} 到 {high}，相对 Normal 的吞吐倍率下降的方法有 {narrowing}/{len(speedups)} 种。", "",
@@ -89,14 +87,14 @@ def render_concurrency(data):
         "|---|" + "---:|" * len(concurrencies),
     ]
     for method, ratios in speedups.items():
-        lines.append(f"| {DISPLAY_LABELS[method]} | " + " | ".join(f"{ratios[c]:.3f}×" for c in concurrencies) + " |")
+        lines.append(f"| {LABELS[method]} | " + " | ".join(f"{ratios[c]:.3f}×" for c in concurrencies) + " |")
     lines.extend(["", "![各并发档的绝对吞吐、配对吞吐及尾延迟](figures/concurrency.png)", "",
                   "## 逐方法结果", "",
                   "以下绝对吞吐和延迟分别取各组的逐轮中位数。括号内是最小及最大配对吞吐倍率。"])
     for method, lane in experiment["lanes"].items():
         name, selected, control = method_cells(data, method)
         ratios = paired_runs(profiles, name, "spec-bench", "output_throughput")
-        lines.extend(["", f"### {DISPLAY_LABELS[method]}", "",
+        lines.extend(["", f"### {LABELS[method]}", "",
                       f"配置 `{name}`，GPU {lane['gpu_index']}，两组服务均使用 vLLM `{lane['server_version']}`。", "",
                       "| 并发 | Normal (tok/s) | 方法 (tok/s) | 配对倍率（范围） | P95 TTFT (ms) | P95 TPOT (ms) | 草稿接受率 |",
                       "|---:|---:|---:|---:|---:|---:|---:|"])

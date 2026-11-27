@@ -1,18 +1,14 @@
-# 复跑 EAGLE-4、自适应 Suffix 和 DFlash 2 对照
+# 复跑 EAGLE-4 和 DFlash 2 对照
 
-从仓库根目录执行。使用单张 NVIDIA B200、同一份 Qwen3.8-27B-FP8 权重和 NVIDIA CUDA 13 驱动。安装 vLLM 0.34.0 及其压测依赖，包括 pandas。客户端和 Suffix、DFlash 2 服务都用这套版本。每个方法的 Normal 在同一个服务二进制下运行。
+从仓库根目录执行。使用单张 NVIDIA B200、同一份 Qwen3.8-27B-FP8 权重和 NVIDIA CUDA 13 驱动。安装 vLLM 0.34.0 及其压测依赖，包括 pandas。客户端和 DFlash 2 服务都用这套版本。每个方法的 Normal 在同一个服务二进制下运行。
 
 ```bash
 standard_vllm=/home/genai/.pixi/envs/default/bin/vllm
 target=/home/model/Qwen3.8-27B-FP8
 bench_deps=/home/genai/dspark-bench/bench-deps
 gpu=7
-replay_root="$(pwd)/replay/eagle4-suffix-b200"
+replay_root="$(pwd)/replay/eagle4-dflash-b200"
 mkdir -p "$replay_root"
-
-python src/unified_framework.py benchmark --study paired --method suffix --gpu "$gpu" \
-  --vllm "$standard_vllm" --client-vllm "$standard_vllm" \
-  --bench-deps "$bench_deps" --model "$target" --output "$replay_root/suffix"
 ```
 
 如果 pandas 已安装在客户端环境中，可以省略 `--bench-deps`。每套压测生成 18 组输入，各组均记录 SHA-256。方法和配对 Normal 各完成 540 条请求，逐组的 JSON 和服务日志保存在输出目录。
@@ -64,10 +60,10 @@ python src/unified_framework.py benchmark --study paired --method dflash --gpu "
   --bench-deps "$bench_deps" --model "$target" --draft-model "$dflash_draft" --output "$replay_root/dflash"
 ```
 
-复跑完成后，从三组输出目录汇总结果。也可以把 `--results` 指向某一个方法的目录。
+复跑完成后，从两组输出目录汇总结果。也可以把 `--results` 指向某一个方法的目录。
 
 ```bash
 python src/unified_framework.py report --study paired --results "$replay_root" --output "$replay_root/report"
 ```
 
-[实测结果](eagle4_suffix.md)
+[实测结果](eagle4_dflash.md)

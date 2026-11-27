@@ -8,16 +8,14 @@ MUTED = "#45505D"
 GRID = "#E3E7EB"
 BASELINE = "#65717D"
 DFLASH = "#BE560F"
-SUFFIX = "#A84578"
 METHOD_STYLES = {
     "mtp": ("#0072B2", "o", "-"),
     "dspark": ("#087B61", "s", "--"),
     "dflash": (DFLASH, "D", "-."),
     "eagle4": ("#5145A1", "^", "-"),
-    "suffix": (SUFFIX, "P", "--"),
-    "suffix-standard": ("#695630", "v", ":"),
 }
-BAR_HATCHES = {"mtp": "", "dspark": "//", "dflash": ".", "eagle4": "", "suffix": "\\\\"}
+
+BAR_HATCHES = {"mtp": "", "dspark": "//", "dflash": ".", "eagle4": ""}
 
 
 def setup_plots():

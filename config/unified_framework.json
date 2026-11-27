@@ -102,30 +102,6 @@
       "draft_revision": "f58a5985223040552ad404fba98f0dd27f5f676a",
       "draft_sha256": "c90c82867b5d6878daca0ada2fdb0dadfc56171770f93c8ee3bd9f796f1d5df3",
       "runtime_depth_stop": "cost_tables"
-    },
-    "suffix": {
-      "label": "Adaptive Suffix",
-      "reference": {
-        "id": "suffix-k8",
-        "spec": {
-          "method": "suffix",
-          "enable_adaptive_verification": true,
-          "num_speculative_tokens": 8,
-          "suffix_decoding_max_tree_depth": 12
-        }
-      },
-      "vllm": "0.34.0"
-    },
-    "suffix-standard": {
-      "label": "Standard Suffix",
-      "reference": {
-        "id": "suffix-k4",
-        "spec": {
-          "method": "suffix",
-          "num_speculative_tokens": 4,
-          "suffix_decoding_max_tree_depth": 12
-        }
-      }
     }
   },
   "studies": {
@@ -140,49 +116,16 @@
     "paired": {
       "methods": [
         "eagle4",
-        "suffix",
         "dflash"
       ],
       "client_version": "0.34.0"
-    },
-    "standard-suffix": {
-      "methods": [
-        "suffix-standard"
-      ],
-      "client_version": "0.34.0",
-      "capture_sizes": [
-        1,
-        2,
-        4,
-        8,
-        16,
-        24,
-        32
-      ],
-      "protocol": {
-        "split_seed": 20261125,
-        "tuning_fraction": 0.3,
-        "holdout_seeds": [
-          43,
-          44,
-          45
-        ],
-        "concurrencies": [
-          1,
-          16
-        ],
-        "holdout_prompts": 48,
-        "output_tokens": 128
-      }
     },
     "concurrency": {
       "methods": [
         "mtp",
         "dspark",
         "dflash",
-        "eagle4",
-        "suffix",
-        "suffix-standard"
+        "eagle4"
       ],
       "client_version": "0.34.0",
       "protocol": {
@@ -205,14 +148,6 @@
         "holdout_prompts": 64,
         "output_tokens": 128,
         "reuse_prompts_by_seed": true
-      },
-      "spec_overrides": {
-        "suffix": {
-          "suffix_decoding_max_cached_requests": 0
-        },
-        "suffix-standard": {
-          "suffix_decoding_max_cached_requests": 0
-        }
       }
     }
   }

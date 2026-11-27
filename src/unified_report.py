@@ -7,20 +7,19 @@ from math import ceil, isclose
 from pathlib import Path
 from statistics import geometric_mean, median
 
-from comparison_report import collect_paired, report_comparison
+from comparison_report import collect_paired, report_comparison, retain_methods
 from concurrency_report import report_concurrency
 from plot_style import BASELINE, DFLASH, METHOD_STYLES, save_plot, setup_plots, speed_bars
 from workloads import ROOT, cell_name, read_json, stress_cells, write_json
 
 
-LABELS = {"normal": "Normal", "mtp": "Native MTP", "dspark": "DSpark", "dflash": "DFlash 2", "suffix": "Suffix"}
+LABELS = {"normal": "Normal", "mtp": "Native MTP", "dspark": "DSpark", "dflash": "DFlash 2"}
 EXTERNAL = {"speed": "NVIDIA SPEED-Bench", "burst": "BurstGPT v2.0"}
 METRICS = ("output_throughput", "p95_ttft_ms", "p95_tpot_ms", "spec_decode_acceptance_rate")
 SCHEMA = 2
 PUBLISHED = {
     "framework": ROOT / "results/processed/unified-framework/summary.json",
-    "paired": ROOT / "results/processed/unified-framework/eagle4-suffix-b200.json",
-    "standard-suffix": ROOT / "results/processed/supplemental_speculative_summary.json",
+    "paired": ROOT / "results/processed/unified-framework/eagle4-dflash-b200.json",
     "concurrency": ROOT / "results/processed/unified-framework/concurrency-summary.json",
 }
 
@@ -546,7 +545,7 @@ def render_tables(summary):
 
 def generate_report(results, output, plt, external=None, profiles=None, draft_study=None):
     summary = read_json(results) if results.is_file() else collect(results, profiles)
-    if summary["schema"] != SCHEMA:
+    if summary.get("schema") != SCHEMA:
         raise ValueError("Unsupported summary format")
     if external is not None:
         summary["external"] = collect_external(external, summary)
@@ -597,12 +596,7 @@ def report_studies(args, config):
     if args.results and study is None:
         if args.results.is_file():
             data = read_json(args.results)
-            if "profiles" in data:
-                study = data.get("experiment", {}).get("study")
-                if study is None:
-                    study = "standard-suffix" if "suffix-standard" in data["winners"] else "paired"
-            else:
-                study = "standard-suffix" if "cell_sha256" in data else "framework"
+            study = data.get("experiment", {}).get("study", "paired") if "profiles" in data else "framework"
         elif (args.results / "experiment.json").is_file():
             study = read_json(args.results / "experiment.json").get("study", "framework")
         else:
@@ -617,8 +611,12 @@ def report_studies(args, config):
             framework = config["studies"]["framework"]
             generate_report(results, args.output, plt, args.external_results, framework["methods"], args.draft_study)
         else:
-            data = read_json(results) if results.is_file() else collect_paired(results, config, name)
+            if results.is_file():
+                methods = {method: config["methods"][method] for method in config["studies"][name]["methods"]}
+                data = retain_methods(read_json(results), methods)
+            else:
+                data = collect_paired(results, config, name)
             if name == "concurrency":
                 report_concurrency(data, args.output, plt)
             else:
-                report_comparison(data, name, args.output, plt)
+                report_comparison(data, args.output, plt)

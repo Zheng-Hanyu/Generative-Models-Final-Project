@@ -5,11 +5,10 @@
 | `--study` | 配置名 | 负载 |
 |---|---|---|
 | `framework` | `normal`、`mtp`、`dspark`、`dflash` | Spec-Bench 留出集和随机压力，或 SPEED-Bench 与 BurstGPT |
-| `paired` | `eagle4`、`suffix`、`dflash` | Spec-Bench 留出集和合成的重复代码编辑／JSON 输出 |
-| `standard-suffix` | `suffix-standard` | 独立的 Spec-Bench 留出划分 |
-| `concurrency` | `mtp`、`dspark`、`dflash`、`eagle4`、`suffix`、`suffix-standard` | 固定 Spec-Bench 输入，七档并发 |
+| `paired` | `eagle4`、`dflash` | Spec-Bench 留出集和合成的重复代码编辑／JSON 输出 |
+| `concurrency` | `mtp`、`dspark`、`dflash`、`eagle4` | 固定 Spec-Bench 输入，七档并发 |
 
-`eagle4`、`suffix` 和 `suffix-standard` 会自动选中对应实验。DFlash 2 默认跑 `framework`，复跑 EAGLE-4 对照时指定 `--study paired`。每个方法使用同卡、同一服务构建的 Normal。[EAGLE-4 与自适应 Suffix 复跑](eagle4_suffix_replay.md) · [标准 Suffix 复跑](early_suffix.md#复跑)
+`eagle4` 默认使用 `paired`。DFlash 2 默认跑 `framework`，复跑 EAGLE-4 对照时指定 `--study paired`。每个方法使用同卡、同一服务构建的 Normal。[EAGLE-4 与 DFlash 2 复跑](eagle4_dflash_replay.md)
 
 ## 复跑公开负载
 
@@ -73,11 +72,11 @@ python src/unified_framework.py --config tuning-plan.json benchmark --method dfl
 
 从仓库根目录执行 `python src/unified_framework.py report --output replay/report-hd`，可从已发布 JSON 重生成报告和 400 dpi PNG。吞吐柱为配对倍率的中位数，须线是不同种子观测到的最小值和最大值。随机压力每档测一轮。
 
-分组柱形参考 ICML 2024 的 EAGLE 图 1。将负载并排、按指标分行的布局参考 NeurIPS 2025 的 SuffixDecoding 图 4。渲染前在系统安装 TeX Gyre Pagella 的常规及粗体 OpenType 字体。[EAGLE 图 1](https://proceedings.mlr.press/v235/li24bt.html) · [SuffixDecoding 图 4](https://proceedings.neurips.cc/paper_files/paper/2025/file/b7aea253ab34a773967f1e4cdea9e4fb-Paper-Conference.pdf#page=7) · [TeX Gyre Pagella](https://ctan.org/pkg/tex-gyre-pagella) · [NeurIPS 实验统计说明](https://neurips.cc/public/guides/PaperChecklist)
+分组柱形参考 ICML 2024 的 EAGLE 图 1。渲染前在系统安装 TeX Gyre Pagella 的常规及粗体 OpenType 字体。[EAGLE 图 1](https://proceedings.mlr.press/v235/li24bt.html) · [TeX Gyre Pagella](https://ctan.org/pkg/tex-gyre-pagella) · [NeurIPS 实验统计说明](https://neurips.cc/public/guides/PaperChecklist)
 
 ## 并发重测
 
-并发档为 1、2、4、8、16、24、32。每个种子固定 64 条 Spec-Bench 输入，在所有并发档复用。种子之间的题目互不重叠，档位在种子内打乱。各方法使用同卡、同服务构建的 Normal。两种 Suffix 仅在这组实验中关闭跨请求缓存，保留单请求内的后缀匹配。EAGLE-4 仍用作者的构建、同构建 Normal 和 vLLM 0.34.0 客户端。
+并发档为 1、2、4、8、16、24、32。每个种子固定 64 条 Spec-Bench 输入，在所有并发档复用。种子之间的题目互不重叠，档位在种子内打乱。各方法使用同卡、同服务构建的 Normal。EAGLE-4 仍用作者的构建、同构建 Normal 和 vLLM 0.34.0 客户端。
 
 ```bash
 export OMP_NUM_THREADS=4 MKL_NUM_THREADS=4 TOKENIZERS_PARALLELISM=false
@@ -89,7 +88,7 @@ python src/unified_framework.py benchmark --study concurrency --method dflash \
   --gpu 2 --port 24822 --model "$target" --draft-model "$draft_dir" --output replay/concurrency/dflash
 ```
 
-自适应和标准 Suffix 分别使用 `--method suffix`、`--method suffix-standard`，各写到同名目录。EAGLE-4 按专用环境的说明提供 `--vllm`、`--client-vllm`、`--draft-model` 和 `--calibration`，将 `--study` 设为 `concurrency`，输出到 `replay/concurrency/eagle4`。多卡同时复跑时用不同端口。[EAGLE-4 环境](eagle4_suffix_replay.md)
+EAGLE-4 按专用环境的说明提供 `--vllm`、`--client-vllm`、`--draft-model` 和 `--calibration`，将 `--study` 设为 `concurrency`，输出到 `replay/concurrency/eagle4`。多卡同时复跑时用不同端口。[EAGLE-4 环境](eagle4_dflash_replay.md)
 
 ```bash
 python src/unified_framework.py report --study concurrency --results replay/concurrency \
@@ -123,13 +122,7 @@ DFlash 2 草稿端的服务日志记录了 `Using FlashAttention version 4`。�
 - MTP 固定 K=5 的综合留出集吞吐为动态 K=6/5 的 **0.986×**，因此保留动态配置。
 - DFlash 2 保留 K=7。在最初的 BF16 试验中，FlashAttention 4 可以完整捕获 CUDA Graph。草稿端切到 FlashInfer 后 CUDA Graph 关闭，调参池并发 16 的吞吐从 1,794 降到 740 token/s。[早期 DFlash 2 结果](https://github.com/Zheng-Hanyu/Generative-Models-Final-Project/blob/63685a5e11358a45c9647b24e24a84ea43081fba/report/unified_framework/results.md)
 
-早期的 DFlash 2 BF16 和 Suffix 在同一张 B200 上使用相同输入，并发上限为 16。每种方法分别与同期的同卡 Normal 配对，表中为三轮吞吐倍率的中位数。[历史 Suffix 结果](https://github.com/Zheng-Hanyu/Generative-Models-Final-Project/blob/bb52f47ab7b56d4f01b6fcee6fe52b45fabbc156/report/unified_framework/results.md)
-
-| 负载 | Suffix | DFlash 2 BF16 |
-|---|---:|---:|
-| Spec-Bench | 1.007× | 1.805× |
-| NVIDIA SPEED-Bench | 1.006× | 1.804× |
-| BurstGPT v2.0 | 1.025× | 1.059× |
+早期 DFlash 2 BF16 实验的并发上限为 16。相对同期同卡 Normal，Spec-Bench、SPEED-Bench 和 BurstGPT 三轮配对吞吐倍率的中位数分别为 1.805×、1.804× 和 1.059×。
 
 BurstGPT 回放中，DFlash 2 相对同期 Normal 的 P95 每 token 延迟从 10.85 ms 降至 8.91 ms，P95 首 token 延迟从 69.23 ms 升至 109.58 ms。
 

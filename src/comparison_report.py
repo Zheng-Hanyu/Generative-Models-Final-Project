@@ -1,4 +1,4 @@
-"""Read and report the paired EAGLE-4 and Suffix benchmarks."""
+"""Read and report the paired EAGLE-4 and DFlash 2 benchmarks."""
 from __future__ import annotations
 
 import hashlib
@@ -8,23 +8,41 @@ from math import ceil, isfinite
 from pathlib import Path
 from statistics import geometric_mean, median
 
-from plot_style import BAR_HATCHES, BASELINE, METHOD_STYLES, MUTED, SUFFIX, save_plot, speed_bars
+from plot_style import BASELINE, METHOD_STYLES, MUTED, save_plot, speed_bars
 from workloads import cell_name, read_json, write_json
 
 WORKLOADS = (("spec-bench", "Spec-Bench 留出集"), ("repetition", "重复代码与 JSON"))
 WORKLOAD_TITLES = (("spec-bench", "Spec-Bench holdout"), ("repetition", "Repetitive code / JSON"))
 PAIRED_STYLES = (
     ("eagle4", "EAGLE-4"),
-    ("suffix", "Adaptive Suffix"),
     ("dflash", "DFlash 2"),
 )
 METRICS = ("output_throughput", "p95_ttft_ms", "p95_tpot_ms")
-PUBLISHED_DFLASH = "dflash2-mxfp8"
 
 
 def profile_for(data, method):
-    profile = data["winners"].get(method, PUBLISHED_DFLASH if method == "dflash" else None)
+    profile = data["winners"].get(method)
     return profile if profile in data["profiles"] else None
+
+
+def retain_methods(data, methods):
+    profiles = data["profiles"]
+    retained = {}
+    for method, metadata in methods.items():
+        profile = data["winners"].get(method, metadata["reference"]["id"])
+        if profile in profiles:
+            retained[method] = profile
+    if not retained:
+        raise ValueError("Summary contains no configured methods")
+    needed = set(retained.values()) | {profiles[key]["baseline"] for key in retained.values()}
+    result = {**data, "winners": retained, "profiles": {key: profile for key, profile in profiles.items() if key in needed}}
+    experiment = data.get("experiment", {})
+    if "lanes" in experiment:
+        result["experiment"] = {**experiment, "lanes": {method: lane for method, lane in experiment["lanes"].items()
+                                                         if method in retained}}
+    if data["winners"].keys() - retained.keys():
+        result.pop("failed_candidate_counts", None)
+    return result
 
 
 def collect_paired(root, config, study):
@@ -42,7 +60,7 @@ def collect_paired(root, config, study):
     for lane in lanes:
         identity = read_json(lane / "experiment.json")
         method = identity["method"]
-        if (identity["study"] != study or identity["smoke"] or method not in spec["methods"]
+        if (identity["study"] != study or method not in spec["methods"]
                 or method in data["winners"]):
             raise ValueError(f"{lane}: expected a full {study} benchmark")
         cells = {(item["workload"], item["concurrency"], item["seed"]): item for item in identity["cells"]}
@@ -76,8 +94,7 @@ def collect_paired(root, config, study):
         label = profile["id"]
         baseline = f"normal-{method}"
         data["winners"][method] = label
-        roles = ("baseline", "selected") if study == "standard-suffix" else ("normal", method)
-        runs = {}
+        roles = ("normal", method)
         lengths = {}
         for role, key, control in zip(roles, (baseline, label), (None, baseline), strict=True):
             directory = lane / role
@@ -95,7 +112,6 @@ def collect_paired(root, config, study):
                     not isfinite(result[metric]) or result[metric] <= 0 for metric in METRICS
                 ):
                     raise ValueError(f"{result_path}: invalid benchmark metrics")
-                run_key = (workload, concurrency, seed)
                 row = {
                     "seed": seed, "completed": result["completed"], "failed": result["failed"],
                     "test_input_sha256": cell["sha256"], "raw_result_sha256": hashlib.sha256(result_path.read_bytes()).hexdigest(),
@@ -107,14 +123,6 @@ def collect_paired(root, config, study):
                     if len(input_lens) != cell["count"] or lengths.setdefault(seed, input_lens) != input_lens:
                         raise ValueError(f"{result_path}: input sequence differs by role or concurrency")
                     row.update({metric: result[metric] for metric in ("total_output_tokens", "duration")})
-                if study == "standard-suffix":
-                    texts = result["generated_texts"]
-                    if len(texts) != cell["count"]:
-                        raise ValueError(f"{result_path}: incomplete output text")
-                    if control is None:
-                        runs[run_key] = texts
-                    else:
-                        row["exact_text_matches"] = sum(a == b for a, b in zip(runs[run_key], texts, strict=True))
                 rows[workload, concurrency].append(row)
             data["profiles"][key] = {"spec": record["profile"]["spec"], "baseline": control, "rows": [
                 {"workload": workload, "concurrency": concurrency, "runs": matches}
@@ -192,21 +200,21 @@ def plot_paired(data, output, plt):
                bbox_to_anchor=(0.5, 0.992), ncol=len(methods), handlelength=3.25,
                handler_map={tuple: HandlerTuple(ndivide=None, pad=0.3)})
     fig.subplots_adjust(left=0.105, right=0.98, bottom=0.095, top=0.886, wspace=0.16, hspace=0.19)
-    save_plot(fig, plt, output, "eagle4-suffix")
+    save_plot(fig, plt, output, "eagle4-dflash")
 
 
 def render_paired(data):
     profiles = data["profiles"]
     methods = [(profile_for(data, method), label) for method, label in PAIRED_STYLES]
     methods = [(profile, label) for profile, label in methods if profile is not None]
-    lines = ["# EAGLE-4、自适应 Suffix 与 DFlash 2", "",
+    lines = ["# EAGLE-4 与 DFlash 2", "",
              "同一档并发先计算各轮相对同构建 Normal 的倍率，再取中位数。综合倍率取各档中位倍率的几何平均。", "",
              "| 方法 | Spec-Bench | 重复代码与 JSON |", "|---|---:|---:|"]
     for profile, label in methods:
         values = [geometric_mean(median(cell) for cell in paired_runs(
             profiles, profile, workload, "output_throughput").values()) for workload, _ in WORKLOADS]
         lines.append(f"| {label} | {values[0]:.3f}× | {values[1]:.3f}× |")
-    lines.extend(["", "![配对吞吐、P95 每 token 延迟和草稿接受率](figures/eagle4-suffix.png)", "",
+    lines.extend(["", "![配对吞吐、P95 每 token 延迟和草稿接受率](figures/eagle4-dflash.png)", "",
                   "吞吐须线覆盖各轮最小值和最大值。虚线对应同构建 Normal。"])
     for workload, title in WORKLOADS:
         lines.extend(["", f"## {title}", "",
@@ -233,81 +241,9 @@ def render_paired(data):
     return "\n".join(lines) + "\n"
 
 
-def standard_rows(data):
-    if "rows" in data:
-        return data["rows"]
-    profiles = data["profiles"]
-    key = data["winners"]["suffix-standard"]
-    item = profiles[key]
-    baseline = {row["concurrency"]: row["runs"] for row in profiles[item["baseline"]]["rows"]}
-    ratios = paired_runs(profiles, key, "spec-bench", "output_throughput")
-    return {
-        str(row["concurrency"]): {
-            "normal_output_tps_median": median(run["output_throughput"] for run in baseline[row["concurrency"]]),
-            "selected_output_tps_median": median(run["output_throughput"] for run in row["runs"]),
-            "normal_p95_ttft_ms_median": median(run["p95_ttft_ms"] for run in baseline[row["concurrency"]]),
-            "selected_p95_ttft_ms_median": median(run["p95_ttft_ms"] for run in row["runs"]),
-            "normal_p95_tpot_ms_median": median(run["p95_tpot_ms"] for run in baseline[row["concurrency"]]),
-            "selected_p95_tpot_ms_median": median(run["p95_tpot_ms"] for run in row["runs"]),
-            "paired_speedups": ratios[row["concurrency"]],
-            "exact_text_matches": sum(run["exact_text_matches"] for run in row["runs"]),
-            "requests_per_configuration": sum(run["completed"] for run in row["runs"]),
-        } for row in item["rows"]
-    }
-
-
-def report_standard(data, output, plt):
-    rows = sorted(standard_rows(data).items(), key=lambda row: int(row[0]))
-    score = geometric_mean(median(row["paired_speedups"]) for _, row in rows)
-    lines = ["# 标准 Suffix", "",
-             f"Spec-Bench 留出集的综合吞吐是同卡 Normal 的 **{score:.3f}×**。"
-             "每档并发取三轮配对倍率的中位数，再作几何平均。", "",
-             "| 并发 | Normal (tok/s) | Suffix (tok/s) | 吞吐倍率 | P95 TTFT（ms） | P95 TPOT（ms） | 全文一致 |",
-             "|---:|---:|---:|---:|---:|---:|---:|"]
-    for concurrency, row in rows:
-        center = median(row["paired_speedups"])
-        lines.append(f"| {concurrency} | {row['normal_output_tps_median']:.2f} | {row['selected_output_tps_median']:.2f} "
-                     f"| {center:.3f}× | {row['normal_p95_ttft_ms_median']:.2f} → {row['selected_p95_ttft_ms_median']:.2f} "
-                     f"| {row['normal_p95_tpot_ms_median']:.2f} → {row['selected_p95_tpot_ms_median']:.2f} "
-                     f"| {row['exact_text_matches']}/{row['requests_per_configuration']} |")
-    lines.extend(["", "![标准 Suffix 的吞吐与 P95 每 token 延迟](figures/standard-suffix.png)", "",
-                  "吞吐须线覆盖各轮最小值和最大值，延迟柱分别取两组 P95 的中位数。", ""])
-    (output / "standard-suffix-results.md").write_text("\n".join(lines), encoding="utf-8")
-
-    fig, (speed, delay) = plt.subplots(1, 2, figsize=(7.7, 3.15))
-    groups = {"suffix": {concurrency: row["paired_speedups"] for concurrency, row in rows}}
-    peak = speed_bars(speed, groups)
-    speed.set_title("(a)  Output throughput", loc="left")
-    speed.set(ylabel="Throughput / Normal", ylim=(0, ceil(2.35 * peak) / 2))
-    for index, (_, row) in enumerate(rows):
-        runs = row["paired_speedups"]
-        speed.annotate(f"{median(runs):.3f}×", (index, max(runs)), xytext=(0, 5),
-                       textcoords="offset points", ha="center", va="bottom", fontsize=8.7)
-    delay.set_title("(b)  Time per output token", loc="left")
-    delay.grid(axis="y")
-    for role, label, color, hatch, offset in (("normal", "Normal", BASELINE, "", -0.16),
-                                              ("selected", "Standard Suffix", SUFFIX, BAR_HATCHES["suffix"], 0.16)):
-        bars = delay.bar([index + offset for index in range(len(rows))],
-                         [row[f"{role}_p95_tpot_ms_median"] for _, row in rows], width=0.29,
-                         color=color, edgecolor="white", linewidth=0.5, hatch=hatch, label=label)
-        delay.bar_label(bars, fmt="%.2f", padding=3, fontsize=8.7)
-    delay.set_ylabel("P95 TPOT (ms)")
-    delay.set_xticks(range(len(rows)), [concurrency for concurrency, _ in rows])
-    ymax = max(row[key] for _, row in rows for key in ("normal_p95_tpot_ms_median", "selected_p95_tpot_ms_median"))
-    delay.set_ylim(0, ymax * 1.23)
-    handles, labels = delay.get_legend_handles_labels()
-    fig.legend(handles, labels, loc="upper center", bbox_to_anchor=(0.5, 0.992), ncol=2)
-    fig.supxlabel("Concurrent requests", y=0.025)
-    fig.subplots_adjust(left=0.104, right=0.98, bottom=0.16, top=0.79, wspace=0.28)
-    save_plot(fig, plt, output / "figures", "standard-suffix")
-
-
-def report_comparison(data, study, output, plt):
+def report_comparison(data, output, plt):
     output.mkdir(parents=True, exist_ok=True)
     (output / "figures").mkdir(exist_ok=True)
-    if study == "paired":
-        (output / "paired-results.md").write_text(render_paired(data), encoding="utf-8")
-        plot_paired(data, output / "figures", plt)
-    else:
-        report_standard(data, output, plt)
-    write_json(output / f"{study}-summary.json", data)
+    (output / "paired-results.md").write_text(render_paired(data), encoding="utf-8")
+    plot_paired(data, output / "figures", plt)
+    write_json(output / "paired-summary.json", data)
