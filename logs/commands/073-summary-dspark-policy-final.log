@@ -1,9 +1,0 @@
-COMMAND: python src/summarize_benchmarks.py --phase policy-dspark-r1 --methods dspark-k7 dspark-adaptive --baseline-method dspark-k7 --best-fixed-methods dspark-k7 --concurrencies 1 4 16 32 --seeds 42 43 44 --num-prompts 32
-CWD: /home/genai/spec_decoding_study
-STARTED_AT: 2026-11-24T16:26:37.690146+00:00
-
-{
-  "summary": "/home/genai/spec_decoding_study/results/processed/policy-dspark-r1-summary.json",
-  "status": "complete",
-  "runs": 24
-}

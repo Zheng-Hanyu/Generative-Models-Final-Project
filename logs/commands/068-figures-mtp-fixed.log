@@ -1,5 +1,0 @@
-COMMAND: python src/make_figures.py --include-policies
-CWD: /home/genai/spec_decoding_study
-STARTED_AT: 2026-11-24T16:23:37.025532+00:00
-
-Figures written to /home/genai/spec_decoding_study/report/figures

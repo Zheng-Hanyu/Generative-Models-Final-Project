@@ -1,9 +1,0 @@
-COMMAND: /home/genai/.pixi/envs/default/bin/python src/smoke_generate.py --base-url http://127.0.0.1:8001 --output results/raw/smoke-mtp-k3-installed.json
-CWD: /home/genai/spec_decoding_study
-STARTED_AT: 2026-11-24T14:23:53.451927+00:00
-
-explanation_en: success=True latency=0.533s
-reasoning_math: success=True latency=0.331s
-code_python: success=True latency=0.336s
-explanation_zh: success=True latency=0.386s
-Saved results/raw/smoke-mtp-k3-installed.json

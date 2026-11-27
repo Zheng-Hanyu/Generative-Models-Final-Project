@@ -1,9 +1,0 @@
-COMMAND: /home/genai/.pixi/envs/default/bin/python src/smoke_generate.py --base-url http://127.0.0.1:8000 --output results/raw/smoke-normal-installed.json
-CWD: /home/genai/spec_decoding_study
-STARTED_AT: 2026-11-24T14:20:40.452750+00:00
-
-explanation_en: success=True latency=0.968s
-reasoning_math: success=True latency=0.857s
-code_python: success=True latency=0.858s
-explanation_zh: success=True latency=0.858s
-Saved results/raw/smoke-normal-installed.json

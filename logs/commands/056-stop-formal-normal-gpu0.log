@@ -1,5 +1,0 @@
-COMMAND: /home/genai/.pixi/envs/default/bin/python /home/genai/spec_decoding_study/bin/stop_logged.py --label 027-server-formal-normal-gpu0 --expect /home/genai/.pixi/envs/default/bin/vllm --expect 8100 --timeout 120
-CWD: /home/genai/spec_decoding_study
-STARTED_AT: 2026-11-24T15:14:27.415006+00:00
-
-{"label": "027-server-formal-normal-gpu0", "pid": 126162, "signal": "SIGTERM", "status": "exited", "checked_at": 1795533269.4385455}

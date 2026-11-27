@@ -1,4 +1,0 @@
-COMMAND: /home/genai/.pixi/envs/default/bin/python src/monitor_gpus.py --output results/raw/gpu-timeseries-formal-r1.csv --interval 5 --devices 0,1,2,3
-CWD: /home/genai/spec_decoding_study
-STARTED_AT: 2026-11-24T14:31:17.202281+00:00
-

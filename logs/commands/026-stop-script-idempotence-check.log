@@ -1,5 +1,0 @@
-COMMAND: /home/genai/.pixi/envs/default/bin/python bin/stop_logged.py --label 012-server-normal-smoke-installed --expect vllm --expect 8000
-CWD: /home/genai/spec_decoding_study
-STARTED_AT: 2026-11-24T14:27:12.697363+00:00
-
-{"label": "012-server-normal-smoke-installed", "status": "not_running"}

@@ -1,9 +1,0 @@
-COMMAND: /home/genai/.pixi/envs/default/bin/python src/smoke_generate.py --base-url http://127.0.0.1:8002 --output results/raw/smoke-dspark-k7-installed.json
-CWD: /home/genai/spec_decoding_study
-STARTED_AT: 2026-11-24T14:23:55.344724+00:00
-
-explanation_en: success=True latency=0.645s
-reasoning_math: success=True latency=0.254s
-code_python: success=True latency=0.293s
-explanation_zh: success=True latency=0.423s
-Saved results/raw/smoke-dspark-k7-installed.json

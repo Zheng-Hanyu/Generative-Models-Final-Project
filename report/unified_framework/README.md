@@ -2,7 +2,7 @@
 
 <p><img src="figures/icon.svg" width="66" alt="草稿 token 经并行验证后汇合的框架图标"></p>
 
-同一 CLI 可启动 Normal、Native MTP、DSpark 和 DFlash 2，也可调参、配对压测和出图。每种发布方法有一套配置。复现早期课程实验时请使用相应报告中的协议。[当前实测](results.md) · [课程实验](../course_study/README.md)
+同一 CLI 可启动 Normal、Native MTP、DSpark 和 DFlash 2，并执行调参、配对压测和出图。默认配置对应报告中的发布设置。 [统一框架实测](results.md) · [EAGLE-4 与自适应 Suffix 复跑](eagle4_suffix_replay.md) · [早期标准 Suffix](early_suffix.md)
 
 ![统一框架的配置、启动、调参、压测和出图流程](figures/workflow.svg)
 
@@ -19,14 +19,30 @@ python src/unified_framework.py serve --method dflash --gpu 7 --port 24827 \
   --draft-model "$draft_dir"
 ```
 
-`serve` 默认使用发布配置。用 `--selection replay/dflash/selection.json` 加载自己的调参结果，用 `--print-command` 查看完整启动参数。下面的命令使用默认草稿目录。如需指定下载位置，可沿用上面的 `--draft-model`。
+`serve` 默认使用发布配置。用 `--selection replay-tuned/dflash/selection.json` 加载自己的调参结果，用 `--print-command` 查看完整启动参数。复跑会自行启动服务，先结束上面的手动服务。替换 `--model` 和 `--vllm` 即可指定本机路径。
 
 ```bash
-python src/unified_framework.py --config tuning-plan.json tune --method dflash --gpu 7 --port 24827 --output replay/dflash
-python src/unified_framework.py --config tuning-plan.json benchmark --method dflash --gpu 7 --port 24827 --output replay/dflash
+python src/unified_framework.py benchmark --method dflash --gpu 7 --port 24827 \
+  --draft-model "$draft_dir" --output replay/dflash
 ```
 
-复制发布配置，为目标方法添加 `round1` 和 `round2`，再用同一调参计划运行两条命令。每个候选项都要有唯一的 `id`。第一轮填写完整的 vLLM `spec`，第二轮通过 `override` 修改首轮最快的配置。用 `null` 删除某个草稿选项。测试 MTP 或 DSpark 时，将 `dflash` 换为 `mtp` 或 `dspark`，并给每个方法单独的结果目录。直接运行默认配置的 `benchmark` 会比较发布设置和同卡 Normal。
+完整的留出集报告需要三个目录。用相同的目标模型和 GPU 依次完成 DFlash 2、MTP 和 DSpark。DSpark 的默认路径指向服务器上的 Red Hat 草稿，也可通过 `--draft-model` 指定本机副本。
+
+```bash
+python src/unified_framework.py benchmark --method mtp --gpu 7 --port 24827 --output replay/mtp
+python src/unified_framework.py benchmark --method dspark --gpu 7 --port 24827 --output replay/dspark
+```
+
+调参时，先将当前配置复制为 tuning-plan.json，并按下一段说明补齐候选配置。使用独立的结果目录保存调参复测。
+
+```bash
+python src/unified_framework.py --config tuning-plan.json tune --method dflash --gpu 7 --port 24827 \
+  --draft-model "$draft_dir" --output replay-tuned/dflash
+python src/unified_framework.py --config tuning-plan.json benchmark --method dflash --gpu 7 --port 24827 \
+  --draft-model "$draft_dir" --output replay-tuned/dflash
+```
+
+复制发布配置，为目标方法添加 `round1` 和 `round2`，再用同一调参计划运行两条命令。每个候选项都要有唯一的 `id`。第一轮填写完整的 vLLM `spec`，第二轮通过 `override` 修改首轮最快的配置。用 `null` 删除某个草稿选项。调参时为每个方法指定独立的结果目录和对应草稿路径。直接运行默认配置的 `benchmark` 会比较发布设置和同卡 Normal。
 
 实验目录保存数据划分、启动命令、服务日志、原始压测 JSON 和配置选择结果。中断后重跑同一条命令，框架会复用已完整结束的配置，并为未完成的配置启动新进程。DFlash 2 首次启动会编译 FlashInfer 内核。服务就绪并预热后才开始计时。
 
@@ -37,13 +53,13 @@ python -m pip install pyarrow
 python src/prepare_serving_workloads.py --speed-parquet speed.parquet \
   --burst-csv BurstGPT_without_fails_3.csv --output replay/serving-inputs
 python src/unified_framework.py benchmark --method dflash --gpu 7 --port 24827 \
-  --workloads replay/serving-inputs --output replay/external/dflash
+  --draft-model "$draft_dir" --workloads replay/serving-inputs --output replay/external/dflash
 ```
 
-对 `mtp` 和 `dspark` 各跑一次同样的 `benchmark`，输出分别写到 `replay/external/mtp` 和 `replay/external/dspark`。框架先校验输入清单和文件哈希，再为每种方法跑同卡 Normal 对照。
+对 `mtp` 和 `dspark` 各跑一次同样的外部负载压测，输出分别写到 `replay/external/mtp` 和 `replay/external/dspark`。MTP 使用主模型内置的草稿头。DSpark 使用其对应的外接草稿权重。框架先校验输入清单和文件哈希，再为每种方法跑同卡 Normal 对照。
 
 ```bash
-python -m pip install matplotlib
+python -m pip install matplotlib==3.11.2
 python src/unified_framework.py report --results replay --external-results replay/external --output replay/report
 python src/unified_framework.py report --results results/processed/unified-framework/summary.json --output replay/published-figures
 ```
@@ -56,7 +72,7 @@ python src/unified_framework.py report --results results/processed/unified-frame
 
 ```bash
 python src/unified_framework.py quantization-study --gpu 7 --port 24787 \
-  --workloads replay/serving-inputs --output replay/draft-study \
+  --draft-model "$draft_dir" --workloads replay/serving-inputs --output replay/draft-study \
   --quantizations fp8_per_tensor fp8_per_block mxfp8 nvfp4_w4a16
 python src/unified_framework.py report \
   --results results/processed/unified-framework/summary.json \

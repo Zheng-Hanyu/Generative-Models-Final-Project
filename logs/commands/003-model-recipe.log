@@ -1,7 +1,0 @@
-COMMAND: bash -lc 'curl -fsSL https://recipes.vllm.ai/Qwen/Qwen3.8-27B-FP8.json -o /home/genai/spec_decoding_study/config/qwen3.8-27b-fp8-recipe.json && /home/genai/vllm/.agents/skills/model-recipes/scripts/read_recipe.sh /home/genai/spec_decoding_study/config/qwen3.8-27b-fp8-recipe.json'
-CWD: /home/genai/spec_decoding_study
-STARTED_AT: 2026-11-24T14:05:05.558311+00:00
-
-/home/genai/vllm/.agents/skills/model-recipes/scripts/read_recipe.sh: line 17: jq: command not found
-/home/genai/vllm/.agents/skills/model-recipes/scripts/read_recipe.sh: line 47: jq: command not found
-/home/genai/vllm/.agents/skills/model-recipes/scripts/read_recipe.sh: line 47: jq: command not found

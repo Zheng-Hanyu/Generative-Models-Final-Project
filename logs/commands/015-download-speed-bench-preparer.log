@@ -1,4 +1,0 @@
-COMMAND: /usr/bin/curl -fsSL https://raw.githubusercontent.com/NVIDIA-NeMo/Skills/refs/heads/main/nemo_skills/dataset/speed-bench/prepare.py -o /home/genai/spec_decoding_study/config/prepare_speed_bench.py
-CWD: /home/genai/spec_decoding_study
-STARTED_AT: 2026-11-24T14:19:23.833716+00:00
-

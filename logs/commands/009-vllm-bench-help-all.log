@@ -1,7 +1,0 @@
-COMMAND: /bin/sh -c 'CUDA_VISIBLE_DEVICES=0 /home/genai/.pixi/envs/default/bin/vllm bench serve --help=all > /home/genai/spec_decoding_study/config/installed-vllm-bench-serve-help-all.txt'
-CWD: /home/genai/vllm
-STARTED_AT: 2026-11-24T14:12:52.855099+00:00
-
-W1124 14:12:53.906000 117477 site-packages/torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
-W1124 14:12:53.906000 117477 site-packages/torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
-W1124 14:12:53.906000 117477 site-packages/torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
