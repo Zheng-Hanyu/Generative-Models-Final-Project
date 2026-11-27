@@ -2,6 +2,12 @@
 
 周熙言（`xiyanzhou`）在单张 NVIDIA B200 上测量 Qwen3.8-27B-FP8 的输出吞吐、P95 首 token 延迟（TTFT）、P95 每 token 延迟（TPOT）和草稿接受率。每个吞吐倍率先按同卡、同引擎构建、同输入和同种子配对 Normal，再取每档并发的中位数。综合倍率取各档的几何平均。
 
+## Spec-Bench 七档并发重测
+
+重新测试了六种推测解码方法和各自的同卡 Normal。并发覆盖 1、2、4、8、16、24、32，每档三轮，每轮 64 条请求。同一种子在七档并发使用同一批输入。
+
+DFlash 2 在并发 32 时达到 Normal 的 **1.310×**，P95 首 token 延迟增加约 51%，P95 每 token 延迟降低约 14%。DSpark 在并发 8 时的吞吐倍率最高，为 **1.953×**。自适应 Suffix 从并发 16 起低于 Normal，标准 Suffix 从并发 8 起低于 Normal。这轮给两种 Suffix 关闭了跨请求后缀缓存，以便在各档复用同一批输入。[完整结果与图表](report/unified_framework/concurrency.md) · [逐轮数据](results/processed/unified-framework/concurrency-summary.json)
+
 ## 各方法在什么负载上有效
 
 | 方法 | 实测表现 |

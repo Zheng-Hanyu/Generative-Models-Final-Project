@@ -8,6 +8,7 @@ from pathlib import Path
 from statistics import geometric_mean, median
 
 from comparison_report import collect_paired, report_comparison
+from concurrency_report import report_concurrency
 from plot_style import BASELINE, DFLASH, METHOD_STYLES, save_plot, setup_plots, speed_bars
 from workloads import ROOT, cell_name, read_json, stress_cells, write_json
 
@@ -20,6 +21,7 @@ PUBLISHED = {
     "framework": ROOT / "results/processed/unified-framework/summary.json",
     "paired": ROOT / "results/processed/unified-framework/eagle4-suffix-b200.json",
     "standard-suffix": ROOT / "results/processed/supplemental_speculative_summary.json",
+    "concurrency": ROOT / "results/processed/unified-framework/concurrency-summary.json",
 }
 
 
@@ -596,7 +598,9 @@ def report_studies(args, config):
         if args.results.is_file():
             data = read_json(args.results)
             if "profiles" in data:
-                study = "standard-suffix" if "suffix-standard" in data["winners"] else "paired"
+                study = data.get("experiment", {}).get("study")
+                if study is None:
+                    study = "standard-suffix" if "suffix-standard" in data["winners"] else "paired"
             else:
                 study = "standard-suffix" if "cell_sha256" in data else "framework"
         elif (args.results / "experiment.json").is_file():
@@ -614,4 +618,7 @@ def report_studies(args, config):
             generate_report(results, args.output, plt, args.external_results, framework["methods"], args.draft_study)
         else:
             data = read_json(results) if results.is_file() else collect_paired(results, config, name)
-            report_comparison(data, name, args.output, plt)
+            if name == "concurrency":
+                report_concurrency(data, args.output, plt)
+            else:
+                report_comparison(data, name, args.output, plt)

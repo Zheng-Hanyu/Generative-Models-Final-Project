@@ -296,15 +296,23 @@ def study_name(config, method, requested):
     return requested
 
 
+def study_profile(config, study, method, profile):
+    overrides = config["studies"][study].get("spec_overrides", {}).get(method)
+    return {**profile, "spec": {**profile["spec"], **overrides}} if overrides else profile
+
+
 def paired_profiles(args, config, study):
-    reference = config["methods"][args.method]["reference"]
+    reference = study_profile(config, study, args.method, config["methods"][args.method]["reference"])
     normal = config["methods"]["normal"]["reference"]
     if args.smoke:
         return [("selected", reference)]
     if study == "standard-suffix":
         profiles = [("selected", reference), ("baseline", normal)]
         return profiles[::-1] if args.gpu % 2 else profiles
-    return [("normal", normal), (args.method, reference)]
+    profiles = [("normal", normal), (args.method, reference)]
+    if study == "concurrency" and args.gpu % 2:
+        profiles.reverse()
+    return profiles
 
 
 def run_paired(args, config, study, dry_run=False):
@@ -346,7 +354,8 @@ def run_paired(args, config, study, dry_run=False):
         experiment = {
             "study": study, "method": args.method, "gpu": {**gpu, "index": args.gpu},
             "target": args.model, "server_version": expected_server, "client_version": expected_client,
-            "profile": config["methods"][args.method]["reference"], "serving_commands": {
+            "profile": study_profile(config, study, args.method, config["methods"][args.method]["reference"]),
+            "serving_commands": {
                 role: command for role, (_, command) in launches.items()
             },
             "dataset_sha256": hashlib.sha256(args.dataset.read_bytes()).hexdigest(), "smoke": args.smoke,
@@ -395,7 +404,7 @@ def main():
     actions = parser.add_subparsers(dest="action", required=True)
     actions.add_parser("profiles", help="list published profiles and study names")
     prepare = actions.add_parser("prepare", help="prepare benchmark input files")
-    prepare.add_argument("--study", choices=("framework", "paired", "standard-suffix", "external"), default="framework")
+    prepare.add_argument("--study", choices=("framework", "paired", "standard-suffix", "concurrency", "external"), default="framework")
     prepare.add_argument("--dataset", type=Path, default=DATASET)
     prepare.add_argument("--speed-parquet", type=Path)
     prepare.add_argument("--burst-csv", type=Path)
@@ -415,7 +424,7 @@ def main():
         sub.add_argument("--vllm", default="vllm")
         sub.add_argument("--bench-deps", default="")
         if action in ("serve", "benchmark"):
-            sub.add_argument("--study", choices=("framework", "paired", "standard-suffix"))
+            sub.add_argument("--study", choices=("framework", "paired", "standard-suffix", "concurrency"))
             sub.add_argument("--calibration", type=Path, help="EAGLE-4 cost-table directory (defaults to the published tables)")
         if action == "serve":
             sub.add_argument("--selection", type=Path)
@@ -428,10 +437,10 @@ def main():
         if action == "benchmark":
             sub.add_argument("--skip-stress", action="store_true")
             sub.add_argument("--workloads", type=Path, help="replay a prepared SPEED-Bench and BurstGPT manifest")
-            sub.add_argument("--client-vllm", help="separate vLLM 0.34.0 benchmark client for the paired study")
+            sub.add_argument("--client-vllm", help="separate vLLM 0.34.0 benchmark client for paired studies")
             sub.add_argument("--smoke", action="store_true", help="for standard Suffix, run four requests with Suffix only")
     report = actions.add_parser("report", help="render tables and figures")
-    report.add_argument("--study", choices=("framework", "paired", "standard-suffix"))
+    report.add_argument("--study", choices=("framework", "paired", "standard-suffix", "concurrency"))
     report.add_argument("--results", type=Path, help="a summary JSON or a replay directory; defaults to all published studies")
     report.add_argument("--external-results", type=Path)
     report.add_argument("--draft-study", type=Path, help="include a completed DFlash 2 quantization study")
@@ -479,7 +488,7 @@ def dispatch(args, config):
         if args.method == "normal" and args.selection:
             raise ValueError("Normal does not use a speculative selection")
         reference = config["methods"][args.method]["reference"]
-        profile = selected_profile(args.method, args.selection, reference)
+        profile = study_profile(config, study, args.method, selected_profile(args.method, args.selection, reference))
         command = config_command(args, profile, config["studies"][study].get("capture_sizes", CAPTURE_SIZES))
         if args.print_command:
             print(shlex.join(command))

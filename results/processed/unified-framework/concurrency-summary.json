@@ -1,0 +1,3988 @@
+{
+  "winners": {
+    "mtp": "mtp-dynamic-smooth",
+    "dspark": "dspark-triton-k8",
+    "dflash": "dflash2-mxfp8",
+    "eagle4": "eagle4-w8",
+    "suffix": "suffix-k8",
+    "suffix-standard": "suffix-k4"
+  },
+  "profiles": {
+    "normal-mtp": {
+      "spec": null,
+      "baseline": null,
+      "rows": [
+        {
+          "workload": "spec-bench",
+          "concurrency": 1,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "dc9375d00d801eabcfb19a11cc4df63f78313ebed7e6f6091cb59255fb279265",
+              "output_throughput": 115.59242303205114,
+              "p95_ttft_ms": 67.0437749497068,
+              "p95_tpot_ms": 8.563707897638334,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8090,
+              "duration": 69.98728625800004
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "36c1238a8b3af0340cf9170ab881fd18b1a8f087930858344dd0bef6beb78163",
+              "output_throughput": 115.77296154429871,
+              "p95_ttft_ms": 51.608019499917646,
+              "p95_tpot_ms": 8.543545766930919,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8164,
+              "duration": 70.51732884000012
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "7e4c6e059abf19debf2a15ee5a50e11cb75059657cc9926c289e351d7f4a20a9",
+              "output_throughput": 115.85634124154807,
+              "p95_ttft_ms": 50.44736385013947,
+              "p95_tpot_ms": 8.530030151181146,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8118,
+              "duration": 70.06953536599985
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 2,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "6a7bb82db80a0d9f0f1a96b6a60e2c0688b85b989103102fcbfcafbde1f43395",
+              "output_throughput": 218.92798006902188,
+              "p95_ttft_ms": 76.68873959964913,
+              "p95_tpot_ms": 9.14926269015662,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8122,
+              "duration": 37.09895828500021
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "339ab2a2acc569f4b3cc6d9e99ab995ca62a379701ab326088762ebe2d73918c",
+              "output_throughput": 219.5239795403342,
+              "p95_ttft_ms": 59.443441700000214,
+              "p95_tpot_ms": 9.072195828345299,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8169,
+              "duration": 37.21233560499968
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "6219ae725d78c8c1082e70fb9cab78b07f593faa5a939c0f0f6855923617ebaa",
+              "output_throughput": 219.76017634488997,
+              "p95_ttft_ms": 61.2948349501039,
+              "p95_tpot_ms": 9.035020249214675,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8118,
+              "duration": 36.94026886499978
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 4,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "a12a7587fd022c050cba87137ebda090bb5a70cd53702d4af91714d30e9f0c5f",
+              "output_throughput": 416.68901164712446,
+              "p95_ttft_ms": 102.93272945025365,
+              "p95_tpot_ms": 9.456173794880963,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8085,
+              "duration": 19.402959459000158
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "34efba63b0a68f68639a1320cde828c7412189229f6625038ad8080c8c6692a5",
+              "output_throughput": 423.2509312638609,
+              "p95_ttft_ms": 102.82721220014537,
+              "p95_tpot_ms": 9.328107643306621,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8176,
+              "duration": 19.317145920000257
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "5a72ba3db27f47bb1c0d5c25bc7f2a1685fcafb5f0cedf12fc8d04419e31cc48",
+              "output_throughput": 421.3504817081757,
+              "p95_ttft_ms": 74.82596294983068,
+              "p95_tpot_ms": 9.367360561023228,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8119,
+              "duration": 19.268994228000338
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 8,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "28fc195e27bbc2db13160eb363536236939e84626731d5ba39c3287cbad403c0",
+              "output_throughput": 770.1487223929194,
+              "p95_ttft_ms": 168.24800994991165,
+              "p95_tpot_ms": 10.240915440216488,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8085,
+              "duration": 10.49797235899996
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "e6f8b620b0173787168c0e9c0d274d0416b5ad498b4c8ad8b8cd222aff7779f1",
+              "output_throughput": 787.402471264752,
+              "p95_ttft_ms": 151.71939610008846,
+              "p95_tpot_ms": 9.976286075985218,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8161,
+              "duration": 10.364458199999717
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "0c3dd9d8f70ff5a9407b58dd29ae063a1c184a565fb5f780242eb5c3b0175725",
+              "output_throughput": 791.0241007127287,
+              "p95_ttft_ms": 114.4066665999162,
+              "p95_tpot_ms": 9.985032901575746,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8156,
+              "duration": 10.310684582999784
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 16,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "767389db626baf99f6a65d641426d1b32565bce7019d33f836df3b5c22181fef",
+              "output_throughput": 1361.427499018082,
+              "p95_ttft_ms": 240.03581044964903,
+              "p95_tpot_ms": 11.540053307052842,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8069,
+              "duration": 5.926867208000203
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "617ec979e70d2f4dde05f4cde2678ba7bd84318e0d06dc14f33e3bef97b93e6d",
+              "output_throughput": 1396.9161669442915,
+              "p95_ttft_ms": 177.18311069984338,
+              "p95_tpot_ms": 11.188907466141503,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8150,
+              "duration": 5.834279960999993
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "78f4f039f9f470bca3899d2efedfbf95c2f10504166a1cc5877b80da7e511faf",
+              "output_throughput": 1408.77225650025,
+              "p95_ttft_ms": 193.82605584974044,
+              "p95_tpot_ms": 11.02432665275386,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8156,
+              "duration": 5.78943825899978
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 24,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "9a58316b3e93d92d6f984b5d2b76b23afa75d379315f91c13c45a2b20d4040b9",
+              "output_throughput": 1660.3712589560132,
+              "p95_ttft_ms": 331.28140325006825,
+              "p95_tpot_ms": 12.484383147637695,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8087,
+              "duration": 4.870597438000004
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "054ebd5fa08bc0129e7a2fd677def21aba7be6dbba3dec9c7377298e387cd956",
+              "output_throughput": 1701.7304429822757,
+              "p95_ttft_ms": 278.1053153998755,
+              "p95_tpot_ms": 12.290599865747476,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8147,
+              "duration": 4.787479729000097
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "013952fcf961dd61253f7440fd5eb3a4f52db0570775567829e5c85c93239d66",
+              "output_throughput": 1706.2837827846527,
+              "p95_ttft_ms": 277.86255174989947,
+              "p95_tpot_ms": 12.925288520079276,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8111,
+              "duration": 4.75360551499989
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 32,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "4390d9e679422ff3e4805f4d8064fc72efa88c0b735cc4cc24724caa52662d1a",
+              "output_throughput": 2168.279465105269,
+              "p95_ttft_ms": 446.74091790004695,
+              "p95_tpot_ms": 13.615050421960694,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8092,
+              "duration": 3.731991253999695
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "e7eb7052ea406a140535a7e1ba92dec2d8ca8da547b35445fec01e5f0ee62659",
+              "output_throughput": 2247.7987763085703,
+              "p95_ttft_ms": 349.4375850001916,
+              "p95_tpot_ms": 13.56534735708522,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8159,
+              "duration": 3.62977330800004
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "57302234935fa51bb5b981dd6bbae1477fe45b50087258aed01db2b62ac9fc57",
+              "output_throughput": 2260.9519584201666,
+              "p95_ttft_ms": 365.60498404978716,
+              "p95_tpot_ms": 13.483989287794795,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8156,
+              "duration": 3.6073300759999256
+            }
+          ]
+        }
+      ]
+    },
+    "mtp-dynamic-smooth": {
+      "spec": {
+        "method": "mtp",
+        "num_speculative_tokens": 6,
+        "num_speculative_tokens_per_batch_size": [
+          [
+            1,
+            4,
+            6
+          ],
+          [
+            5,
+            32,
+            5
+          ]
+        ]
+      },
+      "baseline": "normal-mtp",
+      "rows": [
+        {
+          "workload": "spec-bench",
+          "concurrency": 1,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "2d30880d1fa2209216d05519ac5d600a2a364cd531bab04c3de7b40cdcdc0bf0",
+              "output_throughput": 258.3417704711855,
+              "p95_ttft_ms": 74.72932769978792,
+              "p95_tpot_ms": 4.999384757876593,
+              "spec_decode_acceptance_rate": 43.50954478707783,
+              "total_output_tokens": 8120,
+              "duration": 31.431231524000395
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "191317dcb7a3e385e486ef8644888215bffd03b2b910222a02e09430bc7b47bc",
+              "output_throughput": 261.649418537429,
+              "p95_ttft_ms": 58.57556794990158,
+              "p95_tpot_ms": 4.731630479528668,
+              "spec_decode_acceptance_rate": 43.7362152624614,
+              "total_output_tokens": 8155,
+              "duration": 31.167659556000217
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "aad55b3712341e9821ceefb42735b6785301c29a42cc61c8a4f5ebec54e605d0",
+              "output_throughput": 262.8903268873217,
+              "p95_ttft_ms": 57.40729505027952,
+              "p95_tpot_ms": 4.843649036615358,
+              "spec_decode_acceptance_rate": 44.00089206066012,
+              "total_output_tokens": 8117,
+              "duration": 30.87599340800034
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 2,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "41a87df32ee91fbf34d5f116435589b253b2ce52fe4c1ce936fdd832c45f70a0",
+              "output_throughput": 468.8342536615269,
+              "p95_ttft_ms": 94.46038010016764,
+              "p95_tpot_ms": 4.96729039685066,
+              "spec_decode_acceptance_rate": 43.6420026583961,
+              "total_output_tokens": 8126,
+              "duration": 17.332351330000165
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "685872f0e64e21276441adeae3b8be854a65212fbaeab6a8ef5cc515dd5d1006",
+              "output_throughput": 459.34824081573504,
+              "p95_ttft_ms": 92.71962950008393,
+              "p95_tpot_ms": 5.136898281890123,
+              "spec_decode_acceptance_rate": 42.79513888888889,
+              "total_output_tokens": 8161,
+              "duration": 17.766477097000006
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "936b6f47c579a1adc2c4da09fd190ab5dbf8d024bc207ba9bd17d6c3d491d179",
+              "output_throughput": 474.21768819940434,
+              "p95_ttft_ms": 75.53157619981903,
+              "p95_tpot_ms": 5.1949061511813275,
+              "spec_decode_acceptance_rate": 44.31381248151435,
+              "total_output_tokens": 8179,
+              "duration": 17.24735327999997
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 4,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "9658d7add8a27ace629dba105ca48c8c31f323e26397fdcfed7f9fabee9cc06a",
+              "output_throughput": 824.2354416084031,
+              "p95_ttft_ms": 94.76991594988243,
+              "p95_tpot_ms": 5.643925147242902,
+              "spec_decode_acceptance_rate": 44.94949494949495,
+              "total_output_tokens": 8100,
+              "duration": 9.827289134999774
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "8878019fc0942093d917a6eebb0727b82b3796526f038e957d7978bdd1888a09",
+              "output_throughput": 822.1022443604619,
+              "p95_ttft_ms": 83.38910950033095,
+              "p95_tpot_ms": 5.551183638188799,
+              "spec_decode_acceptance_rate": 43.343607808601206,
+              "total_output_tokens": 8137,
+              "duration": 9.89779562800004
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "c93dd364e2a68ed1dba844063dc8406e418ea23175c2957176ed3212db146b6f",
+              "output_throughput": 855.1301766026688,
+              "p95_ttft_ms": 86.5470483000763,
+              "p95_tpot_ms": 5.680353442520339,
+              "spec_decode_acceptance_rate": 44.84288076980905,
+              "total_output_tokens": 8120,
+              "duration": 9.495630281999638
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 8,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "a2d012c4cb15558e25bb1686e6bab80fc444d050d57b61ece26f205946ae91eb",
+              "output_throughput": 1313.7567254152505,
+              "p95_ttft_ms": 127.2891104998962,
+              "p95_tpot_ms": 6.832367144878966,
+              "spec_decode_acceptance_rate": 49.807938540332906,
+              "total_output_tokens": 8113,
+              "duration": 6.175420337000105
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "0f5c7bf5cd0f64c16743d669cf3091fcc63e8955aee6619d6ffb0422d0ca819b",
+              "output_throughput": 1322.097245627146,
+              "p95_ttft_ms": 98.88044184988298,
+              "p95_tpot_ms": 6.854334613782212,
+              "spec_decode_acceptance_rate": 48.05055344457294,
+              "total_output_tokens": 8182,
+              "duration": 6.188652178999746
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "e248b0a49febacfe107b87a97b73239d66c1f4a7e0d9b11916218773276a41a5",
+              "output_throughput": 1369.467907573925,
+              "p95_ttft_ms": 105.39479040003242,
+              "p95_tpot_ms": 6.5161610866142805,
+              "spec_decode_acceptance_rate": 50.20149189745349,
+              "total_output_tokens": 8156,
+              "duration": 5.95559775799984
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 16,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "8008f5751682ef1bd19378b8b040e654fa15ad7db1aa17cdf25b98b91f41007a",
+              "output_throughput": 2052.738283324252,
+              "p95_ttft_ms": 214.36174615002983,
+              "p95_tpot_ms": 8.645055952362647,
+              "spec_decode_acceptance_rate": 49.575046744858064,
+              "total_output_tokens": 8117,
+              "duration": 3.9542303399998673
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "18a72de37b27412e9eb0a905e53fe72327442e8f096005c2dec6d701ef078d86",
+              "output_throughput": 2072.3143135435676,
+              "p95_ttft_ms": 193.46348775000024,
+              "p95_tpot_ms": 8.244866323229331,
+              "spec_decode_acceptance_rate": 48.49369940749395,
+              "total_output_tokens": 8149,
+              "duration": 3.932318542000303
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "0c57a957f7a30a247476622d9197779e7186e36ec153cb7d90a4779fbcf70507",
+              "output_throughput": 2092.1038817491853,
+              "p95_ttft_ms": 180.66272929977458,
+              "p95_tpot_ms": 8.085965360235274,
+              "spec_decode_acceptance_rate": 50.52694713392169,
+              "total_output_tokens": 8152,
+              "duration": 3.8965560319998076
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 24,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "3620fddf3a9920909c8dcfa43949e006f5d704e7031b008139cdb3941d9eb47a",
+              "output_throughput": 2321.029040471015,
+              "p95_ttft_ms": 357.79090185014866,
+              "p95_tpot_ms": 10.426614225588931,
+              "spec_decode_acceptance_rate": 49.321458863443596,
+              "total_output_tokens": 8095,
+              "duration": 3.487677172000076
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "1f5982456e07dfe73c8fbb96ea80c3943c4558512164a4cbddfe59f9b0f01655",
+              "output_throughput": 2497.4613317781277,
+              "p95_ttft_ms": 306.15525349990094,
+              "p95_tpot_ms": 10.364280678346208,
+              "spec_decode_acceptance_rate": 48.763162293163965,
+              "total_output_tokens": 8176,
+              "duration": 3.27372435999996
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "a089f86104cb3dc0a68e806d0c211bf1296605c2ce5b0a50582460c2c513f600",
+              "output_throughput": 2561.948438727878,
+              "p95_ttft_ms": 287.78241915015315,
+              "p95_tpot_ms": 9.72025767480264,
+              "spec_decode_acceptance_rate": 50.939312613626534,
+              "total_output_tokens": 8142,
+              "duration": 3.178049908000048
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 32,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "882b79a50676e574f720683d6c24fc941824643db57768d6938c53cc7af8a631",
+              "output_throughput": 2696.015235375057,
+              "p95_ttft_ms": 518.8812335998591,
+              "p95_tpot_ms": 11.40163617413779,
+              "spec_decode_acceptance_rate": 50.56394239111574,
+              "total_output_tokens": 8087,
+              "duration": 2.99961212900007
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "045be481d3ad1c59d3173221a21e11f3aa9817bbc5706618f8725af0a330c10b",
+              "output_throughput": 2831.0968877776863,
+              "p95_ttft_ms": 405.42177675006286,
+              "p95_tpot_ms": 11.542609067321175,
+              "spec_decode_acceptance_rate": 48.97565071368598,
+              "total_output_tokens": 8155,
+              "duration": 2.880508976999863
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "6de000f98c3b358bb1ad049f5398becec10069ff0c1d7065bb588ee045247b9a",
+              "output_throughput": 2747.9016595965945,
+              "p95_ttft_ms": 542.9299734501228,
+              "p95_tpot_ms": 11.471287826375873,
+              "spec_decode_acceptance_rate": 50.83139484793659,
+              "total_output_tokens": 8164,
+              "duration": 2.9709942389999924
+            }
+          ]
+        }
+      ]
+    },
+    "normal-dspark": {
+      "spec": null,
+      "baseline": null,
+      "rows": [
+        {
+          "workload": "spec-bench",
+          "concurrency": 1,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "d0bb311ff254f87f3f0c70c1470ec4e0a1e05ca692ab4cde07c65ea757627109",
+              "output_throughput": 117.53429348763214,
+              "p95_ttft_ms": 67.24571424983873,
+              "p95_tpot_ms": 8.423030122832829,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8090,
+              "duration": 68.83097485799999
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "df00785bded5b3aac73fa0cfba3112012b2f1b48c88cd6c9a7d6af6c9250ee34",
+              "output_throughput": 117.66208537937554,
+              "p95_ttft_ms": 49.97489340021275,
+              "p95_tpot_ms": 8.39991375748189,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8164,
+              "duration": 69.38513773300019
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "1a42bba58f944f0ae4967f285709081bc0551fb734402d3b4a21693a0ecd255d",
+              "output_throughput": 117.70323524992813,
+              "p95_ttft_ms": 51.86406635039019,
+              "p95_tpot_ms": 8.39425449251655,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8118,
+              "duration": 68.97006681899984
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 2,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "cf3952c78e57761605da586fae9af092067171f74c57ce029724a27dcc361816",
+              "output_throughput": 222.94658041383622,
+              "p95_ttft_ms": 76.98089314976642,
+              "p95_tpot_ms": 8.999000973624172,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8122,
+              "duration": 36.43025152000018
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "dc77bed9f729007398e5e6acbdca25356e0cbdfcef32505c7117538ac3b98184",
+              "output_throughput": 223.43026653478165,
+              "p95_ttft_ms": 59.07163050021608,
+              "p95_tpot_ms": 8.913186889762123,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8169,
+              "duration": 36.56174307399988
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "9ab20dd6d7f3c4beff46e414ead12db60dd81827117f1c164d494c94ef061a5a",
+              "output_throughput": 223.87774215448934,
+              "p95_ttft_ms": 60.28840195015164,
+              "p95_tpot_ms": 8.874354357084929,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8118,
+              "duration": 36.26086238799962
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 4,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "d08ed51bbae567e3e4bc488152a4c1a720cb7691edb0af1c68934350773e82d2",
+              "output_throughput": 422.25134511308323,
+              "p95_ttft_ms": 102.48658425002759,
+              "p95_tpot_ms": 9.321705592126131,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8085,
+              "duration": 19.147363515999587
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "a8686c8106b8d6faeddd57f2d738f6db08c4bfb02b2a956f9b8c22217824ab13",
+              "output_throughput": 429.01930978353283,
+              "p95_ttft_ms": 103.1570932999557,
+              "p95_tpot_ms": 9.205634778740434,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8176,
+              "duration": 19.057417261999944
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "b63bd51b5558346ef9dc166f9af4768837609141f526c3ffb4fda9291a548e58",
+              "output_throughput": 426.93081748435094,
+              "p95_ttft_ms": 73.95852009990449,
+              "p95_tpot_ms": 9.259201420868486,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8119,
+              "duration": 19.017132677000063
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 8,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "5a05a69c014ca25317b3a54b9695b4d4f9afb0904b511a6d7f7545b23401c348",
+              "output_throughput": 776.1816683345567,
+              "p95_ttft_ms": 173.36458775025676,
+              "p95_tpot_ms": 10.118925078108987,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8085,
+              "duration": 10.416375868999694
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "177c94a7c4e68f31c2a626282dc5577d4cb520e00cfd8785c880262183a3c6bc",
+              "output_throughput": 795.5318845354818,
+              "p95_ttft_ms": 150.537252550248,
+              "p95_tpot_ms": 9.87442165551096,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8161,
+              "duration": 10.258545456999855
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "76f2430fef5694e837d0c8b98f8f6c083c68c04ca9a91fe569d89a8fd2334292",
+              "output_throughput": 797.8705650879884,
+              "p95_ttft_ms": 114.97115759998451,
+              "p95_tpot_ms": 9.891862409842082,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8156,
+              "duration": 10.222209411999756
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 16,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "320a3524b25ad9f1a597ea041b9b3116c5afb2cdd1de5d5e228c7d2a6dbb3f94",
+              "output_throughput": 1375.363254121143,
+              "p95_ttft_ms": 269.41980125020564,
+              "p95_tpot_ms": 11.131664440158529,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8095,
+              "duration": 5.885717809999733
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "6c215430cd2fe103d110de647d7daa62390e5fec20d4a2db8bc0a594c3b5c315",
+              "output_throughput": 1407.1143831635345,
+              "p95_ttft_ms": 210.10253294996346,
+              "p95_tpot_ms": 10.910460230707388,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8152,
+              "duration": 5.793416723999599
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "2663e5ae12c8043573ca07115e15b0caf58c0d34983b2d866fc963aca91b946a",
+              "output_throughput": 1412.4208804479943,
+              "p95_ttft_ms": 190.77490379995652,
+              "p95_tpot_ms": 10.965496409842913,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8156,
+              "duration": 5.774482743000135
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 24,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "4ce4ae56d249be758a493516f672e7527f0a8358c2739aa918458b2441496c90",
+              "output_throughput": 1675.6183702756884,
+              "p95_ttft_ms": 323.5145590502725,
+              "p95_tpot_ms": 12.565455869291979,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8110,
+              "duration": 4.840004229999977
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "0c569ef798a3020fab6d70afff12bb54605693f3be4d6fce2a1ff1e32d543f96",
+              "output_throughput": 1710.4363037378423,
+              "p95_ttft_ms": 278.21176525021656,
+              "p95_tpot_ms": 12.225900081888515,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8147,
+              "duration": 4.7631121849999545
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "8e0ebccc884f3eed6d934aaa57a7ddcd76838d63f6c7be8b2785c22c19c88cec",
+              "output_throughput": 1722.891830388682,
+              "p95_ttft_ms": 276.50856454990844,
+              "p95_tpot_ms": 12.863687770078199,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8119,
+              "duration": 4.712425850999807
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 32,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "c17dcadfb831aea6b48164af61eadae7f4956220e9fd4b65fb72cde59e51049f",
+              "output_throughput": 2182.1669007772443,
+              "p95_ttft_ms": 449.5684313502352,
+              "p95_tpot_ms": 14.149375231888875,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8092,
+              "duration": 3.7082406469999114
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "abe74b181224dd2b23d327a68611c653da9e180f92ebcdb19056110924824800",
+              "output_throughput": 2252.5698260229124,
+              "p95_ttft_ms": 345.42199219990835,
+              "p95_tpot_ms": 13.528506981890857,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8159,
+              "duration": 3.6220852760002344
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "c0ae8aae35622b023e9ea1e8086b79977f0d898643902bea26b38a7bfaf1902a",
+              "output_throughput": 2258.6878000968345,
+              "p95_ttft_ms": 368.88103614983265,
+              "p95_tpot_ms": 13.44919362952874,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8156,
+              "duration": 3.6109461429996372
+            }
+          ]
+        }
+      ]
+    },
+    "dspark-triton-k8": {
+      "spec": {
+        "method": "dspark",
+        "num_speculative_tokens": 8,
+        "quantization": "fp8_per_tensor",
+        "attention_backend": "TRITON_ATTN"
+      },
+      "baseline": "normal-dspark",
+      "rows": [
+        {
+          "workload": "spec-bench",
+          "concurrency": 1,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "8244395f9e752ed3fe26a325092dbdc31ba614875e7780fa0db138a5d95e7af7",
+              "output_throughput": 337.208102595943,
+              "p95_ttft_ms": 72.45148054996656,
+              "p95_tpot_ms": 3.827287123226775,
+              "spec_decode_acceptance_rate": 40.11806981519507,
+              "total_output_tokens": 8118,
+              "duration": 24.074154617000204
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "245093029cddfec48d3b37215386f076dabbe0ef059cab6886a9ebb77994184e",
+              "output_throughput": 345.21462004396915,
+              "p95_ttft_ms": 56.747954999991634,
+              "p95_tpot_ms": 3.4183679169297725,
+              "spec_decode_acceptance_rate": 40.92030114226376,
+              "total_output_tokens": 8172,
+              "duration": 23.672230333000243
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "ad513785182cc26a14e087f4edb675b48b34b9ba8cedb15acae25324914e894a",
+              "output_throughput": 344.7250155778041,
+              "p95_ttft_ms": 54.627684700176346,
+              "p95_tpot_ms": 3.6859653657492033,
+              "spec_decode_acceptance_rate": 40.66855962829117,
+              "total_output_tokens": 8179,
+              "duration": 23.726157460000195
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 2,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "64b23723efea2f2df6e6d3c691abb83f3f2f144f75b7e5d3ee022d1a9bdfcbe8",
+              "output_throughput": 576.9834646332396,
+              "p95_ttft_ms": 90.68199939993063,
+              "p95_tpot_ms": 4.10905807873978,
+              "spec_decode_acceptance_rate": 40.82204273058885,
+              "total_output_tokens": 8081,
+              "duration": 14.005600671999673
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "a83f5714b976f8e1dbf009aefb999bbef1c4a7c3555cd421ca591585437f4cc6",
+              "output_throughput": 573.0398227179738,
+              "p95_ttft_ms": 77.36167394975831,
+              "p95_tpot_ms": 3.9793506866134707,
+              "spec_decode_acceptance_rate": 39.810126582278485,
+              "total_output_tokens": 8164,
+              "duration": 14.246828364000066
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "49efdbc2daf9a837c1171476d7eb33e9453b49535392b6455bb9f82729c2bfae",
+              "output_throughput": 593.4632700853869,
+              "p95_ttft_ms": 73.64499824989252,
+              "p95_tpot_ms": 3.9863903171363253,
+              "spec_decode_acceptance_rate": 41.57936092194866,
+              "total_output_tokens": 8179,
+              "duration": 13.781813318999866
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 4,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "6ced2eebbb39d4741c67cb576d2620dbee744b8aa62b572119d805f33bc9251e",
+              "output_throughput": 928.1011287405312,
+              "p95_ttft_ms": 95.1413948999061,
+              "p95_tpot_ms": 5.3258461678924665,
+              "spec_decode_acceptance_rate": 40.23497688751926,
+              "total_output_tokens": 8121,
+              "duration": 8.750124042000152
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "3b7b694f3c60f424f7f819e333a146b96be735c42c352b6ae5b605b09cdad2d4",
+              "output_throughput": 956.2102426948087,
+              "p95_ttft_ms": 91.04990905022981,
+              "p95_tpot_ms": 4.880732409053883,
+              "spec_decode_acceptance_rate": 39.77791878172589,
+              "total_output_tokens": 8158,
+              "duration": 8.531596541999988
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "3df08f1e02161d4555f5af54a6bfbf9ae4f3be03a6dccf96ec23bc9440a74cfd",
+              "output_throughput": 979.4709090214564,
+              "p95_ttft_ms": 92.03739224997202,
+              "p95_tpot_ms": 5.146328226377533,
+              "spec_decode_acceptance_rate": 41.79339276350289,
+              "total_output_tokens": 8185,
+              "duration": 8.35655242499979
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 8,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "4ca73eec6b0ec58bdff5ee3553c9003e92b3f0ddc9eafdf61fd4e947705d5d7e",
+              "output_throughput": 1526.571592115131,
+              "p95_ttft_ms": 148.57683870027358,
+              "p95_tpot_ms": 6.188553538942783,
+              "spec_decode_acceptance_rate": 40.99869451697128,
+              "total_output_tokens": 8117,
+              "duration": 5.317143357000077
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "3c62beebfe6bc6416efc546fbf9d4b67a9b0e4db097022a16f3dec67a065d412",
+              "output_throughput": 1539.4819305132594,
+              "p95_ttft_ms": 94.8811992501305,
+              "p95_tpot_ms": 5.930547129132109,
+              "spec_decode_acceptance_rate": 39.633062468258004,
+              "total_output_tokens": 8136,
+              "duration": 5.284894767999958
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "5e7ac66a861b0cd1c31ffd69dc105eeb8ba8d8183d5a06cd8c479fe303491cc4",
+              "output_throughput": 1558.5179280119762,
+              "p95_ttft_ms": 105.34116479980185,
+              "p95_tpot_ms": 6.313036040944285,
+              "spec_decode_acceptance_rate": 41.05276907001045,
+              "total_output_tokens": 8117,
+              "duration": 5.208153113999742
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 16,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "682fa6c7a4a0e342aeac271fd22df7704f275a5855c475057eb2bd169d741652",
+              "output_throughput": 2164.803145463136,
+              "p95_ttft_ms": 222.01284015031888,
+              "p95_tpot_ms": 8.02491950211945,
+              "spec_decode_acceptance_rate": 41.70448478376935,
+              "total_output_tokens": 8042,
+              "duration": 3.714887433000058
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "0cc1ce75a7229e17cd78c3d92e879ad89476b9209225cc134564c462cdcb62cc",
+              "output_throughput": 2255.0107061978515,
+              "p95_ttft_ms": 197.49630414980857,
+              "p95_tpot_ms": 7.811505601969792,
+              "spec_decode_acceptance_rate": 40.807117070654975,
+              "total_output_tokens": 8175,
+              "duration": 3.6252599499998723
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "6c530f6771c4ef546623e42e3c92ee154483cfb67cf28f9d2cee175902c5bc11",
+              "output_throughput": 2279.5922080969767,
+              "p95_ttft_ms": 189.9947124500386,
+              "p95_tpot_ms": 8.304599113385867,
+              "spec_decode_acceptance_rate": 41.39601885804086,
+              "total_output_tokens": 8170,
+              "duration": 3.583974349000073
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 24,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "5bf4c3de358d2f3b72e5c9152c670364e66eb6edaa8be431509d7016e4a9ec9d",
+              "output_throughput": 2406.0903686134207,
+              "p95_ttft_ms": 359.47188364982594,
+              "p95_tpot_ms": 11.217817681495928,
+              "spec_decode_acceptance_rate": 40.13596716264751,
+              "total_output_tokens": 8105,
+              "duration": 3.3685351580002134
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "5adebbb04cbfd980167dc054f3ae89301bf7d7729fdbb3444515218c49460fdf",
+              "output_throughput": 2579.464481543302,
+              "p95_ttft_ms": 314.07518640037324,
+              "p95_tpot_ms": 10.237264468111507,
+              "spec_decode_acceptance_rate": 40.182677567705674,
+              "total_output_tokens": 8183,
+              "duration": 3.17236389899972
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "a1ee8538603c866d30c6ab73f12ca3da377a988af0ddf172562338d48ef34684",
+              "output_throughput": 2628.333295450669,
+              "p95_ttft_ms": 297.3971173000564,
+              "p95_tpot_ms": 10.390476983069865,
+              "spec_decode_acceptance_rate": 41.3003663003663,
+              "total_output_tokens": 8179,
+              "duration": 3.1118580030001795
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 32,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "03d9dc20be7cc44bb8e8135d400b7999c2059153593a47cf9eccfc9bec0e8dc8",
+              "output_throughput": 2622.748347013834,
+              "p95_ttft_ms": 468.31806615007275,
+              "p95_tpot_ms": 12.147536875198156,
+              "spec_decode_acceptance_rate": 40.349406910778754,
+              "total_output_tokens": 8109,
+              "duration": 3.0917949140002747
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "5d9fbfc6c74f4b47ab703f7d07f82476bb8fb43f5ccc8dc146afde63edcb54d2",
+              "output_throughput": 2730.603542510179,
+              "p95_ttft_ms": 405.01019100029225,
+              "p95_tpot_ms": 13.160108572832552,
+              "spec_decode_acceptance_rate": 40.58959835221421,
+              "total_output_tokens": 8170,
+              "duration": 2.9920125250000638
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "4812793e1fe8ed237feb9bd366bbac74fb9c9d33adddaf72cbbe7b122bad7736",
+              "output_throughput": 2768.359192735913,
+              "p95_ttft_ms": 413.53016154971556,
+              "p95_tpot_ms": 12.616525885824363,
+              "spec_decode_acceptance_rate": 41.63157894736842,
+              "total_output_tokens": 8158,
+              "duration": 2.94687193100026
+            }
+          ]
+        }
+      ]
+    },
+    "normal-dflash": {
+      "spec": null,
+      "baseline": null,
+      "rows": [
+        {
+          "workload": "spec-bench",
+          "concurrency": 1,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "1c7cb0c006938a39be3b690aabaf842b92b4428e6bf04ffeb43d899d49ae2b69",
+              "output_throughput": 115.71927723821356,
+              "p95_ttft_ms": 68.14638589967211,
+              "p95_tpot_ms": 8.555797128741954,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8090,
+              "duration": 69.91056454099999
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "abb4acd7b9d024274530437dce07641a80b6774beb9959696a78a44a00e8b36f",
+              "output_throughput": 115.95249153470449,
+              "p95_ttft_ms": 51.172044199847726,
+              "p95_tpot_ms": 8.535246490549707,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8164,
+              "duration": 70.40814640500002
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "8c0c34673ac0bf9c58bb2d541bc8b97aa7afc1388d972950992da2cd0bf23061",
+              "output_throughput": 116.04965204496298,
+              "p95_ttft_ms": 50.431231099719284,
+              "p95_tpot_ms": 8.519916573228924,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8118,
+              "duration": 69.9528163760001
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 2,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "9264cd2d4c82e149234b902ce01742359ae0482ebde943ed9da9f76cbf8fdd2e",
+              "output_throughput": 219.81679003940448,
+              "p95_ttft_ms": 76.70682189998388,
+              "p95_tpot_ms": 9.115735736612784,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8122,
+              "duration": 36.94895189099998
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "b754019db9275a10805201c7e22c29b08b862fe034a9e936dbda5ddac546e507",
+              "output_throughput": 220.5171307324288,
+              "p95_ttft_ms": 59.55881034994945,
+              "p95_tpot_ms": 9.030004436222114,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8169,
+              "duration": 37.04474102700033
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "0f33bde1522388d18057ad59685da32513cc2ed966b464810be9eab499003f5e",
+              "output_throughput": 220.79389897102374,
+              "p95_ttft_ms": 60.44999150021795,
+              "p95_tpot_ms": 9.006450566535632,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8118,
+              "duration": 36.76732028300012
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 4,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "69482a731f3a011fa7f9a354ee7d2411bf202652bc9e34a8959a2a90159edf67",
+              "output_throughput": 417.9049418170123,
+              "p95_ttft_ms": 102.87694645019201,
+              "p95_tpot_ms": 9.437019790550226,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8085,
+              "duration": 19.34650488899979
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "e514c21aff15ebc163ef9d49dc42b7ad347397850c05d3dd04217f234d73ecfb",
+              "output_throughput": 424.2985795605853,
+              "p95_ttft_ms": 102.99276534976798,
+              "p95_tpot_ms": 9.307365749606737,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8176,
+              "duration": 19.26944937799999
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "71061a8c7dc2c54dedd0dc34cd48bec59634eaaf6df1226bbad52c678bb53e05",
+              "output_throughput": 422.66047862900103,
+              "p95_ttft_ms": 73.88187539982027,
+              "p95_tpot_ms": 9.347062237402747,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8119,
+              "duration": 19.20927176899977
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 8,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "841492879b6b0f14e66464095d1f64b4a31795c2ce3e5e73314d6c1118ae82bd",
+              "output_throughput": 771.6558007179235,
+              "p95_ttft_ms": 165.63361694986725,
+              "p95_tpot_ms": 10.23259025154124,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8085,
+              "duration": 10.477469348999875
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "e8f1c9262c13a40492e00afe442bbcc9cdc70ef8cbcbcf064ad66c3325227b2d",
+              "output_throughput": 788.4302583978509,
+              "p95_ttft_ms": 152.03695984982915,
+              "p95_tpot_ms": 9.977441100787065,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8161,
+              "duration": 10.350947231000191
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "e0d8bbe83d9383e9b18f3bef2c15f2ff04ccc806d2822998c76ac6295270cd62",
+              "output_throughput": 790.8125253148893,
+              "p95_ttft_ms": 113.62102009989029,
+              "p95_tpot_ms": 9.975439880709985,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8156,
+              "duration": 10.313443121999626
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 16,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "31e52f24449581c7224b53696d2302a0cbb2be1c5731e48f075e64ead4ac90b3",
+              "output_throughput": 1369.1559554607006,
+              "p95_ttft_ms": 269.1523300000199,
+              "p95_tpot_ms": 11.183579896455704,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8095,
+              "duration": 5.912401700999908
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "6b70c232611b90fd831d457261446b67539555d40ea5b595a778771989e246ef",
+              "output_throughput": 1400.0308201534572,
+              "p95_ttft_ms": 209.32114109984923,
+              "p95_tpot_ms": 11.013062789370414,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8152,
+              "duration": 5.82272895899996
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "b82d659ed3cf41b7a20113fa851d5cc69540b1e9b4e1223e9c36b8616ece3d6c",
+              "output_throughput": 1410.1691109445953,
+              "p95_ttft_ms": 182.6639535998538,
+              "p95_tpot_ms": 10.956330679921553,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8156,
+              "duration": 5.783703484000398
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 24,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "1d5067433d94b135becba8a6edbdf3a30fae27f0e62e20fdae9d45376a6c4cb7",
+              "output_throughput": 1668.509523075539,
+              "p95_ttft_ms": 325.4449464001027,
+              "p95_tpot_ms": 12.17348945472454,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8100,
+              "duration": 4.854632166000101
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "6cd5cdb499c46b3011c0061cf59cd58a620efc4a75c3787a85d51cd31f13f9df",
+              "output_throughput": 1707.1563944928257,
+              "p95_ttft_ms": 276.2517813999011,
+              "p95_tpot_ms": 12.21820055629887,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8147,
+              "duration": 4.772263412000029
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "5caebe2d81378e12e495871866fced0abb1c7a58114def51b147e25ad583f222",
+              "output_throughput": 1722.5957977405287,
+              "p95_ttft_ms": 284.5473069998206,
+              "p95_tpot_ms": 12.754679356690776,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8149,
+              "duration": 4.730651270999715
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 32,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "1215aeb91064c444a0b11a5f6003c10809899006281ffb880938f6efe5762fa8",
+              "output_throughput": 2147.8440196413517,
+              "p95_ttft_ms": 428.35129624982073,
+              "p95_tpot_ms": 13.621791584519864,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8075,
+              "duration": 3.759583994999957
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "0bbb408327c52fa1b598ecdeb98ea3b3971751fb9f27c7e300fc86a7e790bd7e",
+              "output_throughput": 2244.8694036673432,
+              "p95_ttft_ms": 351.8167490001133,
+              "p95_tpot_ms": 13.485388059056756,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8159,
+              "duration": 3.6345098679998955
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "5db41057b209b71449a6573d7c6a3fd62d4c56576d87cc99f0b288b0b385183f",
+              "output_throughput": 2257.8866059485226,
+              "p95_ttft_ms": 360.00478399998883,
+              "p95_tpot_ms": 13.334547983857005,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8151,
+              "duration": 3.610012999999981
+            }
+          ]
+        }
+      ]
+    },
+    "dflash2-mxfp8": {
+      "spec": {
+        "method": "dflash",
+        "num_speculative_tokens": 7,
+        "quantization": "mxfp8"
+      },
+      "baseline": "normal-dflash",
+      "rows": [
+        {
+          "workload": "spec-bench",
+          "concurrency": 1,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "c615d9d02835f48cb32dd7ee64fbf30ae2596aeea2a54b991672a5e6a3ad20d9",
+              "output_throughput": 354.031785651173,
+              "p95_ttft_ms": 72.53322830001702,
+              "p95_tpot_ms": 3.582562483858792,
+              "spec_decode_acceptance_rate": 47.52370916754479,
+              "total_output_tokens": 8120,
+              "duration": 22.935793702999945
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "f826893e5d6c7cdb1d981ce6273234881cd694ddd51cb1a9d0ddf965b4ae3938",
+              "output_throughput": 344.5500047502554,
+              "p95_ttft_ms": 56.458248199965055,
+              "p95_tpot_ms": 3.5768616023630786,
+              "spec_decode_acceptance_rate": 45.24291497975709,
+              "total_output_tokens": 8155,
+              "duration": 23.668552858999647
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "081de45f62730f8fd39bbadc251a3e12a5ae4407669e3ac156f719b7808f8740",
+              "output_throughput": 361.8588354505818,
+              "p95_ttft_ms": 54.98952544992331,
+              "p95_tpot_ms": 3.494753676379446,
+              "spec_decode_acceptance_rate": 48.332823493423064,
+              "total_output_tokens": 8117,
+              "duration": 22.431399221999982
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 2,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "64b01d23b3fc55af242597f53ccb2ee1a7725663d704e4a0d1918138521e62e2",
+              "output_throughput": 609.9416448918209,
+              "p95_ttft_ms": 94.71216130032185,
+              "p95_tpot_ms": 3.8272534858251888,
+              "spec_decode_acceptance_rate": 47.029740055434864,
+              "total_output_tokens": 8109,
+              "duration": 13.294714449999901
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "7b7121b3a834674c7bbcb1599603027859849bc9d24be28d188f3185fd40fffa",
+              "output_throughput": 609.905609725291,
+              "p95_ttft_ms": 76.82682235015359,
+              "p95_tpot_ms": 3.782018231495708,
+              "spec_decode_acceptance_rate": 46.38612033960871,
+              "total_output_tokens": 8146,
+              "duration": 13.356165068999871
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "acc8db639a6edbb0669c987d7bc3eccd80ce10e75ec63c1611399f30a823ded1",
+              "output_throughput": 622.119479140022,
+              "p95_ttft_ms": 81.00756560008902,
+              "p95_tpot_ms": 4.057289234249829,
+              "spec_decode_acceptance_rate": 47.90810893047315,
+              "total_output_tokens": 8118,
+              "duration": 13.048940391999622
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 4,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "288bc2366d00cb1dce37b94ceb5d2b8f848f8801a99c1da31dbb5eebab7c40f6",
+              "output_throughput": 1031.8412905253672,
+              "p95_ttft_ms": 97.69332430003028,
+              "p95_tpot_ms": 4.612615456693402,
+              "spec_decode_acceptance_rate": 46.19666048237477,
+              "total_output_tokens": 8090,
+              "duration": 7.840353041000071
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "2ef8435aecf690594b5e47f3bd4e91b6d5fc7bea3bd09e153776472e2f160e2d",
+              "output_throughput": 1030.7493826293764,
+              "p95_ttft_ms": 92.11084430012306,
+              "p95_tpot_ms": 4.565102897241937,
+              "spec_decode_acceptance_rate": 45.93304947878432,
+              "total_output_tokens": 8148,
+              "duration": 7.904928334000033
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "6df3b0b59f3c483397a5009d4772481dd7f61b9408eaec99a370ae20b607b3f7",
+              "output_throughput": 1076.9230816579986,
+              "p95_ttft_ms": 82.96440950011856,
+              "p95_tpot_ms": 4.365403361812134,
+              "spec_decode_acceptance_rate": 48.192310632118016,
+              "total_output_tokens": 8118,
+              "duration": 7.538142823999806
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 8,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "086abb702dc0b08a49bee895492767f511b2614d85e1083a562b661d6c323f03",
+              "output_throughput": 1318.700747312791,
+              "p95_ttft_ms": 526.4083297497564,
+              "p95_tpot_ms": 7.048305150786605,
+              "spec_decode_acceptance_rate": 46.48243072580046,
+              "total_output_tokens": 8109,
+              "duration": 6.1492344009998305
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "2233e5aa0ae98452706f0d18558a47f63bb3623c66d370797aeca4f9b0133a84",
+              "output_throughput": 1433.8323603623473,
+              "p95_ttft_ms": 96.90616625005076,
+              "p95_tpot_ms": 6.661709918895269,
+              "spec_decode_acceptance_rate": 46.78162628214657,
+              "total_output_tokens": 8147,
+              "duration": 5.681975260999934
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "2f83a1b4a9f82b77580ef20967a7309196dadf27ccede63f2320dccb7f941e2f",
+              "output_throughput": 1418.7995705880367,
+              "p95_ttft_ms": 105.21248835013921,
+              "p95_tpot_ms": 6.609680916142133,
+              "spec_decode_acceptance_rate": 47.37670514165792,
+              "total_output_tokens": 8173,
+              "duration": 5.7605035760002465
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 16,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "2ea50a5e425c660df1405bbcbee7165840b0fb5a152363ac97d19fb13c67400e",
+              "output_throughput": 2293.5742985283946,
+              "p95_ttft_ms": 216.38378440004544,
+              "p95_tpot_ms": 7.786974651575593,
+              "spec_decode_acceptance_rate": 46.58482142857142,
+              "total_output_tokens": 8104,
+              "duration": 3.5333496739999646
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "770813e93458e5751960bf3c628edc057274e84847d4c16c179e9031ee59b02f",
+              "output_throughput": 2405.0111236601215,
+              "p95_ttft_ms": 196.88346845002798,
+              "p95_tpot_ms": 7.331703005116457,
+              "spec_decode_acceptance_rate": 46.55236124454955,
+              "total_output_tokens": 8152,
+              "duration": 3.3895893120002256
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "0a0c49f46a7d4983ba983992058426dac04128515d2a00960b1d58ec3b5da387",
+              "output_throughput": 2475.38659448071,
+              "p95_ttft_ms": 189.112238899952,
+              "p95_tpot_ms": 7.9608292464576955,
+              "spec_decode_acceptance_rate": 48.45848595848596,
+              "total_output_tokens": 8152,
+              "duration": 3.2932229729999563
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 24,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "e479b37e750c00303bd373e0ea29d6f3633e50d2c22fd3658e1bf382d94bd472",
+              "output_throughput": 2058.6438549214963,
+              "p95_ttft_ms": 361.88806785019096,
+              "p95_tpot_ms": 16.666123699607176,
+              "spec_decode_acceptance_rate": 46.91729323308271,
+              "total_output_tokens": 8082,
+              "duration": 3.9258854710001287
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "d16046ad6262e8d82c9b5f70bf65e428655d683782b6c0b815dde5da900db961",
+              "output_throughput": 2794.6585736453126,
+              "p95_ttft_ms": 307.0023153501097,
+              "p95_tpot_ms": 9.370866713778721,
+              "spec_decode_acceptance_rate": 45.57512502717982,
+              "total_output_tokens": 8182,
+              "duration": 2.9277279439997983
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "11309400d085dd0cd58e20989f3e1c04b3175438e457079120eb79c471702bbc",
+              "output_throughput": 2797.456321998377,
+              "p95_ttft_ms": 285.9874715000615,
+              "p95_tpot_ms": 9.746888621550124,
+              "spec_decode_acceptance_rate": 48.48137973137973,
+              "total_output_tokens": 8153,
+              "duration": 2.914433349999854
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 32,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "1af18b0ab695d079a21ad2ce1c46c3e446d7fb22d828117d3915994710902552",
+              "output_throughput": 2192.593417527392,
+              "p95_ttft_ms": 661.0719994998583,
+              "p95_tpot_ms": 18.795464579134595,
+              "spec_decode_acceptance_rate": 47.319524824855314,
+              "total_output_tokens": 8043,
+              "duration": 3.668258754999897
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "5b91e5bc9224d240b65d5a00fa00f538e95d48d5e3a207d173a5682c1a8f2f03",
+              "output_throughput": 2941.2201936359884,
+              "p95_ttft_ms": 530.4807281001104,
+              "p95_tpot_ms": 11.626218474805315,
+              "spec_decode_acceptance_rate": 45.45388420133838,
+              "total_output_tokens": 8157,
+              "duration": 2.7733387719999882
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "151a1f88c6c9514ecab144e43424e45fb728100cca016dd4a1a1e1b2fd0fca8b",
+              "output_throughput": 3043.7156239509723,
+              "p95_ttft_ms": 416.60948400012785,
+              "p95_tpot_ms": 10.995012798424774,
+              "spec_decode_acceptance_rate": 48.55155545364213,
+              "total_output_tokens": 8166,
+              "duration": 2.6829050440001083
+            }
+          ]
+        }
+      ]
+    },
+    "normal-eagle4": {
+      "spec": null,
+      "baseline": null,
+      "rows": [
+        {
+          "workload": "spec-bench",
+          "concurrency": 1,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "32f9b2ed811c0251917ecb7395ef21d206c5d91e56a60dc56edbf2d3b0344011",
+              "output_throughput": 110.23573862982511,
+              "p95_ttft_ms": 72.0622031498351,
+              "p95_tpot_ms": 8.871478164959317,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8123,
+              "duration": 73.68753637400005
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "3505c7084411f62fde493d24c7fc0e2faa3d320ea04fb6fa752df4f1a4225c76",
+              "output_throughput": 110.72962676693578,
+              "p95_ttft_ms": 58.86233655016895,
+              "p95_tpot_ms": 8.818263706691292,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8173,
+              "duration": 73.81041766899989
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "e65f2159e850b187d5cad246a78a410dd9e16022e45c8eaae8e006fd0342d675",
+              "output_throughput": 110.762465821925,
+              "p95_ttft_ms": 60.47637575013594,
+              "p95_tpot_ms": 8.811422266142573,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8150,
+              "duration": 73.58088265300012
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 2,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "8dad4f5e4698ad2d51dcdb7a2e127b64fa86f381983576d712a75f6b145102a6",
+              "output_throughput": 206.36308969522184,
+              "p95_ttft_ms": 104.50519024989262,
+              "p95_tpot_ms": 9.353287157875464,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8117,
+              "duration": 39.33358437300012
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "c24dd121985ccb4504d9d5b4300051b6dedd2e269dcb7a242181c09fb4ebee0e",
+              "output_throughput": 208.0391570345711,
+              "p95_ttft_ms": 92.94974030008234,
+              "p95_tpot_ms": 9.340433011021652,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8159,
+              "duration": 39.21857844599981
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "00b8e35efe812b6c4995922a5bf1aec2bea1e4f79a5314d136f44c15587a71c6",
+              "output_throughput": 208.45480996657207,
+              "p95_ttft_ms": 95.32560215013746,
+              "p95_tpot_ms": 9.259675904329953,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8168,
+              "duration": 39.183552546999636
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 4,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "79e0edbd9c4f6f26b66f95930aa622a794a130f1470c2cbfdf6878e0f399c06e",
+              "output_throughput": 387.4653799911206,
+              "p95_ttft_ms": 119.97282350012028,
+              "p95_tpot_ms": 10.086926082046393,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8063,
+              "duration": 20.809601106000173
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "ad3d26c682f710a6f3ec3fdff9e39005bad65d24b0985f66f098ae366edd32ca",
+              "output_throughput": 389.723988417847,
+              "p95_ttft_ms": 102.05641239992929,
+              "p95_tpot_ms": 10.036798165354977,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8150,
+              "duration": 20.912235947000227
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "15a7e7bf7896cc4c701be2695a993c8c313306fac64e40011562a31fec9e98e8",
+              "output_throughput": 394.0891124221529,
+              "p95_ttft_ms": 100.14859725010865,
+              "p95_tpot_ms": 9.962390129134663,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8134,
+              "duration": 20.640001826000116
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 8,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "5f08a7029fc114fb4b37be483a99f9213ff5b0651be8338c04816e8d53c03af0",
+              "output_throughput": 707.4898538554297,
+              "p95_ttft_ms": 204.2864727001188,
+              "p95_tpot_ms": 11.116175514566354,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8071,
+              "duration": 11.40793745100018
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "ab6fde1ab3aef685fa04b2ab2ab7af62afe04667a2c83a51db91fd65605ff037",
+              "output_throughput": 710.6044348384991,
+              "p95_ttft_ms": 152.67396440003722,
+              "p95_tpot_ms": 11.151125111022818,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8148,
+              "duration": 11.466294889999972
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "b1c32b3c0e92ee143579992cc99447d5a61912dddcef4dafeb7f9be687aecd46",
+              "output_throughput": 727.3956585563787,
+              "p95_ttft_ms": 137.6110404000201,
+              "p95_tpot_ms": 10.598091848030919,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8118,
+              "duration": 11.160363557999972
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 16,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "09b5200d731057c1ba6b6460d721547485ff62afc60e2920c763ae712f2a9fc0",
+              "output_throughput": 1236.9986795267398,
+              "p95_ttft_ms": 296.3513482997996,
+              "p95_tpot_ms": 12.435124518111751,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8105,
+              "duration": 6.55214927399993
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "49fbff03317f3d567fdb4a133b92ba5eb597d901260bd0b8235287dafd91fb18",
+              "output_throughput": 1249.8488814896805,
+              "p95_ttft_ms": 212.64515770008074,
+              "p95_tpot_ms": 12.407299941733573,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8148,
+              "duration": 6.519188135999684
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "67c74c59c6ecb5928f30a6eb18177448832e56af4f2b61ca37df0ecc5840b05f",
+              "output_throughput": 1274.093575930036,
+              "p95_ttft_ms": 229.4393035998155,
+              "p95_tpot_ms": 11.894598141337722,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8120,
+              "duration": 6.373158262000288
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 24,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "5609688fb597b2bc722edd5a490339fe4d90024a187616fd6e58a4ea3c45b87b",
+              "output_throughput": 1474.9635611045585,
+              "p95_ttft_ms": 363.7593572501146,
+              "p95_tpot_ms": 13.638298899089175,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8077,
+              "duration": 5.476067486000375
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "40b4632214707cbf6a86b7e05eaed12c75f4fa81cc8f7dd3369f02c3955b9063",
+              "output_throughput": 1517.0223758523884,
+              "p95_ttft_ms": 325.08890099991277,
+              "p95_tpot_ms": 13.622017001968173,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8140,
+              "duration": 5.3657745130003605
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "30b8587f8f57ec14b9a9ae3e54e30ce71bf1ae57d15595208ccb7b3b0169e012",
+              "output_throughput": 1562.073703633341,
+              "p95_ttft_ms": 294.5094848000281,
+              "p95_tpot_ms": 12.60805843189074,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8185,
+              "duration": 5.239829580999867
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 32,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "7112849e2d29f07d1df69fbb6437f86a30ca8a37c45ff4b085f7dd703f5e29d0",
+              "output_throughput": 1883.3346812872308,
+              "p95_ttft_ms": 451.2098625503313,
+              "p95_tpot_ms": 14.979531135038165,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8037,
+              "duration": 4.267430574000173
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "35468a47c2f276d5978bf9910275580c0e90e5e30d1ea0eed905e4062094730b",
+              "output_throughput": 1957.0388619845644,
+              "p95_ttft_ms": 383.0512863501781,
+              "p95_tpot_ms": 14.938517166141295,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8150,
+              "duration": 4.164454859999751
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "6cca0c6eb00b028d409f3a39b49fd9f303d9d9f1b7c588362808f3d11ed97b74",
+              "output_throughput": 1973.4757902028507,
+              "p95_ttft_ms": 400.7936841001309,
+              "p95_tpot_ms": 13.973466099604735,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8119,
+              "duration": 4.114061109999966
+            }
+          ]
+        }
+      ]
+    },
+    "eagle4-w8": {
+      "spec": {
+        "method": "eagle_harness",
+        "model": "EAGLE-Corp/Qwen3.8-27B-EAGLE4",
+        "method_config": {
+          "mode": "static",
+          "node_top_k": 4,
+          "max_verify_width": 8,
+          "tree_depth": 8,
+          "data_path": "config/eagle4_b200_calibration"
+        }
+      },
+      "baseline": "normal-eagle4",
+      "rows": [
+        {
+          "workload": "spec-bench",
+          "concurrency": 1,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "00c8c100ac20ed26f7036b68794329e0299965ffad3e8a536822974a667464e1",
+              "output_throughput": 325.9241622745955,
+              "p95_ttft_ms": 74.23907660006533,
+              "p95_tpot_ms": 3.563495541730687,
+              "spec_decode_acceptance_rate": 45.3059148379596,
+              "total_output_tokens": 8134,
+              "duration": 24.95672595499991
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "3bc7944123e9b679757937209da90697b197c52a928d3d27c97e41a809355cdb",
+              "output_throughput": 316.4844181458445,
+              "p95_ttft_ms": 61.76768934992651,
+              "p95_tpot_ms": 3.6474351437036816,
+              "spec_decode_acceptance_rate": 42.89198606271777,
+              "total_output_tokens": 8152,
+              "duration": 25.757982171000094
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "cef7539a72358c85519185667b4cbd13d8be2c029966d2f54b2484f56c6f491a",
+              "output_throughput": 334.51648458657354,
+              "p95_ttft_ms": 60.78773935003027,
+              "p95_tpot_ms": 3.5307478417334144,
+              "spec_decode_acceptance_rate": 44.50714285714285,
+              "total_output_tokens": 8162,
+              "duration": 24.399395473999903
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 2,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "1cef01d0e3e642bcbe79be4600b2e3c6d0f29fff052527d30ebceb7a6201661f",
+              "output_throughput": 552.2074789611924,
+              "p95_ttft_ms": 98.75340200003392,
+              "p95_tpot_ms": 4.159051245667574,
+              "spec_decode_acceptance_rate": 44.79664206107975,
+              "total_output_tokens": 8098,
+              "duration": 14.664777838999726
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "53d79da6674651076bb05c45225e51b9e97f6a75bc1fd6176b294370a8e853ff",
+              "output_throughput": 551.7310982817899,
+              "p95_ttft_ms": 76.08220740025898,
+              "p95_tpot_ms": 4.500711628346346,
+              "spec_decode_acceptance_rate": 44.09783764622474,
+              "total_output_tokens": 8189,
+              "duration": 14.842375254000217
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "d70460ea5c1b456f2981ba993ff73382f6de8482be342a5f8e369705a14a98c3",
+              "output_throughput": 590.4819257629206,
+              "p95_ttft_ms": 77.0927222500859,
+              "p95_tpot_ms": 4.091705565354561,
+              "spec_decode_acceptance_rate": 45.71136579312359,
+              "total_output_tokens": 8141,
+              "duration": 13.787043505999918
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 4,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "c4ccbed2e99fdf861a5d393bf18a384e2b16d1bed7955d3d943475d08ebfed6d",
+              "output_throughput": 894.3872788235365,
+              "p95_ttft_ms": 103.73226659969531,
+              "p95_tpot_ms": 5.299667437186872,
+              "spec_decode_acceptance_rate": 43.86277726267741,
+              "total_output_tokens": 8089,
+              "duration": 9.044180515000335
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "4ab754a9cf8e58b7ecca342608ada8f1f53257ef8c98c7778387fe94e0db9458",
+              "output_throughput": 905.4702734555757,
+              "p95_ttft_ms": 110.13603769999918,
+              "p95_tpot_ms": 4.971488261022981,
+              "spec_decode_acceptance_rate": 43.74159767919055,
+              "total_output_tokens": 8173,
+              "duration": 9.026248833999944
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "5788446b86d0a2774a5cf1504706f3a460cf98b1739fcd7e78a9227ea2dc3e01",
+              "output_throughput": 922.9632779851376,
+              "p95_ttft_ms": 100.9726236997494,
+              "p95_tpot_ms": 5.146775283463206,
+              "spec_decode_acceptance_rate": 44.5479295027941,
+              "total_output_tokens": 8117,
+              "duration": 8.794499405999886
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 8,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "796de180284a77f93e4d429117c57d0d3acf11e35145adaf9fd17fc39d384db5",
+              "output_throughput": 1160.2909028273584,
+              "p95_ttft_ms": 149.49181694985327,
+              "p95_tpot_ms": 7.948496111023412,
+              "spec_decode_acceptance_rate": 42.9408891060088,
+              "total_output_tokens": 8132,
+              "duration": 7.008587226000145
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "d7429af80e10307a7dbf5bd59067c88fc4b0b06ca09075742d17657368f0ea95",
+              "output_throughput": 1171.4627851901998,
+              "p95_ttft_ms": 120.44645010000748,
+              "p95_tpot_ms": 8.092592890549293,
+              "spec_decode_acceptance_rate": 41.58549783549784,
+              "total_output_tokens": 8182,
+              "duration": 6.984430153000176
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "0edb20cb4b6b910603fdb253c9a8530af7dcde74d11b31c606c9f575eb3305ff",
+              "output_throughput": 1214.688684017661,
+              "p95_ttft_ms": 117.40834414983965,
+              "p95_tpot_ms": 7.717022888975879,
+              "spec_decode_acceptance_rate": 43.76809547348351,
+              "total_output_tokens": 8170,
+              "duration": 6.726003219999711
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 16,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "6eace139a341f9b476ce0464c03ea32607c7762d9e90fd7930661f4547d0afbb",
+              "output_throughput": 1881.6721891649386,
+              "p95_ttft_ms": 261.8188223000743,
+              "p95_tpot_ms": 9.287898411417613,
+              "spec_decode_acceptance_rate": 42.18016026526665,
+              "total_output_tokens": 8110,
+              "duration": 4.30999620800003
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "f15f57a8a6e144f1f684b5c59425233614e66b0b33f4a4f19cc0e7849dcca529",
+              "output_throughput": 1926.9746053145652,
+              "p95_ttft_ms": 215.13889225000185,
+              "p95_tpot_ms": 9.454246852758155,
+              "spec_decode_acceptance_rate": 41.31420450700413,
+              "total_output_tokens": 8181,
+              "duration": 4.2455152119996455
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "a55f8846d634202d77a04156944d08539bde0ca6689efacfa74e2feb306b72e8",
+              "output_throughput": 1980.5240476799945,
+              "p95_ttft_ms": 205.6085552002287,
+              "p95_tpot_ms": 9.563607858662337,
+              "spec_decode_acceptance_rate": 43.109120179183876,
+              "total_output_tokens": 8140,
+              "duration": 4.110023309000098
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 24,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "ca8a87f21d645fb6de67715921d0a77b2e77e856a9b708d9110180596c10b74c",
+              "output_throughput": 2026.2806830626803,
+              "p95_ttft_ms": 411.4463138500241,
+              "p95_tpot_ms": 12.725319564961097,
+              "spec_decode_acceptance_rate": 41.65579735017506,
+              "total_output_tokens": 8087,
+              "duration": 3.9910561589999816
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "504d4f8cba06515b364d27c513924c14e6031bbe2b4640b2b128f4f91db9ef83",
+              "output_throughput": 2224.438612474477,
+              "p95_ttft_ms": 349.64465225016284,
+              "p95_tpot_ms": 11.310239672440451,
+              "spec_decode_acceptance_rate": 41.43534190927556,
+              "total_output_tokens": 8165,
+              "duration": 3.6705890440002804
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "d936b91781ead8d4341f6586f676fa51955e96852b96333b8d0fa1c0760136a4",
+              "output_throughput": 2308.7522029417146,
+              "p95_ttft_ms": 311.5361544000734,
+              "p95_tpot_ms": 11.478276952362918,
+              "spec_decode_acceptance_rate": 42.142857142857146,
+              "total_output_tokens": 8159,
+              "duration": 3.5339435689998027
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 32,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "d6a452d20a9e40b067581d1e26abf5b56219d93d4b34eeb52868c5977b7f600e",
+              "output_throughput": 1717.3822560156495,
+              "p95_ttft_ms": 562.8613757501626,
+              "p95_tpot_ms": 16.33124112677036,
+              "spec_decode_acceptance_rate": 41.642067687238274,
+              "total_output_tokens": 8086,
+              "duration": 4.708328603999689
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "4e41db058a43bc73871b0e4362653ed2fcc59bd75b89fda4c1e78f16622938bb",
+              "output_throughput": 2362.834713094622,
+              "p95_ttft_ms": 439.0186924496902,
+              "p95_tpot_ms": 13.841182399604675,
+              "spec_decode_acceptance_rate": 40.20721259214983,
+              "total_output_tokens": 8152,
+              "duration": 3.4500932099999773
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "6cf8a54581a61c01485e7f3d8d4503dc0918327e45eb8a444acf34f9cad3c47d",
+              "output_throughput": 2534.322999264201,
+              "p95_ttft_ms": 440.3001164998386,
+              "p95_tpot_ms": 13.223645084648288,
+              "spec_decode_acceptance_rate": 42.66306231371734,
+              "total_output_tokens": 8151,
+              "duration": 3.2162435499999447
+            }
+          ]
+        }
+      ]
+    },
+    "normal-suffix": {
+      "spec": null,
+      "baseline": null,
+      "rows": [
+        {
+          "workload": "spec-bench",
+          "concurrency": 1,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "df736522e2908ed44fd55a3341d01effe1fdd8c9e2cb97239b824a71c313484a",
+              "output_throughput": 116.11138250788869,
+              "p95_ttft_ms": 67.04238745032848,
+              "p95_tpot_ms": 8.529835042123329,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8090,
+              "duration": 69.674478292
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "0de8962ea3b5d50e73b9457646ae777e5aae593036250f2ba3df8349b846975f",
+              "output_throughput": 116.29742609597074,
+              "p95_ttft_ms": 51.85608259998844,
+              "p95_tpot_ms": 8.49514109055185,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8164,
+              "duration": 70.19931802500014
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "ec966b723a8541b74f6e812c8b95a13f396d6229c91915ee3eda822a60dd283f",
+              "output_throughput": 116.31446210799943,
+              "p95_ttft_ms": 50.22092135009187,
+              "p95_tpot_ms": 8.494989073228036,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8118,
+              "duration": 69.79355664700006
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 2,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "0f227f2d3af5e852f9e1f404b6ae3523e4fe8adbfa31f510d7fc3635111c008d",
+              "output_throughput": 220.27221303385866,
+              "p95_ttft_ms": 76.46133689966062,
+              "p95_tpot_ms": 9.094520431495395,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8122,
+              "duration": 36.87255822299994
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "ba4cc4efa78f4ea6231a652e505b9530e01dc20aa09ca838aaf22f87fd674238",
+              "output_throughput": 220.90811242178106,
+              "p95_ttft_ms": 59.49083040000005,
+              "p95_tpot_ms": 9.025011416927224,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8169,
+              "duration": 36.97917614000016
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "d25fdcf342c1755fb0f3e1f91547bc27983fe66d3d6c2d4a001429d7e33c55bc",
+              "output_throughput": 220.93079616698253,
+              "p95_ttft_ms": 64.29712584995283,
+              "p95_tpot_ms": 8.980521813386591,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8118,
+              "duration": 36.74453784100024
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 4,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "07eb8fa2a73a2c74cb068cbfb1d78dde3a6601c1bfb2275e3bdf43cc6d8db1f3",
+              "output_throughput": 417.8847407296401,
+              "p95_ttft_ms": 102.37886939974032,
+              "p95_tpot_ms": 9.426779367714609,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8085,
+              "duration": 19.34744012400006
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "511926f526ecabef2306d4c231c60d1cc95ddbdec8dd1e8fc1a4bd048330cdf9",
+              "output_throughput": 424.6146118388421,
+              "p95_ttft_ms": 105.11041510010273,
+              "p95_tpot_ms": 9.30150044724581,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8176,
+              "duration": 19.255107507000048
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "77351d737491ed5b35d42c528220137299db6f4d83e931946e591ad19a1b6613",
+              "output_throughput": 422.30811477101037,
+              "p95_ttft_ms": 74.01884315004281,
+              "p95_tpot_ms": 9.34920411220686,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8119,
+              "duration": 19.22529952900004
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 8,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "1af3e1ec756274b70aad49527ac56fa264fd2be9d3666dfdc38b204f3ceba131",
+              "output_throughput": 773.8807100950542,
+              "p95_ttft_ms": 168.3765338498915,
+              "p95_tpot_ms": 10.13985268394819,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8085,
+              "duration": 10.44734659300002
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "4d910f53efbffdd1c67238c7454602c46588e8441cb13e8db766db1e714aa9ca",
+              "output_throughput": 789.0139309796391,
+              "p95_ttft_ms": 152.25735985029587,
+              "p95_tpot_ms": 9.96060679566829,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8161,
+              "duration": 10.34329012399985
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "ef8641593036e2ba8ce78777d1b6962d3f7337ceaa2eda3dbab8efdafed868e8",
+              "output_throughput": 793.0118380378458,
+              "p95_ttft_ms": 114.70301449994622,
+              "p95_tpot_ms": 9.946699499608071,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8156,
+              "duration": 10.28484016099992
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 16,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "db71425926cf091961dfc6ef8be3206b23100c426b6ceb5092a0693810de63f2",
+              "output_throughput": 1370.9052011119231,
+              "p95_ttft_ms": 265.9857201998648,
+              "p95_tpot_ms": 11.632373316817844,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8091,
+              "duration": 5.901939822999793
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "94d5d90ea38cb5e8a8de0058de186658ec9c3491d05bbb86c30b1b1a2af2fa39",
+              "output_throughput": 1401.9009823763715,
+              "p95_ttft_ms": 175.1199254002131,
+              "p95_tpot_ms": 11.171109300788183,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8150,
+              "duration": 5.813534695000271
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "6c7968d6e9bb0e3507170c67fefa8f8b00f5658a89da00ce3b249771033c26d3",
+              "output_throughput": 1411.060047334651,
+              "p95_ttft_ms": 184.08659169992916,
+              "p95_tpot_ms": 10.952490922835478,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8156,
+              "duration": 5.7800516820002485
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 24,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "693808db8bccffde10bb9847e4819daced21eb35a8d394b0bede967ba4d4e887",
+              "output_throughput": 1668.9848321117322,
+              "p95_ttft_ms": 325.14343365005516,
+              "p95_tpot_ms": 12.174424755855219,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8107,
+              "duration": 4.857443784999759
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "2678a53f6c03fcbb9fa63a35ccc9e202626f7d346a1d4c4181181ea4085da444",
+              "output_throughput": 1707.1410149744129,
+              "p95_ttft_ms": 282.92574044996854,
+              "p95_tpot_ms": 12.20888957795172,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8147,
+              "duration": 4.772306404999654
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "5f8532c4ef5f0514c933520c9d9c19b7a297449a575177a331b1c2fda135367b",
+              "output_throughput": 1730.0199116184053,
+              "p95_ttft_ms": 284.36479180031705,
+              "p95_tpot_ms": 12.85441402362041,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8149,
+              "duration": 4.710350410000046
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 32,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "374cdbec134aa1ec61eca6965edc6ebeb3c072eb95b70f74b3a04d4766ab7dac",
+              "output_throughput": 2172.1685526169613,
+              "p95_ttft_ms": 414.46856484976706,
+              "p95_tpot_ms": 14.040303899213624,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8105,
+              "duration": 3.7312942359999397
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "8c54041440e5f970a3807c8164095f748bf23327a3214d22aa0a5bee34bfee52",
+              "output_throughput": 2245.219901216272,
+              "p95_ttft_ms": 359.1826381999226,
+              "p95_tpot_ms": 13.558363980707584,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8152,
+              "duration": 3.630824756000038
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "c123436f1c3655a5aea63fb01fa3128efab743ab1e9fd1d763ce6fb8b9d88a7f",
+              "output_throughput": 2262.132581990864,
+              "p95_ttft_ms": 361.7721630498636,
+              "p95_tpot_ms": 13.209149586614652,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8156,
+              "duration": 3.6054473839999446
+            }
+          ]
+        }
+      ]
+    },
+    "suffix-k8": {
+      "spec": {
+        "method": "suffix",
+        "enable_adaptive_verification": true,
+        "num_speculative_tokens": 8,
+        "suffix_decoding_max_tree_depth": 12,
+        "suffix_decoding_max_cached_requests": 0
+      },
+      "baseline": "normal-suffix",
+      "rows": [
+        {
+          "workload": "spec-bench",
+          "concurrency": 1,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "a62908fca37f946987a710f147a54c3738d8317fd0429a583ea983da736c3a5e",
+              "output_throughput": 135.1836673746485,
+              "p95_ttft_ms": 69.00617890021289,
+              "p95_tpot_ms": 8.933845325978787,
+              "spec_decode_acceptance_rate": 4.974865661293118,
+              "total_output_tokens": 8090,
+              "duration": 59.84450752900011
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "8e0156db9823d2510a9cd306e8ca6cbfb9ecb23c36f25467e528277867900b7d",
+              "output_throughput": 137.84894072582128,
+              "p95_ttft_ms": 58.21546115002999,
+              "p95_tpot_ms": 8.594632153150503,
+              "spec_decode_acceptance_rate": 4.911477933629833,
+              "total_output_tokens": 8180,
+              "duration": 59.340318155000205
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "10881423c5afe9778adbb5aa9a1130f432f1bfe019676b688f167d2487dc61d4",
+              "output_throughput": 139.48516466532016,
+              "p95_ttft_ms": 51.06419750024996,
+              "p95_tpot_ms": 9.132310237795693,
+              "spec_decode_acceptance_rate": 5.093232044198895,
+              "total_output_tokens": 8174,
+              "duration": 58.60121411199998
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 2,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "532778350f3028ebef6ae7f86b7cc877b7f740c3e91ed3d966d8026586bca770",
+              "output_throughput": 255.26824326099464,
+              "p95_ttft_ms": 80.77288899989978,
+              "p95_tpot_ms": 9.3782530251968,
+              "spec_decode_acceptance_rate": 5.504280363830925,
+              "total_output_tokens": 8110,
+              "duration": 31.770501086999957
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "3cc202918b1a8314e4a64609a96d3c5f67baea8577e02d16b0d30f21f44eff01",
+              "output_throughput": 255.37069100486065,
+              "p95_ttft_ms": 65.96777160000329,
+              "p95_tpot_ms": 9.126442801243265,
+              "spec_decode_acceptance_rate": 5.456875220926123,
+              "total_output_tokens": 8161,
+              "duration": 31.95746531399982
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "e72e12100651b9c63f8b3f8ad51b66829dc136ca8b2694e39b3362bcbd01ed01",
+              "output_throughput": 257.0209330034011,
+              "p95_ttft_ms": 67.23791290012285,
+              "p95_tpot_ms": 9.446259953149168,
+              "spec_decode_acceptance_rate": 5.442552064948818,
+              "total_output_tokens": 8141,
+              "duration": 31.67446287299981
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 4,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "046683fcb898393c635540b3c9ba1a316735bb0fe258e068a2c9e078bb337a99",
+              "output_throughput": 462.2265648302854,
+              "p95_ttft_ms": 87.68485369996597,
+              "p95_tpot_ms": 9.958249948581559,
+              "spec_decode_acceptance_rate": 5.452647476901208,
+              "total_output_tokens": 8116,
+              "duration": 17.558488883000337
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "d4252bbf514b10ec9e624b261b52e677269e1dd5f169d5c453dd3b4bbea5aef3",
+              "output_throughput": 467.62301498786775,
+              "p95_ttft_ms": 74.84295555025255,
+              "p95_tpot_ms": 9.798668135038238,
+              "spec_decode_acceptance_rate": 5.16228680821441,
+              "total_output_tokens": 8161,
+              "duration": 17.452092258999983
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "598fc0f99dade58c4a824120099859e6e88c1cfb5bc0f36b4d83f5fc3c7dde33",
+              "output_throughput": 479.6443762581051,
+              "p95_ttft_ms": 75.99508915004661,
+              "p95_tpot_ms": 10.164293123621135,
+              "spec_decode_acceptance_rate": 5.648115061640165,
+              "total_output_tokens": 8152,
+              "duration": 16.995925321999948
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 8,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "3973d39bef1e7503e8f1befb1ab6fcc24ff384513197f81bfc243fff44b5b9ea",
+              "output_throughput": 808.8033388613178,
+              "p95_ttft_ms": 129.23046485011582,
+              "p95_tpot_ms": 11.189198125199491,
+              "spec_decode_acceptance_rate": 5.57599138704468,
+              "total_output_tokens": 8081,
+              "duration": 9.991303957000127
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "c4911348e95d2b41900c30aaffb184c8135e71415778cb4490e97559a3341137",
+              "output_throughput": 807.2803372381472,
+              "p95_ttft_ms": 91.19414865008366,
+              "p95_tpot_ms": 10.869378561417003,
+              "spec_decode_acceptance_rate": 5.009072058061172,
+              "total_output_tokens": 8155,
+              "duration": 10.101819186999819
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "d9d7dc7c8c81bb65e886fea6896fbafa4ca411628b7f9f2f7ab63b2320a3201e",
+              "output_throughput": 833.6040265641669,
+              "p95_ttft_ms": 105.50858669982972,
+              "p95_tpot_ms": 10.841788241732214,
+              "spec_decode_acceptance_rate": 5.312227074235808,
+              "total_output_tokens": 8187,
+              "duration": 9.821209757999895
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 16,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "4f02fdd11658daf07ed31d9fe090df175b5791b40a6eb14fb4f4abee68142753",
+              "output_throughput": 1277.3469772118965,
+              "p95_ttft_ms": 209.48639734999688,
+              "p95_tpot_ms": 13.540328312597657,
+              "spec_decode_acceptance_rate": 5.204126426690079,
+              "total_output_tokens": 8104,
+              "duration": 6.344399872999929
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "eddf9e83d32e9ba492c34132f2f9c2b58f7ec4ad1f2bdf25ffe08105476cc920",
+              "output_throughput": 1281.113954192982,
+              "p95_ttft_ms": 194.22680334989764,
+              "p95_tpot_ms": 13.093609908269814,
+              "spec_decode_acceptance_rate": 5.10027662517289,
+              "total_output_tokens": 8189,
+              "duration": 6.3920933599997625
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "cee20c6430ce0491289239980a8efe8fd0d300a44b075da9e028f798718050db",
+              "output_throughput": 1330.6358838666954,
+              "p95_ttft_ms": 190.75487749998956,
+              "p95_tpot_ms": 13.578904957873819,
+              "spec_decode_acceptance_rate": 5.585342077277561,
+              "total_output_tokens": 8190,
+              "duration": 6.154952004000279
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 24,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "78a18acf9062139e2ad1941ae45ca8ca26a2a93fd9cbb6348cdb07daa3b4c8c2",
+              "output_throughput": 1555.6323135395482,
+              "p95_ttft_ms": 373.45247605005625,
+              "p95_tpot_ms": 15.73523503661424,
+              "spec_decode_acceptance_rate": 5.5496074232690935,
+              "total_output_tokens": 8118,
+              "duration": 5.2184567839999545
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "47c4575c213854f9f09b419d0d27a3ef0fa9cb7096db7d1921cd8c2a12319c30",
+              "output_throughput": 1624.4256931514756,
+              "p95_ttft_ms": 303.7672503500289,
+              "p95_tpot_ms": 15.7135116397643,
+              "spec_decode_acceptance_rate": 4.974995688911881,
+              "total_output_tokens": 8154,
+              "duration": 5.019620185999884
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "ad9691a1549b3c141d3dce2ab5b69ef3afa7fa827d0b1711b1f7e61849a8bcd9",
+              "output_throughput": 1641.789289114982,
+              "p95_ttft_ms": 285.44668694992197,
+              "p95_tpot_ms": 15.130889561023436,
+              "spec_decode_acceptance_rate": 5.19271014998256,
+              "total_output_tokens": 8142,
+              "duration": 4.959223484999711
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 32,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "a1e5325122dcc777106738d29c567020a52cab75c2ae2c3f717887795de8ca50",
+              "output_throughput": 1803.6604899555587,
+              "p95_ttft_ms": 427.5321740999061,
+              "p95_tpot_ms": 18.02408902283511,
+              "spec_decode_acceptance_rate": 5.556797853309481,
+              "total_output_tokens": 8110,
+              "duration": 4.496411627999805
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "a3edc8438e7fcb0dfae54ad99f3538ff038bd3a969e1aabfbbd2e042ebbcdc30",
+              "output_throughput": 1911.4958388964128,
+              "p95_ttft_ms": 396.04556244994455,
+              "p95_tpot_ms": 18.222982920077964,
+              "spec_decode_acceptance_rate": 4.787188672807916,
+              "total_output_tokens": 8157,
+              "duration": 4.267338612000003
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "aeaff19006a8d04cbe444a87402d08de0c9cf867eecb9f3abd3dfbd11c7df830",
+              "output_throughput": 1904.852275087649,
+              "p95_ttft_ms": 396.7359610001495,
+              "p95_tpot_ms": 18.10148535315048,
+              "spec_decode_acceptance_rate": 5.386375638091885,
+              "total_output_tokens": 8152,
+              "duration": 4.279596957000194
+            }
+          ]
+        }
+      ]
+    },
+    "normal-suffix-standard": {
+      "spec": null,
+      "baseline": null,
+      "rows": [
+        {
+          "workload": "spec-bench",
+          "concurrency": 1,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "61ed1d6913203293690369d274155d8bfb918ec18526993f51be000a668653d3",
+              "output_throughput": 117.39383614833123,
+              "p95_ttft_ms": 66.96517069979103,
+              "p95_tpot_ms": 8.421162199211421,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8090,
+              "duration": 68.91332854799975
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "e5ba9b20f344000989ec52f1a3fb54b34b029ab8d8873e74132353ff147fb229",
+              "output_throughput": 117.69986704990947,
+              "p95_ttft_ms": 52.638628650197454,
+              "p95_tpot_ms": 8.396991422441214,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8164,
+              "duration": 69.36286509599995
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "6e3176b35eaa8697f235dc9188341a75e454f09b5cc8c554eadfc7ab499112a3",
+              "output_throughput": 117.80922458103481,
+              "p95_ttft_ms": 51.175037000143654,
+              "p95_tpot_ms": 8.387695662596757,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8118,
+              "duration": 68.9080165739997
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 2,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "5959650068aded8868017a3c04f2e2cf7144b065cfe7762000d4f48b8b2a08de",
+              "output_throughput": 223.27065773627052,
+              "p95_ttft_ms": 75.92571480013248,
+              "p95_tpot_ms": 8.980180328740778,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8122,
+              "duration": 36.37737301600009
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "0efaf06168660bdabbcaa30f4d33dd29cb607cf566054a4c4178b554652145d0",
+              "output_throughput": 223.68860439340398,
+              "p95_ttft_ms": 59.38415590010209,
+              "p95_tpot_ms": 8.908792034647618,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8169,
+              "duration": 36.51951793499984
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "85e287dbf728b65ffc06a9a5ecf31d05ff919630cc7bba7f3cb8f94909fae50d",
+              "output_throughput": 224.22586175353834,
+              "p95_ttft_ms": 60.15383584988285,
+              "p95_tpot_ms": 8.859146149606076,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8118,
+              "duration": 36.20456595199994
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 4,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "a46e0c5152a37f9a760e909dc46bffbb18572970ee2410749eabf3b19ef69bfa",
+              "output_throughput": 423.03886328205186,
+              "p95_ttft_ms": 101.27743240016116,
+              "p95_tpot_ms": 9.317029776378678,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8085,
+              "duration": 19.111719281000205
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "a3cd1997dc361da78253eb2dad11507434a3af9d6783d216c191746cbdaf74ee",
+              "output_throughput": 429.23743896018766,
+              "p95_ttft_ms": 102.03804799982663,
+              "p95_tpot_ms": 9.199848957088017,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8176,
+              "duration": 19.047732694999922
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "24e2ad21e4f1c4d573e11dc0d37b0b76dfaeb3118b2f368aecffce97a71f9644",
+              "output_throughput": 429.41947608043256,
+              "p95_ttft_ms": 72.33996809989094,
+              "p95_tpot_ms": 9.231312448821337,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8150,
+              "duration": 18.979111227999965
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 8,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "992c96bba761389f04ce9cdbe4920f40ff5634a7a9c700b8d63d2e83e6c68b9f",
+              "output_throughput": 782.9294911961948,
+              "p95_ttft_ms": 151.3401459499164,
+              "p95_tpot_ms": 9.889834214568758,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8139,
+              "duration": 10.39557213199987
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "ef97e93feb3261d67ed73d31cebaa8a07374f578ff3d7a62bb0d0283092c40e5",
+              "output_throughput": 795.8808882213001,
+              "p95_ttft_ms": 152.45387729992217,
+              "p95_tpot_ms": 9.880632333465835,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8161,
+              "duration": 10.2540469569999
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "5f6eba9ccceeefcbcb2c7f817e1b3af304d77811e97178468ae13aa2b5d80038",
+              "output_throughput": 797.5269413931951,
+              "p95_ttft_ms": 114.61813214971244,
+              "p95_tpot_ms": 9.887401593305293,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8156,
+              "duration": 10.226613768999869
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 16,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "3b1cc523aeb4232cc62ce3f3a2a717ad31e127afc87a5c5fba906db439d10346",
+              "output_throughput": 1376.088359352992,
+              "p95_ttft_ms": 266.4709760000733,
+              "p95_tpot_ms": 11.59672465373192,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8099,
+              "duration": 5.885523225999805
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "719001825ec86991ddf9851c7dac2b753ff9f83f6f247e29bee0bd13e43a639f",
+              "output_throughput": 1407.7153821101806,
+              "p95_ttft_ms": 213.6415758000112,
+              "p95_tpot_ms": 11.011112199214477,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8161,
+              "duration": 5.797336666000319
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "a594b98a0af4d754f1ee4ffc85f4e36f96be1eb54449570d64d11a4cff279d9f",
+              "output_throughput": 1415.3950060648838,
+              "p95_ttft_ms": 186.59906779980702,
+              "p95_tpot_ms": 11.150912775590546,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8155,
+              "duration": 5.761642484999811
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 24,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "5247f50e7a11951e5648148c0fd20214a39b4696005c2fbf3f2c57c46f1e9de6",
+              "output_throughput": 1669.2343644889245,
+              "p95_ttft_ms": 319.5815175501366,
+              "p95_tpot_ms": 12.210664854824158,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8107,
+              "duration": 4.856717650000064
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "977ccef298f601bcd740df6cd85fce1cb563a9cc3a2ca6796cfbf4d99889ff46",
+              "output_throughput": 1711.3230961201648,
+              "p95_ttft_ms": 285.5423524999196,
+              "p95_tpot_ms": 12.227290988976984,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8159,
+              "duration": 4.767656101000284
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "bc4adde003ffdf432559c4acc79185856853c2cd1d45cf3b7f4fd5a50280795f",
+              "output_throughput": 1723.3006013231284,
+              "p95_ttft_ms": 284.5172972497493,
+              "p95_tpot_ms": 12.62853360945009,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8149,
+              "duration": 4.728716507000172
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 32,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "1d5f451d54690ee3dc64b13fd88c2ef011f5295c1385d8f8e599167d99cc9d5f",
+              "output_throughput": 2175.8772770033147,
+              "p95_ttft_ms": 390.6089179998844,
+              "p95_tpot_ms": 13.487939782284027,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8094,
+              "duration": 3.719878912999775
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "8c5fb2d0fd959c59e722c8d520f14d09199986de7c77c449a107d1cec5e5c9bc",
+              "output_throughput": 2240.0257354385926,
+              "p95_ttft_ms": 355.9421802500765,
+              "p95_tpot_ms": 13.58099767047195,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8150,
+              "duration": 3.6383510559999195
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "cc913ab9615525d96bb4dafa1b7935dd05a2ed5bf33e93911e3c47d1834157eb",
+              "output_throughput": 2260.6374878364,
+              "p95_ttft_ms": 365.4408172000785,
+              "p95_tpot_ms": 13.492900211025246,
+              "spec_decode_acceptance_rate": null,
+              "total_output_tokens": 8156,
+              "duration": 3.6078318810000383
+            }
+          ]
+        }
+      ]
+    },
+    "suffix-k4": {
+      "spec": {
+        "method": "suffix",
+        "num_speculative_tokens": 4,
+        "suffix_decoding_max_tree_depth": 12,
+        "suffix_decoding_max_cached_requests": 0
+      },
+      "baseline": "normal-suffix-standard",
+      "rows": [
+        {
+          "workload": "spec-bench",
+          "concurrency": 1,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "68cf266f3dd25d043ad8b049eace53ea19f58ead8d18c1f0d20e70d6fa6cd02a",
+              "output_throughput": 150.5280905760368,
+              "p95_ttft_ms": 67.37783045030024,
+              "p95_tpot_ms": 8.031695463780203,
+              "spec_decode_acceptance_rate": 10.956104496179137,
+              "total_output_tokens": 8120,
+              "duration": 53.943419921999975
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "e76c45a3b04aa56db6cb377eb83a19ad3235dc7b5ab66804d7c5afcc117b98cc",
+              "output_throughput": 149.15526736647163,
+              "p95_ttft_ms": 54.616611599976736,
+              "p95_tpot_ms": 8.031843515353705,
+              "spec_decode_acceptance_rate": 10.440328499038966,
+              "total_output_tokens": 8155,
+              "duration": 54.67456928599995
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "f391e6f617da976a2878490a8852798356933d5f4871cbf684904e638617dc31",
+              "output_throughput": 151.7350943330296,
+              "p95_ttft_ms": 52.248490949773434,
+              "p95_tpot_ms": 8.328633004725456,
+              "spec_decode_acceptance_rate": 11.142857142857142,
+              "total_output_tokens": 8117,
+              "duration": 53.49454610800012
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 2,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "d179b60d826aaf0e492cf8f2bece9268e876a9126e86caa8d7afa72586ebc701",
+              "output_throughput": 275.8093153240574,
+              "p95_ttft_ms": 79.20512045018313,
+              "p95_tpot_ms": 8.645406500779925,
+              "spec_decode_acceptance_rate": 11.207205592400072,
+              "total_output_tokens": 8114,
+              "duration": 29.41887582900017
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "da8ac3e18b6add3cee435db244317cbdbda069b98733fd5b39680cc66e784620",
+              "output_throughput": 271.8896709776387,
+              "p95_ttft_ms": 69.15896345001327,
+              "p95_tpot_ms": 8.477387422045632,
+              "spec_decode_acceptance_rate": 10.66027782662212,
+              "total_output_tokens": 8151,
+              "duration": 29.979071918000045
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "121e245df6928022aefd3b4a464c51257d93decd19c7de3c50c8423cdc430900",
+              "output_throughput": 278.90643831292823,
+              "p95_ttft_ms": 64.26457359980304,
+              "p95_tpot_ms": 8.715245264175882,
+              "spec_decode_acceptance_rate": 11.2613413983277,
+              "total_output_tokens": 8173,
+              "duration": 29.303733715999897
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 4,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "a64d20217b50e4dda1fb8e4a807880c9c5c50a591e0e1660043787262ea9bbe4",
+              "output_throughput": 475.0554575356894,
+              "p95_ttft_ms": 83.84828469977487,
+              "p95_tpot_ms": 9.783729922570384,
+              "spec_decode_acceptance_rate": 11.117059243397573,
+              "total_output_tokens": 8132,
+              "duration": 17.118001426999854
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "57da52d55b63eb279863012584ddb52125e73f1a2fe652e12c08014402a13afe",
+              "output_throughput": 478.1967120200162,
+              "p95_ttft_ms": 74.69697710016588,
+              "p95_tpot_ms": 9.500349903937495,
+              "spec_decode_acceptance_rate": 10.550899249170595,
+              "total_output_tokens": 8183,
+              "duration": 17.112204651999946
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "96b49f841c0f767c4e13bb26b6e391a3522825ab4cbcee96b004e9b0585bdd95",
+              "output_throughput": 488.9161206315296,
+              "p95_ttft_ms": 73.98440219994882,
+              "p95_tpot_ms": 9.71891228897439,
+              "spec_decode_acceptance_rate": 11.045995382702895,
+              "total_output_tokens": 8143,
+              "duration": 16.65520864700011
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 8,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "74a362a0b6ed2443b6ecb8448e4654fa86fd2d303da515df81340b7d740b24af",
+              "output_throughput": 757.3195193826483,
+              "p95_ttft_ms": 129.55990435007152,
+              "p95_tpot_ms": 11.478503223280697,
+              "spec_decode_acceptance_rate": 10.918059011731247,
+              "total_output_tokens": 8121,
+              "duration": 10.72334700500005
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "31e29df47d4d71a221dc0590f653de125c87c4ce969b335c5ca03be21a2679b0",
+              "output_throughput": 766.7494297341799,
+              "p95_ttft_ms": 85.6071784002097,
+              "p95_tpot_ms": 11.691819449606914,
+              "spec_decode_acceptance_rate": 10.585190384277944,
+              "total_output_tokens": 8161,
+              "duration": 10.643633608999608
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "ee28a8a75d7763f53339658f9a459f77229f64493d881dad97ecabed71853ff1",
+              "output_throughput": 782.4578494877499,
+              "p95_ttft_ms": 102.77040795012908,
+              "p95_tpot_ms": 11.6400667102377,
+              "spec_decode_acceptance_rate": 11.18759992893942,
+              "total_output_tokens": 8169,
+              "duration": 10.440178988999833
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 16,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "8b510ca77038dbdc570c0a6086645eaeec6454789e65934928c1fa1e123e8ec7",
+              "output_throughput": 1228.1250032068667,
+              "p95_ttft_ms": 241.52194049997888,
+              "p95_tpot_ms": 13.783878239370836,
+              "spec_decode_acceptance_rate": 11.22393961179008,
+              "total_output_tokens": 8108,
+              "duration": 6.6019338250002875
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "727bce4d559990c78e92a16492c36503805dd7ea369030e89a289a25dcba363a",
+              "output_throughput": 1223.571430394894,
+              "p95_ttft_ms": 192.5128789000155,
+              "p95_tpot_ms": 13.679557136220133,
+              "spec_decode_acceptance_rate": 10.408323176040398,
+              "total_output_tokens": 8161,
+              "duration": 6.669819020999967
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "d58b7e2c3a96bb0415dd55cd850a768673c91f01c2c08dfa169b2fbbadfa4b1c",
+              "output_throughput": 1262.8731183220607,
+              "p95_ttft_ms": 183.86682035024933,
+              "p95_tpot_ms": 13.952609279134789,
+              "spec_decode_acceptance_rate": 11.327282530553559,
+              "total_output_tokens": 8120,
+              "duration": 6.4297829150000325
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 24,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "b2862705e6f77e5708a976694eeae845971c5e67b16f146555da95cfa7d20ce2",
+              "output_throughput": 1504.292480900032,
+              "p95_ttft_ms": 351.10421810031767,
+              "p95_tpot_ms": 16.172937881887492,
+              "spec_decode_acceptance_rate": 11.421365519726177,
+              "total_output_tokens": 8119,
+              "duration": 5.397221685999739
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "458d172225559818c528d0a2badc73ce99a56d661ade685bb0e8c756b41a874e",
+              "output_throughput": 1554.9400309896175,
+              "p95_ttft_ms": 303.2795605499814,
+              "p95_tpot_ms": 15.547198990550065,
+              "spec_decode_acceptance_rate": 10.251860827419074,
+              "total_output_tokens": 8173,
+              "duration": 5.256151257999591
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "14a27e9816d02208638c99344864cb96926b592e354a1b62ddab0226dd0063e9",
+              "output_throughput": 1551.8640514286187,
+              "p95_ttft_ms": 287.69930594999096,
+              "p95_tpot_ms": 16.025138439764255,
+              "spec_decode_acceptance_rate": 11.190306486101212,
+              "total_output_tokens": 8163,
+              "duration": 5.260125712999979
+            }
+          ]
+        },
+        {
+          "workload": "spec-bench",
+          "concurrency": 32,
+          "runs": [
+            {
+              "seed": 423,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "4bd462385827763a5b81e7e9ccac9047ec209663420ed382b0bfd537462df207",
+              "raw_result_sha256": "844974af7103a7d4a77dba3371be47ca015c4f347ae2a0ae84c3c5db019d51ac",
+              "output_throughput": 1707.180617996599,
+              "p95_ttft_ms": 493.486992400085,
+              "p95_tpot_ms": 18.620455742914626,
+              "spec_decode_acceptance_rate": 10.950008895214374,
+              "total_output_tokens": 8113,
+              "duration": 4.752279819999785
+            },
+            {
+              "seed": 557,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "426795279788ee6582541c41b6e3afda3137544e0d301443e8b970391a99c4b1",
+              "raw_result_sha256": "fdd653ff9e51c8b28d177b774c4d9868116f8acb1ffebff8d143f75685dc86ef",
+              "output_throughput": 1828.8358778426,
+              "p95_ttft_ms": 387.214235699912,
+              "p95_tpot_ms": 18.722313272834306,
+              "spec_decode_acceptance_rate": 10.605396881023305,
+              "total_output_tokens": 8166,
+              "duration": 4.465135499000098
+            },
+            {
+              "seed": 691,
+              "completed": 64,
+              "failed": 0,
+              "test_input_sha256": "a328cedfbd2fd9d6c56cfcac2220be1bf9f1c07281eaa19a29ff7e3677655838",
+              "raw_result_sha256": "fc3358a1a0a7402eae7e230e26e1f17091f87f93db9305b93cb5d6425ae604bb",
+              "output_throughput": 1775.02516681564,
+              "p95_ttft_ms": 399.08750949985006,
+              "p95_tpot_ms": 19.71917307834744,
+              "spec_decode_acceptance_rate": 10.925893172974884,
+              "total_output_tokens": 8162,
+              "duration": 4.598244662999605
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "experiment": {
+    "study": "concurrency",
+    "target": "Qwen3.8-27B-FP8",
+    "gpu": "NVIDIA B200",
+    "driver": "590.48.01",
+    "client_version": "0.34.0",
+    "dataset_sha256": "4b6d33e79484f9841c487ee87d1cf6aa8c6066f61d5d482ff09e5a007fafdf04",
+    "protocol": {
+      "split_seed": 126451,
+      "tuning_fraction": 0.3,
+      "holdout_seeds": [
+        423,
+        557,
+        691
+      ],
+      "concurrencies": [
+        1,
+        2,
+        4,
+        8,
+        16,
+        24,
+        32
+      ],
+      "holdout_prompts": 64,
+      "output_tokens": 128,
+      "reuse_prompts_by_seed": true
+    },
+    "lanes": {
+      "mtp": {
+        "gpu_index": 0,
+        "server_version": "0.34.0",
+        "order": [
+          "normal",
+          "mtp"
+        ]
+      },
+      "dspark": {
+        "gpu_index": 1,
+        "server_version": "0.34.0",
+        "order": [
+          "dspark",
+          "normal"
+        ]
+      },
+      "dflash": {
+        "gpu_index": 2,
+        "server_version": "0.34.0",
+        "order": [
+          "normal",
+          "dflash"
+        ]
+      },
+      "eagle4": {
+        "gpu_index": 3,
+        "server_version": "0.32.0rc1.dev283+eagle.5",
+        "order": [
+          "eagle4",
+          "normal"
+        ]
+      },
+      "suffix": {
+        "gpu_index": 4,
+        "server_version": "0.34.0",
+        "order": [
+          "normal",
+          "suffix"
+        ]
+      },
+      "suffix-standard": {
+        "gpu_index": 5,
+        "server_version": "0.34.0",
+        "order": [
+          "suffix-standard",
+          "normal"
+        ]
+      }
+    }
+  }
+}

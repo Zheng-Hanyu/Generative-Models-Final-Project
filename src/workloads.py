@@ -73,7 +73,10 @@ def write_workloads(directory, source, protocol):
         cells = list(product(seeds, protocol["concurrencies"]))
         for index, (seed, concurrency) in enumerate(cells):
             name = cell_name(phase, concurrency, seed)
-            subset = rows[index::len(cells)]
+            if phase == "holdout" and protocol.get("reuse_prompts_by_seed"):
+                subset = rows[seeds.index(seed)::len(seeds)][:count]
+            else:
+                subset = rows[index::len(cells)]
             if len(subset) < count:
                 raise ValueError(f"{name}: only {len(subset)} distinct questions for {count} requests")
             contents = "".join(json.dumps(row, ensure_ascii=False) + "\n" for row in subset)
@@ -301,12 +304,16 @@ def prepare_inputs(output, dataset, config, study):
     if study == "framework":
         return ()
     cells = []
-    for seed, concurrency in product(protocol["holdout_seeds"], protocol["concurrencies"]):
-        name = cell_name("holdout", concurrency, seed)
-        run_name = cell_name("spec-bench", concurrency, seed) if study == "paired" else name
-        cell = BenchmarkCell(run_name, seed, concurrency, protocol["holdout_prompts"],
-                             spec_bench_flags(spec_directory / f"{name}.jsonl", protocol["output_tokens"]))
-        cells.append(("spec-bench", spec[name]["sha256"], cell))
+    for seed in protocol["holdout_seeds"]:
+        concurrencies = protocol["concurrencies"].copy()
+        if study == "concurrency":
+            random.Random(seed).shuffle(concurrencies)
+        for concurrency in concurrencies:
+            name = cell_name("holdout", concurrency, seed)
+            run_name = cell_name("spec-bench", concurrency, seed) if study == "paired" else name
+            cell = BenchmarkCell(run_name, seed, concurrency, protocol["holdout_prompts"],
+                                 spec_bench_flags(spec_directory / f"{name}.jsonl", protocol["output_tokens"]))
+            cells.append(("spec-bench", spec[name]["sha256"], cell))
     if study == "paired":
         repetition = output / "repetitive"
         for row in prepare_repetition(protocol, repetition):

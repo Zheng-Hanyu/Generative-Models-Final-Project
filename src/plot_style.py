@@ -15,6 +15,7 @@ METHOD_STYLES = {
     "dflash": (DFLASH, "D", "-."),
     "eagle4": ("#5145A1", "^", "-"),
     "suffix": (SUFFIX, "P", "--"),
+    "suffix-standard": ("#695630", "v", ":"),
 }
 BAR_HATCHES = {"mtp": "", "dspark": "//", "dflash": ".", "eagle4": "", "suffix": "\\\\"}
 

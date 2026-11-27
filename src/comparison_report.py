@@ -57,12 +57,28 @@ def collect_paired(root, config, study):
         if signature is not None and current != signature:
             raise ValueError(f"{lane}: inputs, client or hardware differ from the other methods")
         signature = current
+        if study == "concurrency":
+            for seed in protocol["holdout_seeds"]:
+                hashes = {cell["sha256"] for (_, _, run_seed), cell in cells.items() if run_seed == seed}
+                if len(hashes) != 1:
+                    raise ValueError(f"{lane}: concurrency levels must share the same prompts per seed")
+            if len({cell["sha256"] for cell in cells.values()}) != len(protocol["holdout_seeds"]):
+                raise ValueError(f"{lane}: trial prompt sets must differ")
+            experiment = data.setdefault("experiment", {
+                "study": study, "target": current[0], "gpu": current[1], "driver": current[2],
+                "client_version": current[3], "dataset_sha256": current[4], "protocol": protocol, "lanes": {},
+            })
+            experiment["lanes"][method] = {
+                "gpu_index": identity["gpu"]["index"], "server_version": identity["server_version"],
+                "order": list(identity["serving_commands"]),
+            }
         profile = identity["profile"]
         label = profile["id"]
         baseline = f"normal-{method}"
         data["winners"][method] = label
-        roles = ("normal", method) if study == "paired" else ("baseline", "selected")
+        roles = ("baseline", "selected") if study == "standard-suffix" else ("normal", method)
         runs = {}
+        lengths = {}
         for role, key, control in zip(roles, (baseline, label), (None, baseline), strict=True):
             directory = lane / role
             record = read_json(directory / "completed.json")
@@ -86,6 +102,11 @@ def collect_paired(root, config, study):
                     **{metric: result[metric] for metric in METRICS},
                     "spec_decode_acceptance_rate": result.get("spec_decode_acceptance_rate"),
                 }
+                if study == "concurrency":
+                    input_lens = result["input_lens"]
+                    if len(input_lens) != cell["count"] or lengths.setdefault(seed, input_lens) != input_lens:
+                        raise ValueError(f"{result_path}: input sequence differs by role or concurrency")
+                    row.update({metric: result[metric] for metric in ("total_output_tokens", "duration")})
                 if study == "standard-suffix":
                     texts = result["generated_texts"]
                     if len(texts) != cell["count"]:
