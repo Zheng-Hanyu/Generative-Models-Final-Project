@@ -37,6 +37,7 @@ Spec-Bench 和 SPEED-Bench 使用公开文本提示，BurstGPT v2.0 回放请求
 | [src/](src/) | 统一 CLI、负载准备、结果汇总和绘图 |
 | [report/unified_framework/](report/unified_framework/) | 当前框架的复跑命令、结果和图表 |
 | [report/course_study/](report/course_study/) | 课程实验、早期 Suffix 对照、汇总表和命令记录 |
+| [tree_study/](tree_study/) · [树形投机解码报告](report/tree_drafting/results.md) | DSpark / DFlash2 的树搜索、分支状态验证与 B200 耗时消融 |
 | [results/](results/) | 原始测量和结构化结果 |
 | [logs/](logs/) | 课程实验日志，按运行标签查找 |
 
