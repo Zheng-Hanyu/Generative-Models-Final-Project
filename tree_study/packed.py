@@ -119,7 +119,15 @@ def _recur(
         z = tl.load(a + node * SA + head).to(tl.float32) + bias
         mat *= tl.exp(decay * tl.where(z <= 20.0, tl.log(1.0 + tl.exp(z)), z))
         beta = tl.sigmoid(tl.load(b + node * SB + head).to(tl.float32))
-        update = (val - tl.sum(mat * key[None, :], 1)) * beta
+        # Match the SM100 vLLM 0.34 GDN reduction: the last four value rows
+        # in a 32-row tile contract the first product of each pair into an FMA.
+        # Even one ULP in this prediction can persist in the recurrent state.
+        lo, hi = tl.split(tl.permute(tl.reshape(mat, (BV, K // 4, 2, 2)), (0, 1, 3, 2)))
+        kl, kh = tl.split(tl.permute(tl.reshape(key, (K // 4, 2, 2)), (0, 2, 1)))
+        pairs = tl.fma(lo, kl[None, :, :], hi * kh[None, :, :])
+        tail_prediction = tl.sum(tl.sum(pairs, 2), 1)
+        prediction = tl.where(vv % 32 >= 28, tail_prediction, tl.sum(mat * key[None, :], 1))
+        update = (val - prediction) * beta
         mat += update[:, None] * key[None, :]
         tl.store(out + (node * HV + head) * V + vv, tl.sum(mat * q[None, :], 1))
         dest = tl.load(slots + node).to(tl.int64)
